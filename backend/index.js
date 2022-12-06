@@ -11,6 +11,8 @@ const mongoose = require('mongoose');
 
 // Routes
 var users = require('./routes/users');
+var intakes = require('./routes/intake');
+var curriculums = require('./routes/curriculum');
 var auth = require('./routes/auth');
 
 
@@ -22,6 +24,8 @@ app.use(cors());
 
 mongoose.connect(mongooseConnectionString, {useNewUrlParser:true});
 app.use("/user", users);
+app.use("/intake", intakes);
+app.use("/curriculum", curriculums);
 // app.use("/auth", auth);
 
 app.listen(PORT, () => {
