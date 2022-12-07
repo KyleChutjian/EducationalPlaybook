@@ -90,6 +90,17 @@ router.put("/manage-accounts/:userId/:role/:output", async(req, res) => {
     }
 });
 
+// Deleting a User by UserID
+router.delete("/delete/:userId", async (req, res) => {
+    const userId = req.params.userId;
+    try {
+        const user = await User.findByIdAndRemove(userId);
+        res.status(200).send(`Deleted user with id ${userId}`);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
 // Get Dashboards by UserId
 router.get("/dashboards/:userId", async (req, res) => {
     const userId = req.params.userId;

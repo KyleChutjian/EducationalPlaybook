@@ -50,7 +50,7 @@ router.put("/:curriculumId/update-learningObjective", async (req, res) => {
 });
 
 // Delete 1 Learning Objective by CurriculumID
-router.put("/:curriculumId/delete-learningObjective/:index", async (req, res) => {
+router.delete("/:curriculumId/delete-learningObjective/:index", async (req, res) => {
     const curriculumId = req.params.curriculumId;
     const index = req.params.index;
     try {
@@ -95,7 +95,7 @@ router.put("/:curriculumId/update-lessons", async (req, res) => {
 });
 
 // Delete 1 Lesson by CurriculumID by Index
-router.put("/:curriculumId/delete-lesson/:index", async (req, res) => {
+router.delete("/:curriculumId/delete-lesson/:index", async (req, res) => {
     const curriculumId = req.params.curriculumId;
     const index = req.params.index;
     try {
