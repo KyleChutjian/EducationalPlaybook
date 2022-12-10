@@ -11,6 +11,16 @@ const {
     verifyUser
 } = require("./verifyToken");
 
+// Get All Curriculums
+router.get("/", async (req, res) => {
+    try {
+        const curriculums = await Curriculum.find();
+        res.status(200).json(curriculums);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
 // Get Curriculum by CurriculumID
 router.get("/:curriculumId", async (req, res) => {
     const curriculumId = req.params.curriculumId;
@@ -22,7 +32,16 @@ router.get("/:curriculumId", async (req, res) => {
     }
 });
 
-
+// Delete Curriculum by CurriculumID (this is only for testing purposes)
+router.delete("/:curriculumId", async (req, res) => {
+    const curriculumId = req.params.curriculumId;
+    try {
+        const curriculum = await Curriculum.findByIdAndRemove(curriculumId);
+        res.status(200).send(`Successfully removed curriculum with id ${curriculumId}`);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
 
 // Get Learning Objectives by CurriculumID
 router.get("/:curriculumId/learningObjectives", async (req, res) => {
