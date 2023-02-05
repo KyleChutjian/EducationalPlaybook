@@ -228,7 +228,7 @@ router.get("/:intakeId/view-intake", async (req, res) => {
     }
 });
 
-// Edit Needs Assessment by IntakeId
+// Edit Intake Status by IntakeId
 router.put("/:intakeId/edit-intake-status/:status", async (req, res) => {
     try {
         const status = req.params.status.toLowerCase();
