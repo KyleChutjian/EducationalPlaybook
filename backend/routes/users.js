@@ -10,7 +10,19 @@ const {
     verifyUser,
   } = require("./verifyToken");
 
+// Login
+router.post("/login", async (req, res) => {
+    await User.findOne({email: req.body.email}).then((user) => {
+        const token = "" // do some verification eventually
+        return res.status(200).send(`Successfully logged in with email ${req.body.email}`);
+    })
+});
 
+// Logout
+router.post("/logout", async (req, res) => {
+    req.logout();
+    res.send({message: "Successfully logged out"});
+});
 
 // Get Accounts
 router.get("/get-accounts", async (req, res) => {
