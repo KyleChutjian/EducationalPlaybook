@@ -13,11 +13,6 @@ export function logout() {
     return http.post(`${apiEndPointUser}/logout`);
 }
 
-// Sign-up
-export function signup(data) {
-    return http.post(`${apiEndPointUser}/signup`, data);
-}
-
 // Get-accounts
 export function getAccounts() {
     http.setJwt(getJwt());
