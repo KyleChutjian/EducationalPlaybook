@@ -3,7 +3,6 @@ require('dotenv').config();
 const PORT = 3001;
 
 const mongooseConnectionString = `mongodb+srv://${process.env.LOGIN}:${process.env.PASSWORD}@cluster0.yb6wo5k.mongodb.net/test`;
-
 const express = require('express');
 const app = express();
 const cors = require("cors");

@@ -64,35 +64,46 @@ router.get("/get-intake/:intakeId", async (req,res) => {
 
 // Save Unsubmitted Intake Form
 router.put("/save-intake", async (req, res) => {
+    console.log("save intake")
     try {
         const clientId = req.body.clientId;
+        const intakeId = req.body.intakeId;
+        
+        // If intake does not already exist
+        if (intakeId == null) {
+            // Make new curriculum
+            const newCurriculum = new Curriculum({
+                name: null,
+                lessons: ["Sample Lesson Name", "Reading", false], // Preset curriculum lesson
+                objectives: ["Sample Objective #1"] // Preset curriculum objective
+            });
 
-        // Make new curriculum
-        const newCurriculum = new Curriculum({
-            name: null,
-            lessons: ["Sample Lesson Name", "Reading", false], // Preset curriculum lesson
-            objectives: ["Sample Objective #1"] // Preset curriculum objective
-        });
+            // Save curriculum and get curriculumid
+            const savedCurriculum = await newCurriculum.save();
+            const newCurriculumId = savedCurriculum._id;
 
-        // Save curriculum and get curriculumid
-        const savedCurriculum = await newCurriculum.save();
-        const newCurriculumId = savedCurriculum._id;
+            // Making new intake form
+            const newIntake = new Intake({
+                clientId: clientId, 
+                programLeadId: null, 
+                curriculumId: newCurriculumId, 
+                intakeResponse: req.body.intakeResponse, 
+                status: "pending-client",
+                needsAssessment: [
+                    ["Focus Area", "Desired Future State", "Current State", "Identified Gap"] // first row of table
+                ]
+            });
 
-        // Making new intake form
-        const newIntake = new Intake({
-            clientId: clientId, 
-            programLeadId: null, 
-            curriculumId: newCurriculumId, 
-            intakeResponse: req.body.intakeResponse, 
-            status: "pending-client",
-            needsAssessment: [
-                ["Focus Area", "Desired Future State", "Current State", "Identified Gap"] // first row of table
-            ]
-        });
+            // Save/Create new intake form
+            const savedIntake = await newIntake.save();
+            res.status(200).json(savedIntake);
 
-        // Save new intake form
-        const savedIntake = await newIntake.save();
-        res.status(200).json(savedIntake);
+        } else {
+            const intake = await Intake.findByIdAndUpdate(intakeId, {
+                intakeResponse: req.body.intakeResponse
+            });
+            res.status(200).json(intake);
+        }
 
     } catch (err) {
         res.status(500).json(err);
@@ -140,7 +151,10 @@ router.put("/submit-intake", async (req, res) => {
 
         } else {
             console.log(`Valid intake, updating existing intake form`);
-            const intake = await Intake.findByIdAndUpdate(intakeId, {status: "pending-admin"});
+            const intake = await Intake.findByIdAndUpdate(intakeId, {
+                status: "pending-admin",
+                intakeResponse: req.body.intakeResponse
+            });
             res.status(200).json(intake);
         }
 
