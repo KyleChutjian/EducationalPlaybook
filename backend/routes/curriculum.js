@@ -9,7 +9,7 @@ const {
     verifyTokenAndAuthorization,
     verifyTokenAndAdmin,
     verifyUser
-} = require("./verifyToken");
+} = require("./verify");
 
 // Get All Curriculums
 router.get("/", async (req, res) => {

@@ -11,7 +11,7 @@ const {
     verifyTokenAndAuthorization,
     verifyTokenAndAdmin,
     verifyUser
-} = require("./verifyToken");
+} = require("./verify");
 
 // Get All Intake Forms
 router.get("/", async (req,res) => {
@@ -62,15 +62,35 @@ router.get("/get-intake/:intakeId", async (req,res) => {
     }
 });
 
+// Get 1 Intake Form by ClientId
+router.get("/get-intake-by-clientid/:clientId", async (req, res) => {
+    try {
+        const clientId = req.params.clientId;
+        const intake = await Intake.find({
+            clientId: clientId,
+            status: "pending-client"
+        });
+        if (intake.length == 0) {
+            res.status(200).send(null);
+        } else {
+            res.status(200).send(intake);
+        }
+        
+        // res.status(200).json(intake);
+
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
 // Save Unsubmitted Intake Form
 router.put("/save-intake", async (req, res) => {
-    console.log("save intake")
+    console.log("save intake");
     try {
         const clientId = req.body.clientId;
         const intakeId = req.body.intakeId;
-        
         // If intake does not already exist
-        if (intakeId == null) {
+        if (intakeId === "" || intakeId === null || intakeId === "null") {
             // Make new curriculum
             const newCurriculum = new Curriculum({
                 name: null,

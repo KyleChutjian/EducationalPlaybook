@@ -1,6 +1,7 @@
-import jwtDecode from "jwt-decode";
+import jwtDecode from "jwt-decode"; // handles the token
 import http from "./httpService";
 import { login, logout } from "./userService";
+import { getClientIntakeByClientId, getIntakeDataByIntakeId } from '../services/intakeService'
 
 const tokenKey = "token";
 
@@ -9,7 +10,25 @@ http.setJwt(getJwt());
 // Login
 export async function loginUser(info) {
     const { data: jwt } = await login(info);
+    const currentUserId = getCurrentUser(jwt).id;
+    const intakeId = getClientIntakeByClientId({clientId: currentUserId}).then((result) => {
 
+        // Null IntakeResponse
+        if (result.data === "") {
+            localStorage.setItem("intakeId", null);
+            localStorage.setItem("intakeResponses", null);
+
+        } else {
+            localStorage.setItem("intakeId", result.data[0]._id);
+            const intakeResponses = result.data[0].intakeResponse;
+            localStorage.setItem("intakeResponses", JSON.stringify(intakeResponses));
+        }
+        
+
+        
+    });
+
+    localStorage.setItem("userId", currentUserId);
     localStorage.setItem(tokenKey, jwt);
 }
 
@@ -20,7 +39,8 @@ export function loginWithJwt(jwt) {
 
 // Logout
 export async function logoutUser() {
-    const respond = await logout();
+    const response = await logout();
+    console.log(response);
     localStorage.removeItem(tokenKey);
 }
 

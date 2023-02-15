@@ -21,6 +21,7 @@ from 'mdb-react-ui-kit';
 
 function Intake() {
   // const clientId = useRef(0);
+  // const [intakeId, setIntakeId] = useState();  
 
   const [account, setAccount] = useState({
     email: "",
@@ -29,29 +30,38 @@ function Intake() {
     isAdmin: false
   });
 
+  const intakeResponsesJSON = localStorage.getItem("intakeResponses");
+  var intakeResponses;
+  if (intakeResponsesJSON === "null") {
+    intakeResponses = ["","","","","",""];
+  } else {
+    intakeResponses = JSON.parse(localStorage.getItem("intakeResponses"));
+  }
+
+  const [intakeData, setIntakeData] = useState({
+    intakeId: localStorage.getItem("intakeId"),
+    clientId: localStorage.getItem("userId"),
+    intakeResponse: 
+    [
+      intakeResponses[0], // 1. Why is this training needed?
+      intakeResponses[1], // 2. Can you desctibe the current gap that exists?
+      intakeResponses[2], // 3. Was there an identified problem that brought this to your attention?
+      intakeResponses[3], // 4. Is there data?
+      intakeResponses[4], // 5. How will we measure success of this training?
+      intakeResponses[5]  // 6. Who are your champions for this training development project?
+    ]
+  })
+
   // useEffect(() => {
   //   console.log("page loaded");
   // }, []);
 
-  const [intakeData, setIntakeData] = useState({
-    // intakeId: null,
-    intakeId: "63ead4d0ab51222839e7a652",
-    clientId: "638e9c4d4a14d47642176bbc",
-    intakeResponse: [
-      "", // 1. Why is this training needed?
-      "", // 2. Can you desctibe the current gap that exists?
-      "", // 3. Was there an identified problem that brought this to your attention?
-      "", // 4. Is there data?
-      "", // 5. How will we measure success of this training?
-      ""  // 6. Who are your champions for this training development project?
-    ]
-  })
+
 
   function handleIntakeResponseChange(e) {
     const { name, value } = e.target;
 
     setIntakeData((old) => {
-
       // Get Queston number index
       const indexString = name.split("question")[1];
       const index = parseInt(indexString) - 1;
@@ -79,6 +89,19 @@ function Intake() {
 
     submitIntake(intakeData).then((res) => {
       console.log(res.data);
+      localStorage.setItem("intakeId", "null");
+      localStorage.setItem("intakeResponses", "null");
+      setIntakeData((old) => {
+
+        // New object for return
+        const newValues = {
+          intakeId: localStorage.getItem("intakeId"),
+          clientId: old.clientId,
+          intakeResponse: localStorage.getItem("intakeResponses")
+        }
+
+        return newValues
+      });
     }).catch((err) => console.log(err));
   }
 
@@ -86,9 +109,22 @@ function Intake() {
   function handleSaveAndClose(e) {
     e.preventDefault();
     console.log("Save & Close");
-
     saveIntake(intakeData).then((res) => {
       console.log(res.data);
+      localStorage.setItem("intakeId", res.data._id);
+      localStorage.setItem("intakeResponses", JSON.stringify(res.data.intakeResponse));
+      setIntakeData((old) => {
+
+        // New object for return
+        const newValues = {
+          intakeId: localStorage.getItem("intakeId"),
+          clientId: old.clientId,
+          intakeResponse: localStorage.getItem("intakeResponses")
+        }
+
+        return newValues
+      });
+      
     }).catch((err) => console.log(err));
   }
 
@@ -137,37 +173,37 @@ function Intake() {
         {/* Question 1 */}
         <div className="row question1-wrapper">
           <h3>Why is this training needed?</h3>
-          <MDBTextArea id='question1' rows={4} name="question1" onChange={handleIntakeResponseChange}/>
+          <MDBTextArea id='question1' rows={4} name="question1" defaultValue={intakeResponses[0]} onChange={handleIntakeResponseChange}/>
         </div>
 
         {/* Question 2 */}
         <div className="row question2-wrapper" style={{paddingTop: "2%"}}>
           <h3>Can you describe the current gap that exists?</h3>
-          <MDBTextArea id='question2' rows={4} name="question2" onChange={handleIntakeResponseChange}/>
+          <MDBTextArea id='question2' rows={4} name="question2" defaultValue={intakeResponses[1]} onChange={handleIntakeResponseChange}/>
         </div>
 
         {/* Question 3 */}
         <div className="row question3-wrapper" style={{paddingTop: "2%"}}>
           <h3>Was there an identified problem that brought this to your attention? If so, what was the problem?</h3>
-          <MDBTextArea id='question3' rows={4} name="question3" onChange={handleIntakeResponseChange}/>
+          <MDBTextArea id='question3' rows={4} name="question3" defaultValue={intakeResponses[2]} onChange={handleIntakeResponseChange}/>
         </div>
 
         {/* Question 4 */}
         <div className="row question4-wrapper" style={{paddingTop: "2%"}}>
           <h3>Is there data? If so, what has the data shown?</h3>
-          <MDBTextArea id='question4' rows={4} name="question4" onChange={handleIntakeResponseChange}/>
+          <MDBTextArea id='question4' rows={4} name="question4" defaultValue={intakeResponses[3]} onChange={handleIntakeResponseChange}/>
         </div>
 
         {/* Question 5 */}
         <div className="row question5-wrapper" style={{paddingTop: "2%"}}>
           <h3>How will we measure success of this training?</h3>
-          <MDBTextArea id='question5' rows={4} name="question5" onChange={handleIntakeResponseChange}/>
+          <MDBTextArea id='question5' rows={4} name="question5" defaultValue={intakeResponses[4]} onChange={handleIntakeResponseChange}/>
         </div>
 
         {/* Question 6 */}
         <div className="row question6-wrapper" style={{paddingTop: "2%"}}>
           <h3>Who are your champions for this training development project? Please include name(s) and email(s). </h3>
-          <MDBTextArea id='question6' rows={4} name="question6" onChange={handleIntakeResponseChange}/>
+          <MDBTextArea id='question6' rows={4} name="question6" defaultValue={intakeResponses[5]} onChange={handleIntakeResponseChange}/>
         </div>
 
 
@@ -213,6 +249,5 @@ function Intake() {
 
   );
 }
-// style={{paddingLeft: "1%"}}
 export default Intake;
 
