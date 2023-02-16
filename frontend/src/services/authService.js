@@ -10,7 +10,8 @@ http.setJwt(getJwt());
 // Login
 export async function loginUser(info) {
     const { data: jwt } = await login(info);
-    const currentUserId = getCurrentUser(jwt).id;
+    const decodedUser = jwtDecode(jwt);
+    const currentUserId = decodedUser.id;
     const intakeId = getClientIntakeByClientId({clientId: currentUserId}).then((result) => {
 
         // Null IntakeResponse

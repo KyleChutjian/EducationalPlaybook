@@ -31,6 +31,10 @@ export function getClientIntakeByClientId(clientId) {
 // Save Unsubmitted Intake Form
 export function saveIntake(data) {
     http.setJwt(getJwt());
+
+    console.log(`Updated intakeResponse localstorage with: ${data.intakeResponse}`);
+    localStorage.setItem("intakeResponses", JSON.stringify(data.intakeResponse));
+    console.log(localStorage.getItem("intakeResponses"));
     return http.put(`${apiEndPointIntake}/save-intake`, data);
 }
 
