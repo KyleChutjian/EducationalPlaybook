@@ -18,6 +18,7 @@ import {
   MDBIcon
 }
 from 'mdb-react-ui-kit';
+import ClientNav from './ClientNav';
 
 function Intake() {
   const history = useNavigate();
@@ -133,77 +134,49 @@ function Intake() {
     <div className="intake-wrapper">
       {/* Navbar */}
       <header style={{ paddingLeft: 0 }}>
-        <MDBNavbar expand='lg' light bgColor='white'>
-          <MDBContainer fluid>
-            <MDBNavbarToggler
-              aria-controls='navbarExample01'
-              aria-expanded='false'
-              aria-label='Toggle navigation'
-            >
-              <MDBIcon fas icon='bars' />
-            </MDBNavbarToggler>
-            <div className='collapse navbar-collapse' id='navbarExample01'>
-              <MDBNavbarNav right className='mb-2 mb-lg-0'>
-                <MDBNavbarItem active>
-                  <MDBNavbarLink aria-current='page' href='#'>
-                    Sample Navbar
-                  </MDBNavbarLink>
-                </MDBNavbarItem>
-                <MDBNavbarItem>
-                  <MDBNavbarLink href='#'>Features</MDBNavbarLink>
-                </MDBNavbarItem>
-                <MDBNavbarItem>
-                  <MDBNavbarLink href='#'>Pricing</MDBNavbarLink>
-                </MDBNavbarItem>
-                <MDBNavbarItem>
-                  <MDBNavbarLink href='#'>About</MDBNavbarLink>
-                </MDBNavbarItem>
-              </MDBNavbarNav>
-            </div>
-          </MDBContainer>
-        </MDBNavbar>
+        <ClientNav/>
       </header>
 
       {/* Jumbotron */}
       <div className='p-5 text-center bg-info'>
-        <h1 className='mb-3'>New Intake Form</h1>
+        <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>New Intake Form</h1>
       </div>
       
       <div className="intake-body container" style={{paddingTop: "1%"}}>
 
         {/* Question 1 */}
         <div className="row question1-wrapper">
-          <h3>Why is this training needed?</h3>
+          <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Why is this training needed?</h3>
           <MDBTextArea id='question1' rows={4} name="question1" defaultValue={intakeResponses[0]} onChange={handleIntakeResponseChange}/>
         </div>
 
         {/* Question 2 */}
         <div className="row question2-wrapper" style={{paddingTop: "2%"}}>
-          <h3>Can you describe the current gap that exists?</h3>
+          <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Can you describe the current gap that exists?</h3>
           <MDBTextArea id='question2' rows={4} name="question2" defaultValue={intakeResponses[1]} onChange={handleIntakeResponseChange}/>
         </div>
 
         {/* Question 3 */}
         <div className="row question3-wrapper" style={{paddingTop: "2%"}}>
-          <h3>Was there an identified problem that brought this to your attention? If so, what was the problem?</h3>
+          <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Was there an identified problem that brought this to your attention? If so, what was the problem?</h3>
           <MDBTextArea id='question3' rows={4} name="question3" defaultValue={intakeResponses[2]} onChange={handleIntakeResponseChange}/>
         </div>
 
         {/* Question 4 */}
         <div className="row question4-wrapper" style={{paddingTop: "2%"}}>
-          <h3>Is there data? If so, what has the data shown?</h3>
+          <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Is there data? If so, what has the data shown?</h3>
           <MDBTextArea id='question4' rows={4} name="question4" defaultValue={intakeResponses[3]} onChange={handleIntakeResponseChange}/>
         </div>
 
         {/* Question 5 */}
         <div className="row question5-wrapper" style={{paddingTop: "2%"}}>
-          <h3>How will we measure success of this training?</h3>
+          <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>How will we measure success of this training?</h3>
           <MDBTextArea id='question5' rows={4} name="question5" defaultValue={intakeResponses[4]} onChange={handleIntakeResponseChange}/>
         </div>
 
         {/* Question 6 */}
         <div className="row question6-wrapper" style={{paddingTop: "2%"}}>
-          <h3>Who are your champions for this training development project? Please include name(s) and email(s). </h3>
+          <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Who are your champions for this training development project? Please include name(s) and email(s). </h3>
           <MDBTextArea id='question6' rows={4} name="question6" defaultValue={intakeResponses[5]} onChange={handleIntakeResponseChange}/>
         </div>
 
@@ -223,7 +196,7 @@ function Intake() {
                   type="submit"
                   form="save-close-form"
                   onSubmit={handleSaveAndClose}
-                  style={{width: "150px"}}
+                  style={{width: "150px", fontFamily:'Bitter'}}
 
                 >Save & Close</button>
               </span>
@@ -236,7 +209,7 @@ function Intake() {
                   className="btn btn-primary btm-md center-block"
                   type="submit"
                   onSubmit={handleSubmit}
-                  style={{width: "150px", display: "inline-block", verticalAlign: "top"}}
+                  style={{width: "150px", display: "inline-block", verticalAlign: "top", fontFamily:'Bitter'}}
                   >Submit</button>
               </span>
             </form>

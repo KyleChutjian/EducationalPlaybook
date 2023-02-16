@@ -3,6 +3,8 @@ import ApprovedIntakes from "./components/ApprovedIntakes";
 import ArchivedIntakes from "./components/ArchivedIntakes";
 import Curriculum from "./components/Curriculum";
 import Dashboard from "./components/Dashboard";
+import AdminDashboard from "./components/AdminDashboard";
+import CurriculumDash from "./components/CurriculumDash";
 import EditCurriculum from "./components/EditCurriculum";
 import Intake from "./components/Intake";
 import Login from "./components/Login";
@@ -10,6 +12,9 @@ import ManageAccounts from "./components/ManageAccounts";
 import NeedsAssessment from "./components/NeedsAssessment";
 import PendingIntake from "./components/PendingIntake";
 import SuccessRate from "./components/SuccessRate";
+import AdminNav from "./components/AdminNav";
+import PLDashboard from './components/PLDashboard';
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -28,12 +33,16 @@ function App() {
         <Route exact path="/archivedIntakes" element={<ArchivedIntakes />}/>
         <Route exact path="/curriculum" element={<Curriculum />}/>
         <Route exact path="/dashboard" element={<Dashboard />}/>
+        <Route exact path="/adminDashboard" element={<AdminDashboard />}/>
+        <Route exact path="/plDashboard" element={<PLDashboard />}/>
+        <Route exact path="/curriculumDash" element={<CurriculumDash />}/>
         <Route exact path="/editCurriculum" element={<EditCurriculum />}/>
         <Route exact path="/intake" element={<Intake />}/>
         <Route exact path="/manageAccounts" element={<ManageAccounts />}/>
         <Route exact path="/needsAssessment" element={<NeedsAssessment />}/>
         <Route exact path="/pendingIntake" element={<PendingIntake />}/>
         <Route exact path="/successRate" element={<SuccessRate />}/>
+        <Route exact path="/adminNav" element={<AdminNav />}/>
       </Routes>
     </Router>
   );
