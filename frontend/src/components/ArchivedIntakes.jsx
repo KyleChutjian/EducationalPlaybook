@@ -2,6 +2,12 @@ import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { loginUser } from '../services/authService';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Container from 'react-bootstrap/Container';
+import { saveIntake, submitIntake, getIntakebyStatus, adminApproveIntake, programleadApproveIntake, editIntakeByIntakeId } from '../services/intakeService';
+
 import {
   MDBContainer,
   MDBInput,
@@ -21,42 +27,49 @@ from 'mdb-react-ui-kit';
 
 function ArchivedIntakes() {
 
+  const history = useNavigate();
+
+  const toArchivedIntake = () => {
+    // Update the route
+    let path = '/intake';
+    history(path);
+  };
+  const toLogin = () => {
+    // Update the route
+    let path = '/login';
+    history(path);
+  };
+
   
   return(
 
     <div className="intake-wrapper">
       {/* Navbar */}
       <header style={{ paddingLeft: 0 }}>
-        <MDBNavbar expand='lg' light bgColor='white'>
-          <MDBContainer fluid>
-            <MDBNavbarToggler
-              aria-controls='navbarExample01'
-              aria-expanded='false'
-              aria-label='Toggle navigation'
-            >
-              <MDBIcon fas icon='bars' />
-            </MDBNavbarToggler>
-            <div className='collapse navbar-collapse' id='navbarExample01'>
-              <MDBNavbarNav right className='mb-2 mb-lg-0'>
-                <MDBNavbarItem active>
-                  <MDBNavbarLink aria-current='page' href='#'>
-                    Sample Navbar
-                  </MDBNavbarLink>
-                </MDBNavbarItem>
-                
-              </MDBNavbarNav>
-            </div>
-          </MDBContainer>
-        </MDBNavbar>
+      <Navbar bg="light" expand="lg" className="ms-auto">
+          <Container>
+
+            <Navbar.Brand href="#home">
+              <img src="./final-ep-logo.png" alt="bug" height={100} />
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+             <Nav className="ms-auto">
+               <Nav.Item title="Logout" id="basic-nav" onClick={toLogin}>Logout</Nav.Item>
+             </Nav>
+           </Navbar.Collapse>
+        
+          </Container>
+        </Navbar>
       </header>
       {/* Jumbotron */}
       <div className='head-pending p-5 text-center'>
-        <h1 className='mb-3'>Approved Intake Forms</h1>
+        <h1 className='mb-3'>Archived Intake Forms</h1>
       </div>
 
       <div className="intake-body container" style={{paddingTop: "1%"}}>
         {/* Intake 1 */}
-        <div class="rectangle">
+        <div class="rectangle" onClick={toArchivedIntake}>
           <h5 class="d-flex justify-content-center">Intake #001</h5>
         </div>
 
@@ -78,19 +91,11 @@ function ArchivedIntakes() {
 
 
 
-        <div className="row" style={{paddingTop: "2%", paddingBottom: "5%"}}>
-          <div className="col-sm-12 text-center">
-            <span style={{paddingRight: "1%"}}>
-              <MDBBtn 
-                id="saveAndCloseIntakeButton" 
-                className="button-pending"
-                style={{width: "150px"}}
-                >View More</MDBBtn>
-            </span>
-            
-
+        <div className="row">
+            <div className="col-sm-12 text-center">
+              <button className="button-pending center-block">See More</button>
+            </div>
           </div>
-        </div>
 
       </div>
     </div>
