@@ -21,6 +21,19 @@ from 'mdb-react-ui-kit';
 
 function PLDashboard() {
 
+    const history = useNavigate();
+
+    const toClientDash = () => {
+      // Update the route
+      let path = '/dashboard';
+      history(path);
+    };
+
+    const toAdminDash = () => {
+    // Update the route
+    let path = '/AdminDashboard';
+    history(path);
+    };
   
     return(
 
@@ -36,8 +49,8 @@ function PLDashboard() {
         title={
           <span className="my-auto" style={{color:'black', fontSize:'35px'}}>Program Lead Dashboard</span>
         }>
-         <Dropdown.Item href="#/action-1">Client Dashboard</Dropdown.Item>
-         <Dropdown.Item href="#/action-2">Admin Dashboard</Dropdown.Item>
+         <Dropdown.Item onClick={toClientDash}>Client Dashboard</Dropdown.Item>
+         <Dropdown.Item onClick={toAdminDash}>Admin Dashboard</Dropdown.Item>
        </DropdownButton>
         </h1>
         <h3> Welcome Program Lead!</h3>

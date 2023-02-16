@@ -38,7 +38,21 @@ function Dashboard() {
       // Update the route
       let path2 = '/needsassessment';
       history(path2);
-  };
+    };
+
+    const toAdminDash = () => {
+        // Update the route
+        let path = '/AdminDashboard';
+        history(path);
+    };
+  
+    const toPLDash = () => {
+      // Update the route
+      let path = '/PLdashboard';
+      history(path);
+    };
+
+
 
 
   
@@ -54,8 +68,8 @@ function Dashboard() {
         title={
           <span className="my-auto" style={{color:'black', fontSize:'35px'}}>Client Dashboard</span>
         }>
-         <Dropdown.Item href="#/action-1">Admin Dashboard</Dropdown.Item>
-         <Dropdown.Item href="#/action-2">Program Lead Dashboard</Dropdown.Item>
+         <Dropdown.Item onClick={toAdminDash}>Admin Dashboard</Dropdown.Item>
+         <Dropdown.Item onClick={toPLDash}>Program Lead Dashboard</Dropdown.Item>
        </DropdownButton>
         </h1>
         </h1>

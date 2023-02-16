@@ -21,6 +21,21 @@ from 'mdb-react-ui-kit';
 
 function AdminDashboard() {
 
+  const history = useNavigate();
+
+  const toClientDash = () => {
+      // Update the route
+      let path = '/dashboard';
+      history(path);
+  };
+
+  const toPLDash = () => {
+    // Update the route
+    let path = '/PLdashboard';
+    history(path);
+  };
+
+
   
     return(
 
@@ -36,8 +51,8 @@ function AdminDashboard() {
         title={
           <span className="my-auto" style={{color:'black', fontSize:'35px'}}>Administrator Dashboard</span>
         }>
-         <Dropdown.Item href="#/action-1">Client Dashboard</Dropdown.Item>
-         <Dropdown.Item href="#/action-2">Program Lead Dashboard</Dropdown.Item>
+         <Dropdown.Item onClick={toClientDash} >Client Dashboard</Dropdown.Item>
+         <Dropdown.Item onClick={toPLDash}>Program Lead Dashboard</Dropdown.Item>
        </DropdownButton>
         </h1>
         <h3> Welcome Tom!</h3>
