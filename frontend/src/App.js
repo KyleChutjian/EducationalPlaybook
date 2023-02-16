@@ -13,6 +13,7 @@ import NeedsAssessment from "./components/NeedsAssessment";
 import PendingIntake from "./components/PendingIntake";
 import SuccessRate from "./components/SuccessRate";
 import AdminNav from "./components/AdminNav";
+import PLDashboard from './components/PLDashboard';
 
 import {
   BrowserRouter as Router,
@@ -33,6 +34,7 @@ function App() {
         <Route exact path="/curriculum" element={<Curriculum />}/>
         <Route exact path="/dashboard" element={<Dashboard />}/>
         <Route exact path="/adminDashboard" element={<AdminDashboard />}/>
+        <Route exact path="/plDashboard" element={<PLDashboard />}/>
         <Route exact path="/curriculumDash" element={<CurriculumDash />}/>
         <Route exact path="/editCurriculum" element={<EditCurriculum />}/>
         <Route exact path="/intake" element={<Intake />}/>

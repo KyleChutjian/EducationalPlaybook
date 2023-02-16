@@ -19,7 +19,7 @@ import {
 }
 from 'mdb-react-ui-kit';
 
-function AdminDashboard() {
+function PLDashboard() {
 
   
     return(
@@ -34,13 +34,13 @@ function AdminDashboard() {
         <h1>
         <DropdownButton variant='light' size='lg' id="chooseUserType" 
         title={
-          <span className="my-auto" style={{color:'black', fontSize:'35px'}}>Administrator Dashboard</span>
+          <span className="my-auto" style={{color:'black', fontSize:'35px'}}>Program Lead Dashboard</span>
         }>
          <Dropdown.Item href="#/action-1">Client Dashboard</Dropdown.Item>
-         <Dropdown.Item href="#/action-2">Program Lead Dashboard</Dropdown.Item>
+         <Dropdown.Item href="#/action-2">Admin Dashboard</Dropdown.Item>
        </DropdownButton>
         </h1>
-        <h3> Welcome Tom!</h3>
+        <h3> Welcome Program Lead!</h3>
     </div> 
     <div class="col d-flex justify-content-center">
 
@@ -69,14 +69,6 @@ function AdminDashboard() {
         </Card.Title>
       </Card.Body>
     </Card>
-
-    <Card className="text-center mx-auto" style={{ background: '#a40084', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
-    <Card.Body>
-        <Card.Title style={{fontSize:'30px'}}>
-          <MDBCardLink href='#' style={{color:'whitesmoke'}}>Success Rate</MDBCardLink> 
-        </Card.Title>
-      </Card.Body>
-    </Card> 
     </Container>
     
 
@@ -87,4 +79,4 @@ function AdminDashboard() {
   )
 }
 
-export default AdminDashboard;
+export default PLDashboard;

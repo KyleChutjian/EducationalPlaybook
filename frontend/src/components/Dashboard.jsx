@@ -9,10 +9,14 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import {Card} from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import ClientNav from '../components/ClientNav';
+import { Dropdown } from 'react-bootstrap';
+import { DropdownButton } from 'react-bootstrap';
+
 // import { ReactComponent as Logo } from './logo.svg';
 
 import {
   MDBContainer,
+  MDBCardLink,
   MDBInput,
   MDBCheckbox,
   MDBBtn,
@@ -22,6 +26,21 @@ from 'mdb-react-ui-kit';
 
 function Dashboard() {
 
+  const history = useNavigate();
+
+    const routeChange = () => {
+        // Update the route
+        let path = '/intake';
+        history(path);
+    };
+
+    const routeChange2 = () => {
+      // Update the route
+      let path2 = '/needsassessment';
+      history(path2);
+  };
+
+
   
     return(  
     <div>
@@ -29,41 +48,51 @@ function Dashboard() {
         <ClientNav/>
       </div>
     <div class="container-fluid text-sm-center p-3 bg-light" style={{fontFamily: 'Bitter'}}>
-        <h1> Client Dashboard</h1>
+        <h1> 
+        <h1>
+        <DropdownButton variant='light' size='lg' id="chooseUserType" 
+        title={
+          <span className="my-auto" style={{color:'black', fontSize:'35px'}}>Client Dashboard</span>
+        }>
+         <Dropdown.Item href="#/action-1">Admin Dashboard</Dropdown.Item>
+         <Dropdown.Item href="#/action-2">Program Lead Dashboard</Dropdown.Item>
+       </DropdownButton>
+        </h1>
+        </h1>
         <h3> Welcome client!</h3>
     </div> 
     <div class="col d-flex justify-content-center">
     
     <Container fluid>
-     <Card className="text-center mx-auto" style={{ background: '#0098C3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
+     <Card id='submit' className="text-center mx-auto" style={{ background: '#0098C3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
       <Card.Body>
-        <Card.Title style={{fontSize:'30px'}}>Intake Forms</Card.Title>
-        <Button variant="light">Submit New</Button>
+        <Card.Title style={{fontSize:'30px'}}>
+          <MDBCardLink onClick={routeChange} style={{color:'whitesmoke'}}>Submit Intake</MDBCardLink> 
+        </Card.Title>
       </Card.Body>
     </Card>
 
-    <Card className="text-center mx-auto" style={{ background: '#6E9A35', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
-      <Card.Body>
-        <Card.Title style={{fontSize:'30px'}}>Needs Assessment</Card.Title>
-        <Button variant="light" disabled>Analyze</Button>
+    <Card id='needsassess' className="text-center mx-auto" style={{ background: '#6E9A35', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
+    <Card.Body>
+        <Card.Title style={{fontSize:'30px'}}>
+          <MDBCardLink onClick={routeChange2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink> 
+        </Card.Title>
       </Card.Body>
     </Card>
 
     <Card className="text-center mx-auto" style={{ background: '#d2492a', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
-      <Card.Body>
-        <Card.Title style={{fontSize:'30px'}}>Course</Card.Title>
-        <Card.Text>
-        </Card.Text>
-        <Button variant="light" disabled>View</Button>
+    <Card.Body>
+        <Card.Title style={{fontSize:'30px'}}>
+          <MDBCardLink href='#' style={{color:'whitesmoke'}}>Course</MDBCardLink> 
+        </Card.Title>
       </Card.Body>
     </Card>
 
     <Card className="text-center mx-auto" style={{ background: '#a40084', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
-      <Card.Body>
-        <Card.Title style={{fontSize:'30px'}}>Complete Courses</Card.Title>
-        <Card.Text>
-        </Card.Text>
-        <Button variant="light" disabled>View</Button>
+    <Card.Body>
+        <Card.Title style={{fontSize:'30px'}}>
+          <MDBCardLink href='#' style={{color:'whitesmoke'}}>Complete Courses</MDBCardLink> 
+        </Card.Title>
       </Card.Body>
     </Card> 
     </Container>
