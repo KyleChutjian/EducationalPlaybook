@@ -86,6 +86,7 @@ router.get("/get-intake-by-clientid/:clientId", async (req, res) => {
 // Save Unsubmitted Intake Form
 router.put("/save-intake", async (req, res) => {
     console.log("save intake");
+    console.log(req.body.intakeResponse);
     try {
         const clientId = req.body.clientId;
         const intakeId = req.body.intakeId;

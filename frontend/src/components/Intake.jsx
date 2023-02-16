@@ -20,9 +20,7 @@ import {
 from 'mdb-react-ui-kit';
 
 function Intake() {
-  // const clientId = useRef(0);
-  // const [intakeId, setIntakeId] = useState();  
-
+  const history = useNavigate();
   const [account, setAccount] = useState({
     email: "",
     password: "",
@@ -35,6 +33,7 @@ function Intake() {
   if (intakeResponsesJSON === "null") {
     intakeResponses = ["","","","","",""];
   } else {
+    console.log(localStorage.getItem("intakeResponses"));
     intakeResponses = JSON.parse(localStorage.getItem("intakeResponses"));
   }
 
@@ -102,6 +101,7 @@ function Intake() {
 
         return newValues
       });
+      history("/dashboard");
     }).catch((err) => console.log(err));
   }
 
@@ -112,7 +112,8 @@ function Intake() {
     saveIntake(intakeData).then((res) => {
       console.log(res.data);
       localStorage.setItem("intakeId", res.data._id);
-      localStorage.setItem("intakeResponses", JSON.stringify(res.data.intakeResponse));
+      console.log(JSON.stringify(res.data.intakeResponse));
+      // localStorage.setItem("intakeResponses", JSON.stringify(res.data.intakeResponse));
       setIntakeData((old) => {
 
         // New object for return
@@ -121,10 +122,10 @@ function Intake() {
           clientId: old.clientId,
           intakeResponse: localStorage.getItem("intakeResponses")
         }
-
+        console.log(newValues);
         return newValues
       });
-      
+      history("/dashboard");
     }).catch((err) => console.log(err));
   }
 
