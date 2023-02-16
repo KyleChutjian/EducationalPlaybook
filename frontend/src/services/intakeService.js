@@ -21,6 +21,13 @@ export function getIntakeByIntakeId(intakeId) {
     return http.get(`${apiEndPointIntake}/get-intake/${intakeId}`);
 }
 
+// Get Open Intake by ClientId
+export function getClientIntakeByClientId(clientId) {
+    http.setJwt(getJwt());
+    return http.get(`${apiEndPointIntake}/get-intake-by-clientid/${clientId.clientId}`);
+}
+
+
 // Save Unsubmitted Intake Form
 export function saveIntake(data) {
     http.setJwt(getJwt());
@@ -30,6 +37,7 @@ export function saveIntake(data) {
 // Submit Intake Form
 export function submitIntake(data) {
     http.setJwt(getJwt());
+    localStorage.setItem("intakeId", null)
     return http.put(`${apiEndPointIntake}/submit-intake`, data);
 }
 
