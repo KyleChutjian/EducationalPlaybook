@@ -61,8 +61,7 @@ function Dashboard() {
       <div>
         <ClientNav/>
       </div>
-    <div class="container-fluid text-sm-center p-3 bg-light" style={{fontFamily: 'Bitter'}}>
-        <h1> 
+    <div className="container-fluid text-sm-center p-3 bg-light" style={{fontFamily: 'Bitter'}}>
         <h1>
         <DropdownButton variant='light' size='lg' id="chooseUserType" 
         title={
@@ -72,10 +71,9 @@ function Dashboard() {
          <Dropdown.Item onClick={toPLDash}>Program Lead Dashboard</Dropdown.Item>
        </DropdownButton>
         </h1>
-        </h1>
         <h3> Welcome client!</h3>
     </div> 
-    <div class="col d-flex justify-content-center">
+    <div className="col d-flex justify-content-center">
     
     <Container fluid>
      <Card id='submit' className="text-center mx-auto" style={{ background: '#0098C3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
