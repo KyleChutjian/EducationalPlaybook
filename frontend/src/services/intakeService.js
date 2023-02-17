@@ -21,27 +21,21 @@ export function getIntakeByIntakeId(intakeId) {
     return http.get(`${apiEndPointIntake}/get-intake/${intakeId}`);
 }
 
-// Get Open Intake by ClientId
-export function getClientIntakeByClientId(clientId) {
+// Get Intakes by ClientId by Status
+export function getIntakesByClientIdByStatus(clientId, status) {
     http.setJwt(getJwt());
-    return http.get(`${apiEndPointIntake}/get-intake-by-clientid/${clientId.clientId}`);
+    return http.get(`${apiEndPointIntake}/client/${clientId}/${status}`);
 }
-
 
 // Save Unsubmitted Intake Form
 export function saveIntake(data) {
     http.setJwt(getJwt());
-
-    console.log(`Updated intakeResponse localstorage with: ${data.intakeResponse}`);
-    localStorage.setItem("intakeResponses", JSON.stringify(data.intakeResponse));
-    console.log(localStorage.getItem("intakeResponses"));
     return http.put(`${apiEndPointIntake}/save-intake`, data);
 }
 
 // Submit Intake Form
 export function submitIntake(data) {
     http.setJwt(getJwt());
-    localStorage.setItem("intakeId", null)
     return http.put(`${apiEndPointIntake}/submit-intake`, data);
 }
 
@@ -76,9 +70,9 @@ export function deleteIntakeByIntakeId(intakeId) {
 }
 
 // Get Intake Data by IntakeId
-export function getIntakeDataByIntakeId(data) {
+export function getIntakeDataByIntakeId(intakeId) {
     http.setJwt(getJwt());
-    return http.get(`${apiEndPointIntake}/view-intake`, data);
+    return http.get(`${apiEndPointIntake}/${intakeId}/view-intake`);
 }
 
 // Edit Intake Status by IntakeID
@@ -97,12 +91,6 @@ export function getNeedsAssessmentByIntakeId(intakeId) {
 export function editNeedsAssessmentByIntakeId(intakeId, data) {
     http.setJwt(getJwt());
     return http.get(`${apiEndPointIntake}/${intakeId}/edit-needsAssessment`, data);
-}
-
-// Get Intakes by ClientId by Status
-export function getIntakesByClientIdByStatus(clientId, status) {
-    http.setJwt(getJwt());
-    return http.get(`${apiEndPointIntake}/client/${clientId}/${status}`);
 }
 
 // Get Intakes By ProgramLeadId By Status

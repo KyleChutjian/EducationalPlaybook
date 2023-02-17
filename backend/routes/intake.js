@@ -63,25 +63,57 @@ router.get("/get-intake/:intakeId", async (req,res) => {
 });
 
 // Get 1 Intake Form by ClientId
-router.get("/get-intake-by-clientid/:clientId", async (req, res) => {
-    try {
-        const clientId = req.params.clientId;
-        const intake = await Intake.find({
-            clientId: clientId,
-            status: "pending-client"
-        });
-        if (intake.length == 0) {
-            res.status(200).send(null);
-        } else {
-            res.status(200).send(intake);
-        }
+// router.get("/get-intake-by-clientid/:clientId", async (req, res) => {
+//     try {
+//         const clientId = req.params.clientId;
+//         const intake = await Intake.find({
+//             clientId: clientId,
+//             status: "pending-client"
+//         });
+//         if (intake.length == 0) {
+//             res.status(200).send(null);
+//         } else {
+//             if (intake.length > 1) console.log("Something went wrong, should not have more than 1 intake in this status");
+//             res.status(200).send(intake);
+//         }
         
-        // res.status(200).json(intake);
+//         // res.status(200).json(intake);
 
+//     } catch (err) {
+//         res.status(500).json(err);
+//     }
+// });
+
+// Get Intakes By ClientID By Status
+router.get("/client/:clientId/:status", async (req, res) => {
+    const clientId = req.params.clientId;
+    const status = req.params.status.toLowerCase();
+    try {
+        switch (status) {
+            case "pending-client":
+            case "pending-admin":
+            case "pending-programlead":
+            case "approved":
+            case "archived":
+                console.log(`Getting all ${status} intakes for clientId: ${clientId}`);
+                const intakes = await Intake.find({
+                    clientId: clientId,
+                    status: status
+                });
+                res.status(200).json(intakes);
+                break;
+
+            default:
+                res.status(500).send(`Invalid status: ${status}`);
+        }
     } catch (err) {
         res.status(500).json(err);
     }
 });
+
+
+
+
 
 // Save Unsubmitted Intake Form
 router.put("/save-intake", async (req, res) => {
@@ -256,7 +288,9 @@ router.delete("/:intakeId", async (req, res) => {
 router.get("/:intakeId/view-intake", async (req, res) => {
     try {
         const intakeId = req.params.intakeId;
+        console.log(intakeId);
         const intakeResponse = await Intake.findById(intakeId);
+        
         res.status(200).json(intakeResponse.intakeResponse);
     } catch (err) {
         res.status(500).json(err);
@@ -295,33 +329,6 @@ router.put("/:intakeId/edit-needsAssessment", async (req, res) => {
         const intakeId = req.params.intakeId;
         const intake = await Intake.findByIdAndUpdate(intakeId, { needsAssessment: req.body.newNeedsAssessment});
         res.status(200).json(intake);
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
-
-// Get Intakes By ClientID By Status
-router.get("/client/:clientId/:status", async (req, res) => {
-    const clientId = req.params.clientId;
-    const status = req.params.status.toLowerCase();
-    try {
-        switch (status) {
-            case "pending-client":
-            case "pending-admin":
-            case "pending-programlead":
-            case "approved":
-            case "archived":
-                console.log(`Getting all ${status} intakes for clientId: ${clientId}`);
-                const intakes = await Intake.find({
-                    clientId: clientId,
-                    status: status
-                });
-                res.status(200).json(intakes);
-                break;
-
-            default:
-                res.status(500).send(`Invalid status: ${status}`);
-        }
     } catch (err) {
         res.status(500).json(err);
     }

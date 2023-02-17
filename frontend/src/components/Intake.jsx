@@ -1,85 +1,51 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { NavLink } from "react-router-dom";
-import { loginUser } from '../services/authService';
-import { saveIntake, submitIntake, adminApproveIntake, programleadApproveIntake, editIntakeByIntakeId } from '../services/intakeService';
-import {
-  MDBContainer,
-  MDBNavbar,
-  MDBNavbarBrand,
-  MDBNavbarToggler,
-  MDBNavbarNav,
-  MDBNavbarItem,
-  MDBNavbarLink,
-  MDBCollapse,
-  MDBTextArea,
-  MDBBtn,
-  MDBInput,
-  MDBIcon
-}
-from 'mdb-react-ui-kit';
+import { getCurrentUser } from '../services/authService';
+import { saveIntake, submitIntake, getIntakesByClientIdByStatus } from '../services/intakeService';
+import { MDBTextArea } from 'mdb-react-ui-kit';
 import ClientNav from './ClientNav';
 
 function Intake() {
   const history = useNavigate();
-  const [account, setAccount] = useState({
-    email: "",
-    password: "",
-    isProgramLead: false,
-    isAdmin: false
-  });
 
-  const intakeResponsesJSON = localStorage.getItem("intakeResponses");
-  var intakeResponses;
-  if (intakeResponsesJSON === "null") {
-    intakeResponses = ["","","","","",""];
-  } else {
-    console.log(localStorage.getItem("intakeResponses"));
-    intakeResponses = JSON.parse(localStorage.getItem("intakeResponses"));
-  }
+  useEffect(() => {
+    console.log("Page loaded");
 
-  const [intakeData, setIntakeData] = useState({
-    intakeId: localStorage.getItem("intakeId"),
-    clientId: localStorage.getItem("userId"),
-    intakeResponse: 
-    [
-      intakeResponses[0], // 1. Why is this training needed?
-      intakeResponses[1], // 2. Can you desctibe the current gap that exists?
-      intakeResponses[2], // 3. Was there an identified problem that brought this to your attention?
-      intakeResponses[3], // 4. Is there data?
-      intakeResponses[4], // 5. How will we measure success of this training?
-      intakeResponses[5]  // 6. Who are your champions for this training development project?
-    ]
-  })
+    // Get current user
+    const currentUser = getCurrentUser();
 
-  // useEffect(() => {
-  //   console.log("page loaded");
-  // }, []);
+    // Use clientId to get their only pending-client intake form
+    getIntakesByClientIdByStatus(currentUser.id, "pending-client").then((res) => {
+      if (res.data.length === 1) {
+        // If there is an open intake form, set intakeId and intakeResponse variables
+        setIntakeId(res.data[0]._id);
+        setIntakeResponse(res.data[0].intakeResponse);
+      } else if (res.data.length !== 0) {
+        // If more than 1 intake form is open, something is wrong
+        console.error(`User with id ${res.data[0].clientId} has more than 1 pending-client intake`);
+      }
 
+    })
+  }, []);
 
+  const [intakeId, setIntakeId] = useState(null);
+  const [clientId, setClientId] = useState(localStorage.getItem("userId"));
+  const [intakeResponse, setIntakeResponse] = useState(["","","","","",""]);
 
+  // Updates intakeResponse with new changes
   function handleIntakeResponseChange(e) {
     const { name, value } = e.target;
 
-    setIntakeData((old) => {
+    setIntakeResponse((oldResponses) => {
       // Get Queston number index
       const indexString = name.split("question")[1];
       const index = parseInt(indexString) - 1;
 
       // Redefine updated response
-      old.intakeResponse[index] = value;
+      oldResponses[index] = value;
 
-      // New object for return
-      const newValues = {
-        intakeId: old.intakeId,
-        clientId: old.clientId,
-        intakeResponse: old.intakeResponse
-      }
-
-      return newValues
-    })
-    
-
+      return oldResponses;
+    });
   }
 
   // Submit Button
@@ -87,47 +53,25 @@ function Intake() {
     e.preventDefault();
     console.log("Submit");
 
-    submitIntake(intakeData).then((res) => {
-      console.log(res.data);
-      localStorage.setItem("intakeId", "null");
-      localStorage.setItem("intakeResponses", "null");
-      setIntakeData((old) => {
-
-        // New object for return
-        const newValues = {
-          intakeId: localStorage.getItem("intakeId"),
-          clientId: old.clientId,
-          intakeResponse: localStorage.getItem("intakeResponses")
-        }
-
-        return newValues
-      });
-      history("/dashboard");
-    }).catch((err) => console.log(err));
+    submitIntake({
+      intakeId: intakeId,
+      clientId: clientId,
+      intakeResponse: intakeResponse
+    });
+    history("/dashboard");
   }
 
   // Save & Close Button
   function handleSaveAndClose(e) {
     e.preventDefault();
     console.log("Save & Close");
-    saveIntake(intakeData).then((res) => {
-      console.log(res.data);
-      localStorage.setItem("intakeId", res.data._id);
-      console.log(JSON.stringify(res.data.intakeResponse));
-      // localStorage.setItem("intakeResponses", JSON.stringify(res.data.intakeResponse));
-      setIntakeData((old) => {
+    saveIntake({
+      intakeId: intakeId,
+      clientId: clientId,
+      intakeResponse: intakeResponse
+    });
+    history("/dashboard");
 
-        // New object for return
-        const newValues = {
-          intakeId: localStorage.getItem("intakeId"),
-          clientId: old.clientId,
-          intakeResponse: localStorage.getItem("intakeResponses")
-        }
-        console.log(newValues);
-        return newValues
-      });
-      history("/dashboard");
-    }).catch((err) => console.log(err));
   }
 
   return (
@@ -147,37 +91,37 @@ function Intake() {
         {/* Question 1 */}
         <div className="row question1-wrapper">
           <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Why is this training needed?</h3>
-          <MDBTextArea id='question1' rows={4} name="question1" defaultValue={intakeResponses[0]} onChange={handleIntakeResponseChange}/>
+          <MDBTextArea id='question1' rows={4} name="question1" defaultValue={intakeResponse[0]} onChange={handleIntakeResponseChange}/>
         </div>
 
         {/* Question 2 */}
         <div className="row question2-wrapper" style={{paddingTop: "2%"}}>
           <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Can you describe the current gap that exists?</h3>
-          <MDBTextArea id='question2' rows={4} name="question2" defaultValue={intakeResponses[1]} onChange={handleIntakeResponseChange}/>
+          <MDBTextArea id='question2' rows={4} name="question2" defaultValue={intakeResponse[1]} onChange={handleIntakeResponseChange}/>
         </div>
 
         {/* Question 3 */}
         <div className="row question3-wrapper" style={{paddingTop: "2%"}}>
           <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Was there an identified problem that brought this to your attention? If so, what was the problem?</h3>
-          <MDBTextArea id='question3' rows={4} name="question3" defaultValue={intakeResponses[2]} onChange={handleIntakeResponseChange}/>
+          <MDBTextArea id='question3' rows={4} name="question3" defaultValue={intakeResponse[2]} onChange={handleIntakeResponseChange}/>
         </div>
 
         {/* Question 4 */}
         <div className="row question4-wrapper" style={{paddingTop: "2%"}}>
           <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Is there data? If so, what has the data shown?</h3>
-          <MDBTextArea id='question4' rows={4} name="question4" defaultValue={intakeResponses[3]} onChange={handleIntakeResponseChange}/>
+          <MDBTextArea id='question4' rows={4} name="question4" defaultValue={intakeResponse[3]} onChange={handleIntakeResponseChange}/>
         </div>
 
         {/* Question 5 */}
         <div className="row question5-wrapper" style={{paddingTop: "2%"}}>
           <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>How will we measure success of this training?</h3>
-          <MDBTextArea id='question5' rows={4} name="question5" defaultValue={intakeResponses[4]} onChange={handleIntakeResponseChange}/>
+          <MDBTextArea id='question5' rows={4} name="question5" defaultValue={intakeResponse[4]} onChange={handleIntakeResponseChange}/>
         </div>
 
         {/* Question 6 */}
         <div className="row question6-wrapper" style={{paddingTop: "2%"}}>
           <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Who are your champions for this training development project? Please include name(s) and email(s). </h3>
-          <MDBTextArea id='question6' rows={4} name="question6" defaultValue={intakeResponses[5]} onChange={handleIntakeResponseChange}/>
+          <MDBTextArea id='question6' rows={4} name="question6" defaultValue={intakeResponse[5]} onChange={handleIntakeResponseChange}/>
         </div>
 
 

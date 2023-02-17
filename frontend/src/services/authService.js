@@ -1,7 +1,7 @@
 import jwtDecode from "jwt-decode"; // handles the token
 import http from "./httpService";
 import { login, logout } from "./userService";
-import { getClientIntakeByClientId, getIntakeDataByIntakeId } from '../services/intakeService'
+import { getIntakesByClientIdByStatus } from '../services/intakeService'
 
 const tokenKey = "token";
 
@@ -12,22 +12,22 @@ export async function loginUser(info) {
     const { data: jwt } = await login(info);
     const decodedUser = jwtDecode(jwt);
     const currentUserId = decodedUser.id;
-    const intakeId = getClientIntakeByClientId({clientId: currentUserId}).then((result) => {
+    // const intakeId = getIntakesByClientIdByStatus(currentUserId, "pending-client").then((result) => {
 
-        // Null IntakeResponse
-        if (result.data === "") {
-            localStorage.setItem("intakeId", null);
-            localStorage.setItem("intakeResponses", null);
+    //     // Null IntakeResponse
+    //     // if (result.data === "") {
+    //     //     localStorage.setItem("intakeId", null);
+    //     //     localStorage.setItem("intakeResponses", null);
 
-        } else {
-            localStorage.setItem("intakeId", result.data[0]._id);
-            const intakeResponses = result.data[0].intakeResponse;
-            localStorage.setItem("intakeResponses", JSON.stringify(intakeResponses));
-        }
+    //     // } else {
+    //     //     localStorage.setItem("intakeId", result.data[0]._id);
+    //     //     const intakeResponses = result.data[0].intakeResponse;
+    //     //     localStorage.setItem("intakeResponses", JSON.stringify(intakeResponses));
+    //     // }
         
 
         
-    });
+    // });
 
     localStorage.setItem("userId", currentUserId);
     localStorage.setItem(tokenKey, jwt);
