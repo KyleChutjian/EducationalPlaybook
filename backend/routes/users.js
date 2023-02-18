@@ -32,6 +32,19 @@ router.get("/get-accounts", async (req, res) => {
     }
 });
 
+// Get User by UserId
+router.get("/get-user/:userId", async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        User.findById(userId).then((user) => {
+            res.status(200).send(user);
+        });
+
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
 // Get Accounts By Role
 router.get("/get-accounts/:role", async (req, res) => {
     try {
@@ -118,13 +131,11 @@ router.delete("/delete/:userId", async (req, res) => {
 // Get Dashboards by UserId
 router.get("/dashboards/:userId", async (req, res) => {
     const userId = req.params.userId;
-    console.log(`Get dashboards for uid: ${userId}`);
     let dashboards = ["Client"];
     try {
         const user = await User.findById(userId);
         if (user.isAdmin) dashboards.push("Admin");
         if (user.isProgramLead) dashboards.push("ProgramLead");
-        console.log(`Dashboards: ${dashboards.toString()}`);
         res.status(200).json(dashboards);
     } catch (err) {
         res.status(500).json(err);

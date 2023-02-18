@@ -4,8 +4,6 @@ const User = require("../models/User");
 const Intake = require("../models/IntakeForm");
 const Curriculum = require("../models/Curriculum");
 
-// Ignoring verification for now
-
 const {
     verifyToken,
     verifyTokenAndAuthorization,
@@ -62,28 +60,6 @@ router.get("/get-intake/:intakeId", async (req,res) => {
     }
 });
 
-// Get 1 Intake Form by ClientId
-// router.get("/get-intake-by-clientid/:clientId", async (req, res) => {
-//     try {
-//         const clientId = req.params.clientId;
-//         const intake = await Intake.find({
-//             clientId: clientId,
-//             status: "pending-client"
-//         });
-//         if (intake.length == 0) {
-//             res.status(200).send(null);
-//         } else {
-//             if (intake.length > 1) console.log("Something went wrong, should not have more than 1 intake in this status");
-//             res.status(200).send(intake);
-//         }
-        
-//         // res.status(200).json(intake);
-
-//     } catch (err) {
-//         res.status(500).json(err);
-//     }
-// });
-
 // Get Intakes By ClientID By Status
 router.get("/client/:clientId/:status", async (req, res) => {
     const clientId = req.params.clientId;
@@ -111,9 +87,27 @@ router.get("/client/:clientId/:status", async (req, res) => {
     }
 });
 
+// Get Open Intake by ClientID
+router.get("/open-intake/client/:clientId", async (req, res) => {
+    const clientId = req.params.clientId;
+    try {
+        Intake.find({
+            clientId: clientId,
+            $or:[
+                {status: "pending-client"},
+                {status: "pending-admin"}, 
+                {status: "pending-programlead"},
+                {status: "approved"}
+            ]
+        }).then((result) => {
+            res.status(200).send(result);
+        })
+        
+    } catch (err) {
+        res.status(500).json(err);
+    }
 
-
-
+}); 
 
 // Save Unsubmitted Intake Form
 router.put("/save-intake", async (req, res) => {

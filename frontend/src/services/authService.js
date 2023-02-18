@@ -12,23 +12,8 @@ export async function loginUser(info) {
     const { data: jwt } = await login(info);
     const decodedUser = jwtDecode(jwt);
     const currentUserId = decodedUser.id;
-    // const intakeId = getIntakesByClientIdByStatus(currentUserId, "pending-client").then((result) => {
 
-    //     // Null IntakeResponse
-    //     // if (result.data === "") {
-    //     //     localStorage.setItem("intakeId", null);
-    //     //     localStorage.setItem("intakeResponses", null);
-
-    //     // } else {
-    //     //     localStorage.setItem("intakeId", result.data[0]._id);
-    //     //     const intakeResponses = result.data[0].intakeResponse;
-    //     //     localStorage.setItem("intakeResponses", JSON.stringify(intakeResponses));
-    //     // }
-        
-
-        
-    // });
-
+    // Create local storage values
     localStorage.setItem("userId", currentUserId);
     localStorage.setItem(tokenKey, jwt);
 }

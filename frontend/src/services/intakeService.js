@@ -27,6 +27,13 @@ export function getIntakesByClientIdByStatus(clientId, status) {
     return http.get(`${apiEndPointIntake}/client/${clientId}/${status}`);
 }
 
+// Get Open Intake by ClientId
+export function getOpenIntakeByClientId(clientId) {
+    http.setJwt(getJwt());
+    // console.log(`${apiEndPointIntake}/open-intake/client/${clientId}`);
+    return http.get(`${apiEndPointIntake}/open-intake/client/${clientId}`);
+}
+
 // Save Unsubmitted Intake Form
 export function saveIntake(data) {
     http.setJwt(getJwt());

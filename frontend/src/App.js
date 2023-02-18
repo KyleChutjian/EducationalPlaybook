@@ -6,7 +6,8 @@ import Dashboard from "./components/Dashboard";
 import AdminDashboard from "./components/AdminDashboard";
 import CurriculumDash from "./components/CurriculumDash";
 import EditCurriculum from "./components/EditCurriculum";
-import Intake from "./components/Intake";
+import SubmitIntake from "./components/SubmitIntake";
+import ViewIntake from "./components/ViewIntake";
 import Login from "./components/Login";
 import ManageAccounts from "./components/ManageAccounts";
 import NeedsAssessment from "./components/NeedsAssessment";
@@ -37,7 +38,8 @@ function App() {
         <Route exact path="/plDashboard" element={<PLDashboard />}/>
         <Route exact path="/curriculumDash" element={<CurriculumDash />}/>
         <Route exact path="/editCurriculum" element={<EditCurriculum />}/>
-        <Route exact path="/intake" element={<Intake />}/>
+        <Route exact path="/submitIntake" element={<SubmitIntake />}/>
+        <Route exact path="/viewIntake" element={<ViewIntake />}/>
         <Route exact path="/manageAccounts" element={<ManageAccounts />}/>
         <Route exact path="/needsAssessment" element={<NeedsAssessment />}/>
         <Route exact path="/pendingIntake" element={<PendingIntake />}/>

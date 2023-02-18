@@ -5,13 +5,12 @@ import { saveIntake, submitIntake, getIntakesByClientIdByStatus } from '../servi
 import { MDBTextArea } from 'mdb-react-ui-kit';
 import ClientNav from './ClientNav';
 
-function Intake() {
+function SubmitIntake() {
   const history = useNavigate();
 
   useEffect(() => {
-    console.log("Page loaded");
 
-    // Get current user
+    // Get Current User
     const currentUser = getCurrentUser();
 
     // Use clientId to get their only pending-client intake form
@@ -124,11 +123,7 @@ function Intake() {
           <MDBTextArea id='question6' rows={4} name="question6" defaultValue={intakeResponse[5]} onChange={handleIntakeResponseChange}/>
         </div>
 
-
-
-
-
-
+        {/* Buttons */}
         <div className="row" style={{paddingTop: "2%", paddingBottom: "5%"}}>
           <div className="col-sm-12 text-center" style={{display: "flex", justifyContent: "center", columnGap: "20px"}}>
             {/* Save & Close Form */}
@@ -167,5 +162,5 @@ function Intake() {
 
   );
 }
-export default Intake;
+export default SubmitIntake;
 
