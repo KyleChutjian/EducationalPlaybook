@@ -42,7 +42,7 @@ function App() {
         <Route exact path="/viewIntake" element={<ViewIntake />}/>
         <Route exact path="/manageAccounts" element={<ManageAccounts />}/>
         <Route exact path="/needsAssessment" element={<NeedsAssessment />}/>
-        <Route exact path="/pendingIntake" element={<PendingIntake />}/>
+        <Route exact path="/pendingIntakes" element={<PendingIntake />}/>
         <Route exact path="/successRate" element={<SuccessRate />}/>
         <Route exact path="/adminNav" element={<AdminNav />}/>
       </Routes>

@@ -143,65 +143,63 @@ function Dashboard() {
         <ClientNav/>
       </div>
 
-    {/* Header, viewing dashboards */}
-    <div className="container-fluid text-sm-center p-3 bg-light" style={{fontFamily: 'Bitter'}}>
-          <DropdownButton disabled={hideAdminDashboard && hideProgramLeadDashboard} variant='light' size='lg' id="chooseUserType" 
-          title={
-            <span className="my-auto" style={{color:'black', fontSize:'35px'}}>Client Dashboard</span>
-          }>
-          <Dropdown.Item hidden={hideAdminDashboard} onClick={toAdminDash}>Admin Dashboard</Dropdown.Item>
-          <Dropdown.Item hidden={hideProgramLeadDashboard} onClick={toPLDash}>Program Lead Dashboard</Dropdown.Item>
-        </DropdownButton>
-        <h3> Welcome, {clientFirstName}!</h3>
-    </div> 
-    <div className="col d-flex justify-content-center">
-      <Container id='clientButtonContainer' fluid>
+      {/* Header, viewing dashboards */}
+      <div className="container-fluid text-sm-center p-3 bg-light" style={{fontFamily: 'Bitter'}}>
+            <DropdownButton disabled={hideAdminDashboard && hideProgramLeadDashboard} variant='light' size='lg' id="chooseUserType" 
+            title={
+              <span className="my-auto" style={{color:'black', fontSize:'35px'}}>Client Dashboard</span>
+            }>
+            <Dropdown.Item hidden={hideAdminDashboard} onClick={toAdminDash}>Admin Dashboard</Dropdown.Item>
+            <Dropdown.Item hidden={hideProgramLeadDashboard} onClick={toPLDash}>Program Lead Dashboard</Dropdown.Item>
+          </DropdownButton>
+          <h3> Welcome, {clientFirstName}!</h3>
+      </div> 
+      <div className="col d-flex justify-content-center">
+        <Container id='clientButtonContainer' fluid>
 
-        {/* Card1: [Submit New Intake, Edit Intake, View Pending Intake, View Approved Intake] */}
-        <Card id='card1' className="text-center mx-auto" style={{ background: '#0098C3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
-          <Card.Body>
-            <Card.Title style={{fontSize:'30px'}}>
-              {/* <MDBCardLink onClick={button1} style={{color:'whitesmoke'}}>
-                {button1Option}
-                </MDBCardLink>  */}
-                <Button onClick={button1} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}><u>{button1Option}</u></Button>
-            </Card.Title>
-          </Card.Body>
-        </Card>
+          {/* Card1: [Submit New Intake, Edit Intake, View Pending Intake, View Approved Intake] */}
+          <Card id='card1' className="text-center mx-auto" style={{ background: '#0098C3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
+            <Card.Body>
+              <Card.Title style={{fontSize:'30px'}}>
+                {/* <MDBCardLink onClick={button1} style={{color:'whitesmoke'}}>
+                  {button1Option}
+                  </MDBCardLink>  */}
+                  <Button onClick={button1} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}><u>{button1Option}</u></Button>
+              </Card.Title>
+            </Card.Body>
+          </Card>
 
-        {/* Card2: NeedsAssessment */}
-        <Card id='card2' className="text-center mx-auto" style={{ background: '#6E9A35', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
-          <Card.Body>
-            <Card.Title style={{fontSize:'30px'}}>
-              {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
-              <Button onClick={needsAssessmentButton} disabled={disableNeedsAssessment} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Needs Assessment</u></Button>
-            </Card.Title>
-          </Card.Body>
-        </Card>
+          {/* Card2: NeedsAssessment */}
+          <Card id='card2' className="text-center mx-auto" style={{ background: '#6E9A35', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
+            <Card.Body>
+              <Card.Title style={{fontSize:'30px'}}>
+                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
+                <Button onClick={needsAssessmentButton} disabled={disableNeedsAssessment} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Needs Assessment</u></Button>
+              </Card.Title>
+            </Card.Body>
+          </Card>
 
-        {/* Card3: Course */}
-        <Card id='card3' className="text-center mx-auto" style={{ background: '#d2492a', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
-          <Card.Body>
-            <Card.Title style={{fontSize:'30px'}}>
-              {/* <MDBCardLink disabled={disableViewCourse} href='#' style={{color:'whitesmoke'}}>View Course</MDBCardLink>  */}
-              <Button onClick={viewCourseButton} disabled={disableViewCourse} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}><u>View Course</u></Button>
-            </Card.Title>
-          </Card.Body>
-        </Card>
+          {/* Card3: Course */}
+          <Card id='card3' className="text-center mx-auto" style={{ background: '#d2492a', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
+            <Card.Body>
+              <Card.Title style={{fontSize:'30px'}}>
+                {/* <MDBCardLink disabled={disableViewCourse} href='#' style={{color:'whitesmoke'}}>View Course</MDBCardLink>  */}
+                <Button onClick={viewCourseButton} disabled={disableViewCourse} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}><u>View Course</u></Button>
+              </Card.Title>
+            </Card.Body>
+          </Card>
 
-        {/* Card4: Completed Courses */}
-        <Card id='card4' className="text-center mx-auto" style={{ background: '#a40084', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
-          <Card.Body>
-            {/* <Card.Title style={{fontSize:'30px'}}>
-              <MDBCardLink href='#' style={{color:'whitesmoke'}}>View Completed Courses</MDBCardLink> 
-            </Card.Title> */}
-            <Button onClick={viewCompletedCoursesButton} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}><u>View Completed Courses</u></Button>
-          </Card.Body>
-        </Card> 
-      </Container>
-    
-    </div>
-      
+          {/* Card4: Completed Courses */}
+          <Card id='card4' className="text-center mx-auto" style={{ background: '#a40084', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
+            <Card.Body>
+              {/* <Card.Title style={{fontSize:'30px'}}>
+                <MDBCardLink href='#' style={{color:'whitesmoke'}}>View Completed Courses</MDBCardLink> 
+              </Card.Title> */}
+              <Button onClick={viewCompletedCoursesButton} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}><u>View Completed Courses</u></Button>
+            </Card.Body>
+          </Card> 
+        </Container>
+      </div>
     </div>
 
   )
