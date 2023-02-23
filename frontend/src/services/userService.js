@@ -19,6 +19,12 @@ export function getAccounts() {
     return http.get(`${apiEndPointUser}/get-accounts`);
 }
 
+// Get-accounts
+export function getUserByUserId(userId) {
+    http.setJwt(getJwt());
+    return http.get(`${apiEndPointUser}/get-user/${userId}`);
+}
+
 // Get-accounts by role
 export function getAccountsByRole(role) {
     http.setJwt(getJwt());
