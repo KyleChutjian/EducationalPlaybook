@@ -12,7 +12,8 @@ function SubmitIntake() {
 
     // Get Current User
     const currentUser = getCurrentUser();
-
+    setClientId(currentUser.id);
+    
     // Use clientId to get their only pending-client intake form
     getIntakesByClientIdByStatus(currentUser.id, "pending-client").then((res) => {
       if (res.data.length === 1) {
@@ -28,7 +29,7 @@ function SubmitIntake() {
   }, []);
 
   const [intakeId, setIntakeId] = useState(null);
-  const [clientId, setClientId] = useState(localStorage.getItem("userId"));
+  const [clientId, setClientId] = useState("");
   const [intakeResponse, setIntakeResponse] = useState(["","","","","",""]);
 
   // Updates intakeResponse with new changes

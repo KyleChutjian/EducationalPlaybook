@@ -10,11 +10,9 @@ http.setJwt(getJwt());
 // Login
 export async function loginUser(info) {
     const { data: jwt } = await login(info);
-    const decodedUser = jwtDecode(jwt);
-    const currentUserId = decodedUser.id;
 
     // Create local storage values
-    localStorage.setItem("userId", currentUserId);
+    localStorage.setItem("permission-level", "client");
     localStorage.setItem(tokenKey, jwt);
 }
 

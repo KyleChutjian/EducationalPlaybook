@@ -105,34 +105,31 @@ function Dashboard() {
     }
 
   };
-
   const needsAssessmentButton = () => {
     // Update the route
     let path2 = '/needsassessment';
     history(path2);
   };
-
   const viewCourseButton = () => {
     // Update the route
     let path2 = '/curriculum';
     history(path2);
   };
-
   const viewCompletedCoursesButton = () => {
       // Update the route
       let path2 = '/archivedintakes';
       history(path2);
   };
-
   const toAdminDash = () => {
       // Update the route
       let path = '/AdminDashboard';
+      localStorage.setItem("permission-level", "admin");
       history(path);
   };
-
   const toPLDash = () => {
     // Update the route
     let path = '/PLdashboard';
+    localStorage.setItem("permission-level", "programlead");
     history(path);
   };
 
