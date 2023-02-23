@@ -43,11 +43,13 @@ function PLDashboard() {
     const toClientDash = () => {
       // Update the route
       let path = '/dashboard';
+      localStorage.setItem("permission-level", "client");
       history(path);
     };
     const toAdminDash = () => {
     // Update the route
     let path = '/AdminDashboard';
+    localStorage.setItem("permission-level", "admin");
     history(path);
     };
     const pendingIntakes = () => {

@@ -121,8 +121,13 @@ router.put("/save-intake", async (req, res) => {
             // Make new curriculum
             const newCurriculum = new Curriculum({
                 name: null,
-                lessons: ["Sample Lesson Name", "Reading", false], // Preset curriculum lesson
-                objectives: ["Sample Objective #1"] // Preset curriculum objective
+                objectives: [
+                    ["Sample Objective #1", "Sample Objective #1 Description"]
+                ], // Preset curriculum objective
+                steps: [
+                    ["Step #1", "Step #1 Description"]
+                ] // Preset curriculum lesson
+                // add resources later
             });
 
             // Save curriculum and get curriculumid
@@ -172,8 +177,13 @@ router.put("/submit-intake", async (req, res) => {
             // Make new curriculum
             const newCurriculum = new Curriculum({
                 name: null,
-                lessons: ["Sample Lesson Name", "Reading", false], // Preset curriculum lesson
-                objectives: ["Sample Objective #1"] // Preset curriculum objective
+                objectives: [
+                    ["Sample Objective #1", "Sample Objective #1 Description"]
+                ], // Preset curriculum objective
+                steps: [
+                    ["Step #1", "Step #1 Description"]
+                ] // Preset curriculum lesson
+                // add resources later
             });
 
             // Save curriculum and get curriculumid

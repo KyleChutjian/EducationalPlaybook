@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from '../services/authService';
-import { getOpenIntakeByClientId } from '../services/intakeService';
+import { getIntakeByIntakeId, getOpenIntakeByClientId } from '../services/intakeService';
 import ClientNav from './ClientNav';
 
 function ViewIntake() {
@@ -12,11 +12,21 @@ function ViewIntake() {
     // Get Current User
     const currentUser = getCurrentUser();
 
-    // Get Open Intake by ClientID
-    getOpenIntakeByClientId(currentUser.id).then((result) => {
-        const currentIntake = result.data[0];
-        setIntakeResponse(currentIntake.intakeResponse);
-    })
+    const permissionLevel = localStorage.getItem("permission-level");
+    const currentIntakeId = localStorage.getItem("currentIntakeId");
+
+    if (permissionLevel === "client") {
+      // Get Open Intake by ClientID
+      getOpenIntakeByClientId(currentUser.id).then((result) => {
+        setIntakeResponse(result.data[0].intakeResponse);
+      });
+    } else {
+      getIntakeByIntakeId(currentIntakeId).then((result) => {
+        setIntakeResponse(result.data.intakeResponse);
+      });
+    }
+
+
 
   }, []);
 
