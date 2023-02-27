@@ -39,7 +39,7 @@ router.get("/get-curriculum-intake/:intakeId", async (req, res) => {
     try {
         const intake = await Intake.findById(intakeId);
         const curriculum = await Curriculum.findById(intake.curriculumId);
-        // console.log(intake.curriculumId);
+
         res.status(200).send(curriculum);
 
     } catch (err) {
@@ -78,9 +78,6 @@ router.put("/add-learning-objective/:curriculumId", async (req, res) => {
     try {
         const learningObjective = req.body.learningObjective;
         const newLearningObjective = [learningObjective.title, learningObjective.description];
-        // Curriculum.updateOne({_id: curriculumId}, {
-        //     $push: {objectives: newLearningObjective} 
-        // })
 
         const curriculum = await Curriculum.findByIdAndUpdate(
             curriculumId, 
@@ -88,7 +85,6 @@ router.put("/add-learning-objective/:curriculumId", async (req, res) => {
             {returnDocument: 'after'}).then((result) => {
             console.log(result);
             res.status(200).send(result);
-            // res.status(200).send(`Successfully inserted ${learningObjective.title} into learning objectives`);
         });
 
     } catch (err) {
