@@ -10,6 +10,8 @@ import {
   MDBIcon
 }
 from 'mdb-react-ui-kit';
+//localStorage.setItem("currentIntakeId", <selected intake's intakeId>);
+//later call: localStorage.getItem("currentIntakeId");
 
 function NeedsAssessment() {
 
