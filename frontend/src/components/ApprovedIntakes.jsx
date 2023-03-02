@@ -1,7 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { loginUser } from '../services/authService';
+import AdminNav from '../components/AdminNav';
+import ClientNav from '../components/ClientNav';
+import { getIntakesByStatus} from '../services/intakeService';
+import {Card} from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -31,7 +36,7 @@ function ApprovedIntakes() {
 
   const toApprovedIntake = () => {
     // Update the route
-    let path = '/intake';
+    let path = '/curriculumDash';
     history(path);
   };
 
@@ -41,109 +46,69 @@ function ApprovedIntakes() {
     history(path);
   };
 
-  
 
 
-  // function ApprovedIntake() {
-  //   // const clientId = useRef(0);
-  //   // const [intakeId, setIntakeId] = useState();  
-  
-  //   const [account, setAccount] = useState({
-  //     email: "",
-  //     password: "",
-  //     isProgramLead: true,
-  //     isAdmin: true
-  //   });
 
-  //   const approvedIntakesJSON = localStorage.getItem("approvedIntakes");
-  //   var approvedIntakes;
-  //   if (approvedIntakesJSON === "null") {
-  //     approvedIntakes = ["","","","","",""];
-  //   } else {
-  //   approvedIntakes = JSON.parse(localStorage.getItem("approvedIntakes"));
-  //   }
-  
-  
-    
-  
-  //   // useEffect(() => {
-  //   //   console.log("page loaded");
-  //   // }, []);
-  
-  
-  
-  //   function handleIntakeResponseChange(e) {
-  //     const { name, value } = e.target;
-  
-  //     setIntakeData((old) => {
-  //       // Get Queston number index
-  //       const indexString = name.split("question")[1];
-  //       const index = parseInt(indexString) - 1;
-  
-  //       // Redefine updated response
-  //       old.intakeResponse[index] = value;
-  
-  //       // New object for return
-  //       const newValues = {
-  //         intakeId: old.intakeId,
-  //         clientId: old.clientId,
-  //         intakeResponse: old.intakeResponse
-  //       }
-  
-  //       return newValues
-  //     })
+
+
+
+  const [ adminNavbar, setAdminNavbar ] = useState(false);
+  const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
+
+  //Approved Intake Hooks
+  const [approvedIntakes, setApprovedIntakes] = useState("");
+
+
+
+  useEffect(() => {
+    // Permissions
+    const permissionLevel = localStorage.getItem("permission-level");
+    if (permissionLevel === "admin") {
+      setAdminNavbar(true);
+    }
+
+
+    // Get Intake using Status
+    getIntakesByStatus("approved").then((approvedIntakes) => {
+      console.log(approvedIntakes.data);
+      console.log("Hello World");
+      setApprovedIntakes(approvedIntakes);
+      loadIntakes(approvedIntakes);
+    });
       
-  
-  //   }
-  
-  //   // Submit Button
-  //   function handleSubmit(e) {
-  //     e.preventDefault();
-  //     console.log("Submit");
-  
-  //     submitIntake(intakeData).then((res) => {
-  //       console.log(res.data);
-  //       localStorage.setItem("intakeId", "null");
-  //       localStorage.setItem("intakeResponses", "null");
-  //       setIntakeData((old) => {
-  
-  //         // New object for return
-  //         const newValues = {
-  //           intakeId: localStorage.getItem("intakeId"),
-  //           clientId: old.clientId,
-  //           intakeResponse: localStorage.getItem("intakeResponses")
-  //         }
-  
-  //         return newValues
-  //       });
-  //     }).catch((err) => console.log(err));
-  //   }
-  
-  //   // Save & Close Button
-  //   function handleSaveAndClose(e) {
-  //     e.preventDefault();
-  //     console.log("Save & Close");
-  //     saveIntake(intakeData).then((res) => {
-  //       console.log(res.data);
-  //       localStorage.setItem("intakeId", res.data._id);
-  //       localStorage.setItem("intakeResponses", JSON.stringify(res.data.intakeResponse));
-  //       setIntakeData((old) => {
-  
-  //         // New object for return
-  //         const newValues = {
-  //           intakeId: localStorage.getItem("intakeId"),
-  //           clientId: old.clientId,
-  //           intakeResponse: localStorage.getItem("intakeResponses")
-  //         }
-  
-  //         return newValues
-  //       });
-        
-  //     }).catch((err) => console.log(err));
-  //<NavDropdown.Item href="#action/3.1">Logout</NavDropdown.Item>
-  //   }
+  }, [currentIntakeId]);
 
-  // }
+  const loadIntakes = (intakes) => {
+    setApprovedIntakes(
+      intakes.map((approvedIntakes, index) => {
+        return(
+          <div className="container" key={approvedIntakes[0]}>
+            <div className="row" style={{paddingTop: "1%"}}>
+              <button onClick={reroute(index)}>${approvedIntakes[0]}</button>
+            </div>
+          </div>
+        )
+      }
+    ))
+  }
+
+  const reroute = (index) => {
+    localStorage.setItem("currentIntakeId", approvedIntakes[index]);
+    history('/curriculum')
+  }
+
+
+
+
+  
+
+
+ 
+  
+  
+  
+  
+  
 
   
 
@@ -152,57 +117,58 @@ function ApprovedIntakes() {
 
       <div className="intake-wrapper">
         {/* Navbar */}
-        <header style={{ paddingLeft: 0 }}>
-        <Navbar bg="light" expand="lg" className="ms-auto">
-          <Container>
-
-            <Navbar.Brand href="#home">
-              <img src="./final-ep-logo.png" alt="bug" height={100} />
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-             <Nav className="ms-auto">
-               <Nav.Item title="Logout" id="basic-nav" onClick={toLogin}>Logout</Nav.Item>
-             </Nav>
-           </Navbar.Collapse>
-        
-          </Container>
-        </Navbar>
-        </header>
-        {/* Jumbotron */}
-        <div className='head-approved p-5 text-center'>
-          <h1 className='mb-3'>Approved Intake Forms</h1>
-        </div>
+        <div>
+        {adminNavbar ? <AdminNav/> : <ClientNav/>}
+      </div>
+      {/* Jumbotron */}
+      <div className='p-5 text-center' style={{backgroundColor: '#6E9A35'}}>
+        <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>Approved Intakes</h1>
+      </div>
 
         <div className="intake-body container" style={{paddingTop: "1%"}}>
           {/* Intake 1 */}
-          <div class="rectangle" onClick={toApprovedIntake}>
-						<h5 class="d-flex justify-content-center">Intake #001</h5>
-					</div>
+          <Card id='card2' className="text-center mx-auto" style={{ background: '#D3D3D3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
+            <Card.Body>
+              <Card.Title style={{fontSize:'30px'}}>
+                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
+                <Button onClick={toApprovedIntake} variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Intake #001</u></Button>
+              </Card.Title>
+            </Card.Body>
+          </Card>
+          
+         
 
           {/* Intake 2 */}
-          <div class="rectangle">
-						<h5 class="d-flex justify-content-center">Intake #002</h5>
-					</div>
+          <Card id='card2' className="text-center mx-auto" style={{ background: '#D3D3D3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
+            <Card.Body>
+              <Card.Title style={{fontSize:'30px'}}>
+                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
+                <Button variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Intake #002</u></Button>
+              </Card.Title>
+            </Card.Body>
+          </Card>
           
 
           {/* Intake 3 */}
-          <div class="rectangle">
-						<h5 class="d-flex justify-content-center">Intake #003</h5>
-					</div>
+          <Card id='card2' className="text-center mx-auto" style={{ background: '#D3D3D3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
+            <Card.Body>
+              <Card.Title style={{fontSize:'30px'}}>
+                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
+                <Button variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Intake #003</u></Button>
+              </Card.Title>
+            </Card.Body>
+          </Card>
+
+          <Card id='card2' className="text-center mx-auto" style={{ background: '#6E9A35', width: '10rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
+            <Card.Body>
+              <Card.Title style={{fontSize:'30px'}}>
+                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
+                <Button variant='outline-dark' size='sm' style={{width: "100px", fontSize: "15px"}}><u>See More</u></Button>
+              </Card.Title>
+            </Card.Body>
+          </Card>
 
           
-
-
-
-
-
-
-          <div className="row">
-            <div className="col-sm-12 text-center">
-              <button className="button-approved center-block">See More</button>
-            </div>
-          </div>
         </div>
       </div>
 
