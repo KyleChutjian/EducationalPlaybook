@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import * as ReactDOM from 'react-dom';
 import { useNavigate } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import {Card} from 'react-bootstrap';
@@ -15,11 +14,10 @@ function ClientDashboard() {
 
   const [ currentStatus, setCurrentStatus ] = useState();
   const [ button1Option, setButton1Option ] = useState("");
+  const [ button1Output, setButton1Output ] = useState("");
   const [ clientFirstName, setClientFirstName ] = useState("");
   const [ hideAdminDashboard, setHideAdminDashboard ] = useState(true);
   const [ hideProgramLeadDashboard, setHideProgramLeadDashboard ] = useState(true);
-  const [ disableNeedsAssessment, setDisableNeedsAssessment ] = useState(true);
-  const [ disableViewCourse, setDisableViewCourse ] = useState(true);
   
   useEffect(() => {
 
@@ -50,41 +48,44 @@ function ClientDashboard() {
     });
 
     // Use ClientId to get Open Intake
-    // getOpenIntakeByClientId(currentUser.id).then((result) => {
-    //   const currentIntake = result.data[0];
+    getOpenIntakeByClientId(currentUser.id).then((result) => {
+      const currentIntake = result.data[0];
 
-    //   let status = "pending-client"
-    //   if (typeof currentIntake !== "undefined") {
-    //     status = currentIntake.status;
-    //   }
+      let status = "pending-client"
+      if (typeof currentIntake !== "undefined") {
+        status = currentIntake.status;
+      }
       
-    //   setCurrentStatus(status);
-    //   switch (status) {
-    //     case "pending-client":
-    //       if (typeof currentIntake === "undefined") {
-    //         setButton1Option("Submit a Problem");
-    //       } else {
-    //         setButton1Option("Edit Intake");
-    //       }
-    //       setDisableNeedsAssessment(true);
-    //       setDisableViewCourse(true);
-    //       break;
-    //     case "pending-admin":
-    //     case "pending-programlead":
-    //       setButton1Option("View Pending Intake");
-    //       setDisableNeedsAssessment(true);
-    //       setDisableViewCourse(true);
-    //       break;
-    //     case "approved":
-    //       setButton1Option("View Approved Intake");
-    //       setDisableNeedsAssessment(false);
-    //       setDisableViewCourse(false);
-    //       break;
-    //     default:
-    //       console.log("Something went wrong, intake status is not open");
-    //       break;
-    //   }
-    // });
+      setCurrentStatus(status);
+      switch (status) {
+        case "pending-client":
+          if (typeof currentIntake === "undefined") {
+            setButton1Option("Submit New Intake");
+          } else {
+            setButton1Option("Edit Intake");
+          }
+
+          setButton1Output("/submitIntake");
+          break;
+        case "pending-admin":
+        case "pending-programlead":
+          setButton1Option("View Pending Intake");
+          setButton1Output("/viewintake");
+          break;
+        case "approved":
+          if (typeof currentIntake.name === 'undefined') {
+            setButton1Option("View Approved Intake");
+          } else {
+            setButton1Option(currentIntake.name);
+          }
+          
+          setButton1Output("/dashboard");
+          break;
+        default:
+          console.log("Something went wrong, intake status is not open");
+          break;
+      }
+    });
 
   }, [currentStatus]);
 
@@ -109,7 +110,7 @@ function ClientDashboard() {
   const submitProblemButton = () => {
     // Update the route
     let path3 = '/dashboard';
-    history(path3);
+    history(button1Output);
 };
  
   const viewCompletedCoursesButton = () => {
@@ -151,18 +152,17 @@ function ClientDashboard() {
       <div className="col d-flex justify-content-center">
         <Container id='clientButtonContainer' fluid>
 
-          {/* Card1: [Submit a Problem] */}
+          {/* Card1: [Submit a Problem, View Pending Intake, [Approved Intake Name]] */}
           <Card id='card1' className="text-center mx-auto" style={{ background: '#0098C3', width: '60rem', margin:'10px', marginTop: '60px',color:'whitesmoke', fontFamily: 'Bitter' }}>
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
-                  <Button onClick={submitProblemButton} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>Submit a Problem</Button>
+                  <Button onClick={submitProblemButton} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>{button1Option}</Button>
               </Card.Title>
             </Card.Body>
           </Card>
 
-
-          {/* Card4: Completed Courses */}
-          <Card id='card4' className="text-center mx-auto" style={{ background: '#a40084', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
+          {/* Card2: Completed Courses */}
+          <Card id='card2' className="text-center mx-auto" style={{ background: '#a40084', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
             <Card.Body>
              
               <Button onClick={viewCompletedCoursesButton} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>View Completed Courses</Button>

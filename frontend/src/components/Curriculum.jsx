@@ -11,7 +11,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 function Curriculum() {
   // TEMPORARY, when Sadjell is done this will be removed
-  localStorage.setItem("currentIntakeId", "63fbe103b03bb728cd7b41c8"); 
+  localStorage.setItem("currentIntakeId", "64001af5f037081c00fb95b4"); 
 
 
   const fileInput = React.createRef();
@@ -56,7 +56,7 @@ function Curriculum() {
     // Get Curriculum using CurrentIntakeId
     getCurriculumByIntakeId(currentIntakeId).then((curriculum) => {
       setCurriculumId(curriculum.data._id);
-      setCurriculumTitle(`View Curriculum Development Plan: ${curriculum.data.name}`);
+      setCurriculumTitle(`Curriculum Development Plan: ${curriculum.data.name}`);
       return(curriculum)
     }).then((curriculum) => {
       setCurriciulumLearningObjectives(curriculum.data.objectives);

@@ -58,7 +58,7 @@ function SubmitIntake() {
       clientId: clientId,
       intakeResponse: intakeResponse
     });
-    history("/dashboard");
+    history("/clientdashboard");
   }
 
   // Save & Close Button
@@ -70,7 +70,7 @@ function SubmitIntake() {
       clientId: clientId,
       intakeResponse: intakeResponse
     });
-    history("/dashboard");
+    history("/clientdashboard");
 
   }
 
