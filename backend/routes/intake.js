@@ -121,8 +121,15 @@ router.put("/save-intake", async (req, res) => {
             // Make new curriculum
             const newCurriculum = new Curriculum({
                 name: null,
-                lessons: ["Sample Lesson Name", "Reading", false], // Preset curriculum lesson
-                objectives: ["Sample Objective #1"] // Preset curriculum objective
+                objectives: [
+                    ["Sample Objective #1", "Sample Objective #1 Description"]
+                ], // Preset curriculum objective
+                steps: [
+                    ["Step #1", "Step #1 Description"]
+                ], // Preset curriculum lesson
+                resources: [
+                    ["Sample Link Title", "Link", "https://www.google.com/"]
+                ]
             });
 
             // Save curriculum and get curriculumid
@@ -172,8 +179,15 @@ router.put("/submit-intake", async (req, res) => {
             // Make new curriculum
             const newCurriculum = new Curriculum({
                 name: null,
-                lessons: ["Sample Lesson Name", "Reading", false], // Preset curriculum lesson
-                objectives: ["Sample Objective #1"] // Preset curriculum objective
+                objectives: [
+                    ["Sample Objective #1", "Sample Objective #1 Description"]
+                ], // Preset curriculum objective
+                steps: [
+                    ["Step #1", "Step #1 Description"]
+                ], // Preset curriculum lesson
+                resources: [
+                    ["Sample Link Title", "Link", "https://www.google.com/"]
+                ]
             });
 
             // Save curriculum and get curriculumid
@@ -194,7 +208,7 @@ router.put("/submit-intake", async (req, res) => {
 
             // Save new intake form
             const savedIntake = await newIntake.save();
-            res.status(200).json(savedIntake);
+            res.status(200).send(savedIntake);
 
         } else {
             console.log(`Valid intake, updating existing intake form`);
@@ -204,11 +218,8 @@ router.put("/submit-intake", async (req, res) => {
             });
             res.status(200).json(intake);
         }
-
-        
-
-
     } catch (err) {
+        console.log("error");
         res.status(500).json(err);
     }
 });

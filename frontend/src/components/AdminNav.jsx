@@ -8,12 +8,21 @@ import Container from 'react-bootstrap/Container';
 
 
 function AdminNav() {
+
+  const history = useNavigate();
+
+  const toHome = () => {
+      // Update the route
+      let path = '/adminDashboard';
+      history(path);
+  };
+
     return (
         <div>
     <Navbar bg="light" expand="lg" className="ms-auto">
       <Container>
-        <Navbar.Brand href="#home">
-        <img src="./final-ep-logo.png" alt="bug" height={100} />
+        <Navbar.Brand onClick={toHome} >
+        <img src="./final-logo.png" alt="bug" height={40} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

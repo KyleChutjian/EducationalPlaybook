@@ -15,6 +15,12 @@ export function getCurriculumByCurriculumId(curriculumId) {
     return http.get(`${apiEndPointCurriculum}/${curriculumId}`);
 }
 
+// Get Curriculum by IntakeId
+export function getCurriculumByIntakeId(intakeId) {
+    http.setJwt(getJwt());
+    return http.get(`${apiEndPointCurriculum}/get-curriculum-intake/${intakeId}`);
+}
+
 // Delete Curriculum by CurriculumId
 export function deleteCurriculumByCurriculumId(curriculumId) {
     http.setJwt(getJwt());
@@ -25,6 +31,12 @@ export function deleteCurriculumByCurriculumId(curriculumId) {
 export function getLearningObjectivesByCurriculumId(curriculumId) {
     http.setJwt(getJwt());
     return http.get(`${apiEndPointCurriculum}/${curriculumId}/learningObjectives`);
+}
+
+// Add New Learning Objective
+export function addLearningObjectiveByCurriculumId(curriculumId, data) {
+    http.setJwt(getJwt());
+    return http.put(`${apiEndPointCurriculum}/add-learning-objective/${curriculumId}`, data);
 }
 
 // Create/Update Learning Objectives by CurriculumId

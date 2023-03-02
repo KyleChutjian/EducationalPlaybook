@@ -6,6 +6,7 @@ import { createAccount } from '../services/userService';
 import TextField from "@mui/material/TextField";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { useEffect } from 'react';
 
 import {
   MDBContainer,
@@ -15,6 +16,7 @@ import {
   MDBIcon
 }
 from 'mdb-react-ui-kit';
+import ClientNav from './ClientNav';
 
 // import { Modal } from '@mui/material';
 const style = {
@@ -23,11 +25,12 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
-  bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
-  p: 4,
+  p: 4
 };
+
+
 function Login() {
     const history = useNavigate();
 
@@ -52,7 +55,7 @@ function Login() {
         e.preventDefault();
         loginUser(account).then(() => {
             // Update the route
-            history("/dashboard");
+            history("/clientDashboard");
         }).catch((err) => console.log(err));
     }
 
@@ -93,21 +96,23 @@ function Login() {
     const handleOpenModal = () => setOpen(true);
     const handleCloseModal = () => setOpen(false);
 
-
+    useEffect(() => { document.body.style.backgroundColor = '#66c1db' }, [])
 
     // Login screen HTML
     return(
-      <div className="" id="loginScreen">
-      <div id="j-tron" className="jumbotron jumbotron-fluid">
+      
+      <div style={{height:'100%'}} className="" id="loginScreen">
         <div className="container text-center">
-          <h1 className="display-4">Login</h1>
+          <h2 style={{fontFamily: 'Bitter', fontWeight:'normal' , marginTop:'50px', marginBottom:'20px', color:'whitesmoke'}} className="display-4">Login to:</h2>
+          <h2> <img src="./white-ep-logo.png" alt="bug" height={70} style={{marginBottom:'20px'}}/> </h2>
         </div>
-      </div>
+ 
         {/* <form id="loginForm" className='text-center' onSubmit={handleSubmit}> */}
-        <div id="loginForm" className='form-container text-center'>
+        <div id="loginForm" className='form-container text-center' style={{ height:'100%', opacity:'90%'}}>
           <div style={{paddingBottom: "0.5%"}}>
-              <TextField
-                label="Email"
+              <TextField 
+                style={{width:'40%', background:'white'}}
+                label="yourname@hhchealth.org"
                 name="email"
                 value={account.email}
                 onChange={handleChange}
@@ -115,6 +120,7 @@ function Login() {
           </div>
           <div id="password" className="mb-3">
               <TextField
+                style={{width:'40%', background:'white'}}
                 label="Password"
                 name="password"
                 type="password"
@@ -153,17 +159,17 @@ function Login() {
                   
 
                   <Modal.Footer>
-                    <Button variant="primary" onClick={submitModal}>Submit</Button>
+                    <Button style={{background:'#6E9A35'}} onClick={submitModal}>Submit</Button>
                     <Button variant="secondary" onClick={handleCloseModal}>Close</Button>
                   </Modal.Footer>
 
               </Modal>
           </div>
           <div className="login-button" style={{paddingBottom: "0.3%"}}>
-            <button type="submit" onClick={handleSubmit} className="btn btn-primary">Login</button>
+            <button type="submit" onClick={handleSubmit} className="btn btn-success" style={{width:'20%',fontFamily: 'Bitter', background:'#d2492a'}}>Login</button>
           </div>
           <div className="create-account-button">
-            <Button variant="secondary" onClick={handleOpenModal}>Create New Account</Button>
+            <Button variant="primary" onClick={handleOpenModal} style={{width:'20%',fontFamily: 'Bitter', background: '#a40084'}}>Create New Account</Button>
           </div>
           
           

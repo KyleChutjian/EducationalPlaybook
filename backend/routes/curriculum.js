@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const Curriculum = require("../models/Curriculum");
+const Intake = require("../models/IntakeForm");
 
 // Ignoring verification for now
 const {
@@ -32,6 +33,20 @@ router.get("/:curriculumId", async (req, res) => {
     }
 });
 
+// Get Curriculum by IntakeID
+router.get("/get-curriculum-intake/:intakeId", async (req, res) => {
+    const intakeId = req.params.intakeId;
+    try {
+        const intake = await Intake.findById(intakeId);
+        const curriculum = await Curriculum.findById(intake.curriculumId);
+
+        res.status(200).send(curriculum);
+
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
 // Delete Curriculum by CurriculumID (this is only for testing purposes)
 router.delete("/:curriculumId", async (req, res) => {
     const curriculumId = req.params.curriculumId;
@@ -50,6 +65,28 @@ router.get("/:curriculumId/learningObjectives", async (req, res) => {
         const curriculum = await Curriculum.findById(curriculumId);
         console.log(curriculum);
         res.status(200).json(curriculum.objectives);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+// Add New Learning Objective
+router.put("/add-learning-objective/:curriculumId", async (req, res) => {
+    console.log("add new learning objective");
+    const curriculumId = req.params.curriculumId;
+
+    try {
+        const learningObjective = req.body.learningObjective;
+        const newLearningObjective = [learningObjective.title, learningObjective.description];
+
+        const curriculum = await Curriculum.findByIdAndUpdate(
+            curriculumId, 
+            { $push: {objectives: newLearningObjective}}, 
+            {returnDocument: 'after'}).then((result) => {
+            console.log(result);
+            res.status(200).send(result);
+        });
+
     } catch (err) {
         res.status(500).json(err);
     }
