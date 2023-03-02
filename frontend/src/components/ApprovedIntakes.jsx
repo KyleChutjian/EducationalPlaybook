@@ -85,7 +85,17 @@ function ApprovedIntakes() {
         return(
           <div className="container" key={index}>
             <div className="row" style={{paddingTop: "1%"}}>
-              <button name={index} onClick={reroute}>{`Approved Intake ${index}`}</button>
+
+
+            <Card id='card2' className="text-center mx-auto" style={{ background: '#D3D3D3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
+            <Card.Body>
+              <Card.Title style={{fontSize:'30px'}}>
+                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
+                <Button name={index} onClick={reroute} variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}><u>{`Approved Intake ${index}`}</u></Button>
+              </Card.Title>
+            </Card.Body>
+          </Card>
+
             </div>
           </div>
         )
