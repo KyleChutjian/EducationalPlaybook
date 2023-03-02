@@ -115,18 +115,18 @@ function Dashboard() {
     let path2 = '/curriculum';
     history(path2);
   };
-  const toAdminDash = () => {
-      // Update the route
-      let path = '/AdminDashboard';
-      localStorage.setItem("permission-level", "admin");
-      history(path);
-  };
-  const toPLDash = () => {
-    // Update the route
-    let path = '/PLdashboard';
-    localStorage.setItem("permission-level", "programlead");
-    history(path);
-  };
+  // const toAdminDash = () => {
+  //     // Update the route
+  //     let path = '/AdminDashboard';
+  //     localStorage.setItem("permission-level", "admin");
+  //     history(path);
+  // };
+  // const toPLDash = () => {
+  //   // Update the route
+  //   let path = '/PLdashboard';
+  //   localStorage.setItem("permission-level", "programlead");
+  //   history(path);
+  // };
 
     
   return(  
@@ -135,28 +135,23 @@ function Dashboard() {
         <ClientNav/>
       </div>
 
-      {/* Header, viewing dashboards */}
-      <div className="container-fluid text-sm-center p-3 bg-light" style={{fontFamily: 'Bitter'}}>
-            <DropdownButton disabled={hideAdminDashboard && hideProgramLeadDashboard} variant='light' size='lg' id="chooseUserType" 
-            title={
-              <span className="my-auto" style={{color:'black', fontSize:'35px'}}>Client Dashboard</span>
-            }>
-            <Dropdown.Item hidden={hideAdminDashboard} onClick={toAdminDash}>Admin Dashboard</Dropdown.Item>
-            <Dropdown.Item hidden={hideProgramLeadDashboard} onClick={toPLDash}>Program Lead Dashboard</Dropdown.Item>
-          </DropdownButton>
-          <h3> Welcome, {clientFirstName}!</h3>
-      </div> 
+      {/* Header, name of curriculum development plan */}
+      <div className='p-5 text-center' style={{backgroundColor: "lightslategrey"}}>
+        <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>Client Development Plan: [name]</h1>
+      </div>
+
+
       <div className="col d-flex justify-content-center">
         <Container id='clientButtonContainer' fluid>
 
           {/* Card1: [Submit New Intake, Edit Intake, View Pending Intake, View Approved Intake] */}
-          <Card id='card1' className="text-center mx-auto" style={{ background: '#0098C3', width: '60rem', margin:'5px', marginTop:'60px',color:'whitesmoke', fontFamily: 'Bitter' }}>
+          <Card id='card1' className="text-center mx-auto" style={{ background: '#0098C3', width: '60rem', margin:'5px', marginTop:'1%',color:'whitesmoke', fontFamily: 'Bitter' }}>
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
                 {/* <MDBCardLink onClick={button1} style={{color:'whitesmoke'}}>
                   {button1Option}
                   </MDBCardLink>  */}
-                  <Button onClick={button1} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}><u>{button1Option}</u></Button>
+                  <Button onClick={button1} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}><u>View Intake</u></Button>
               </Card.Title>
             </Card.Body>
           </Card>
@@ -182,6 +177,19 @@ function Dashboard() {
           </Card>
         </Container>
       </div>
+
+
+            {/* Header, viewing dashboards */}
+      {/* <div className="container-fluid text-sm-center p-3 bg-light" style={{fontFamily: 'Bitter'}}>
+            <DropdownButton disabled={hideAdminDashboard && hideProgramLeadDashboard} variant='light' size='lg' id="chooseUserType" 
+            title={
+              <span className="my-auto" style={{color:'black', fontSize:'35px'}}>Client Dashboard</span>
+            }>
+            <Dropdown.Item hidden={hideAdminDashboard} onClick={toAdminDash}>Admin Dashboard</Dropdown.Item>
+            <Dropdown.Item hidden={hideProgramLeadDashboard} onClick={toPLDash}>Program Lead Dashboard</Dropdown.Item>
+          </DropdownButton>
+          <h3> Welcome, {clientFirstName}!</h3>
+      </div>  */}
     </div>
 
   )
