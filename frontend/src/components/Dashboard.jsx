@@ -115,11 +115,6 @@ function Dashboard() {
     let path2 = '/curriculum';
     history(path2);
   };
-  const viewCompletedCoursesButton = () => {
-      // Update the route
-      let path2 = '/archivedintakes';
-      history(path2);
-  };
   const toAdminDash = () => {
       // Update the route
       let path = '/AdminDashboard';
@@ -155,7 +150,7 @@ function Dashboard() {
         <Container id='clientButtonContainer' fluid>
 
           {/* Card1: [Submit New Intake, Edit Intake, View Pending Intake, View Approved Intake] */}
-          <Card id='card1' className="text-center mx-auto" style={{ background: '#0098C3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
+          <Card id='card1' className="text-center mx-auto" style={{ background: '#0098C3', width: '60rem', margin:'5px', marginTop:'60px',color:'whitesmoke', fontFamily: 'Bitter' }}>
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
                 {/* <MDBCardLink onClick={button1} style={{color:'whitesmoke'}}>
@@ -185,16 +180,6 @@ function Dashboard() {
               </Card.Title>
             </Card.Body>
           </Card>
-
-          {/* Card4: Completed Courses */}
-          <Card id='card4' className="text-center mx-auto" style={{ background: '#a40084', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
-            <Card.Body>
-              {/* <Card.Title style={{fontSize:'30px'}}>
-                <MDBCardLink href='#' style={{color:'whitesmoke'}}>View Completed Courses</MDBCardLink> 
-              </Card.Title> */}
-              <Button onClick={viewCompletedCoursesButton} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}><u>View Completed Courses</u></Button>
-            </Card.Body>
-          </Card> 
         </Container>
       </div>
     </div>

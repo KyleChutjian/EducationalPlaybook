@@ -15,6 +15,7 @@ import PendingIntake from "./components/PendingIntake";
 import SuccessRate from "./components/SuccessRate";
 import AdminNav from "./components/AdminNav";
 import PLDashboard from './components/PLDashboard';
+import ClientDashboard from './components/ClientDashboard';
 
 import {
   BrowserRouter as Router,
@@ -36,6 +37,7 @@ function App() {
         <Route exact path="/dashboard" element={<Dashboard />}/>
         <Route exact path="/adminDashboard" element={<AdminDashboard />}/>
         <Route exact path="/plDashboard" element={<PLDashboard />}/>
+        <Route exact path="/clientDashboard" element={<ClientDashboard />}/>
         <Route exact path="/curriculumDash" element={<CurriculumDash />}/>
         <Route exact path="/editCurriculum" element={<EditCurriculum />}/>
         <Route exact path="/submitIntake" element={<SubmitIntake />}/>

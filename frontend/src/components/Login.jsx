@@ -55,7 +55,7 @@ function Login() {
         e.preventDefault();
         loginUser(account).then(() => {
             // Update the route
-            history("/dashboard");
+            history("/clientDashboard");
         }).catch((err) => console.log(err));
     }
 
