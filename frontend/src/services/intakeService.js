@@ -12,7 +12,7 @@ export function getAllIntakes() {
 // Get Intake Forms by Status
 export function getIntakesByStatus(status) {
     http.setJwt(getJwt());
-    return http.get(`${apiEndPointIntake}/get-intakes/${status}`);
+    return http.get(`${apiEndPointIntake}/get-intakes-status/${status}`);
 }
 
 // Get Intake By IntakeId

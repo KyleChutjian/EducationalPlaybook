@@ -50,7 +50,7 @@ function ArchivedIntakes() {
   const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
 
   //Approved Intake Hooks
-  const [archivedIntakes, setArchivedIntakes] = useState("");
+  const [archivedIntakes, setArchivedIntakes] = useState(null);
 
 
 
@@ -66,19 +66,19 @@ function ArchivedIntakes() {
     getIntakesByStatus("archived").then((archivedIntakes) => {
       console.log(archivedIntakes.data);
       console.log("Hello World");
-      setArchivedIntakes(archivedIntakes);
+      setArchivedIntakes(archivedIntakes.data);
       loadIntakes(archivedIntakes);
     });
       
-  }, [currentIntakeId]);
+  }, []);
 
   const loadIntakes = (intakes) => {
     setArchivedIntakes(
       intakes.map((archivedIntakes, index) => {
         return(
-          <div className="container" key={archivedIntakes[0]}>
+          <div className="container" key={index}>
             <div className="row" style={{paddingTop: "1%"}}>
-              <button onClick={reroute(index)}>${archivedIntakes[0]}</button>
+              <button name={index} onClick={reroute}>{`Archived Intake ${index}`}</button>
             </div>
           </div>
         )
@@ -86,9 +86,22 @@ function ArchivedIntakes() {
     ))
   }
 
-  const reroute = (index) => {
-    localStorage.setItem("currentIntakeId", archivedIntakes[index]);
-    history('/curriculum')
+  const reroute = (e) => {
+    const index = e.target.name;
+    //console.log(index);
+    //console.log(approvedIntakes);
+    console.log(archivedIntakes == null);
+   
+    if(archivedIntakes != null){
+      console.log(archivedIntakes);
+      localStorage.setItem("currentIntakeId", archivedIntakes[index]._id);
+      //console.log(index);
+      console.log(archivedIntakes[index]._id);
+      history('/curriculumDash');
+
+    }
+   
+    
   }
 
 

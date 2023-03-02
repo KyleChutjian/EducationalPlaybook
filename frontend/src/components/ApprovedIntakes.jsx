@@ -7,6 +7,7 @@ import ClientNav from '../components/ClientNav';
 import { getIntakesByStatus} from '../services/intakeService';
 import {Card} from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
+
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -56,7 +57,7 @@ function ApprovedIntakes() {
   const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
 
   //Approved Intake Hooks
-  const [approvedIntakes, setApprovedIntakes] = useState("");
+  const [approvedIntakes, setApprovedIntakes] = useState(null);
 
 
 
@@ -70,31 +71,49 @@ function ApprovedIntakes() {
 
     // Get Intake using Status
     getIntakesByStatus("approved").then((approvedIntakes) => {
-      console.log(approvedIntakes.data);
-      console.log("Hello World");
+      //console.log(approvedIntakes.data);
       setApprovedIntakes(approvedIntakes);
-      loadIntakes(approvedIntakes);
+      loadIntakes(approvedIntakes.data);
+      console.log(approvedIntakes.data);
     });
       
-  }, [currentIntakeId]);
+  }, []);
 
   const loadIntakes = (intakes) => {
     setApprovedIntakes(
       intakes.map((approvedIntakes, index) => {
         return(
-          <div className="container" key={approvedIntakes[0]}>
+          <div className="container" key={index}>
             <div className="row" style={{paddingTop: "1%"}}>
-              <button onClick={reroute(index)}>${approvedIntakes[0]}</button>
+              <button name={index} onClick={reroute}>{`Approved Intake ${index}`}</button>
             </div>
           </div>
         )
+       
       }
+
+    
     ))
+    
+
   }
 
-  const reroute = (index) => {
-    localStorage.setItem("currentIntakeId", approvedIntakes[index]);
-    history('/curriculum')
+  const reroute = (e) => {
+    const index = e.target.name;
+    //console.log(index);
+    //console.log(approvedIntakes);
+    console.log(approvedIntakes == null);
+   
+    if(approvedIntakes != null){
+      console.log(approvedIntakes);
+      localStorage.setItem("currentIntakeId", approvedIntakes[index]._id);
+      //console.log(index);
+      console.log(approvedIntakes[index]._id);
+      history('/curriculumDash');
+
+    }
+   
+    
   }
 
 
@@ -126,49 +145,7 @@ function ApprovedIntakes() {
       </div>
 
         <div className="intake-body container" style={{paddingTop: "1%"}}>
-          {/* Intake 1 */}
-          <Card id='card2' className="text-center mx-auto" style={{ background: '#D3D3D3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
-            <Card.Body>
-              <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
-                <Button onClick={toApprovedIntake} variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Intake #001</u></Button>
-              </Card.Title>
-            </Card.Body>
-          </Card>
-          
-         
-
-          {/* Intake 2 */}
-          <Card id='card2' className="text-center mx-auto" style={{ background: '#D3D3D3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
-            <Card.Body>
-              <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
-                <Button variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Intake #002</u></Button>
-              </Card.Title>
-            </Card.Body>
-          </Card>
-          
-
-          {/* Intake 3 */}
-          <Card id='card2' className="text-center mx-auto" style={{ background: '#D3D3D3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
-            <Card.Body>
-              <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
-                <Button variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Intake #003</u></Button>
-              </Card.Title>
-            </Card.Body>
-          </Card>
-
-          <Card id='card2' className="text-center mx-auto" style={{ background: '#6E9A35', width: '10rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
-            <Card.Body>
-              <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
-                <Button variant='outline-dark' size='sm' style={{width: "100px", fontSize: "15px"}}><u>See More</u></Button>
-              </Card.Title>
-            </Card.Body>
-          </Card>
-
-          
+          {approvedIntakes}       
         </div>
       </div>
 
