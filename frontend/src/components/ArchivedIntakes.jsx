@@ -101,7 +101,7 @@ function ArchivedIntakes() {
         {adminNavbar ? <AdminNav/> : <ClientNav/>}
       </div>
       {/* Jumbotron */}
-      <div className='p-5 text-center' style={{backgroundColor: '#a40084'}}>
+      <div className='p-5 text-center' style={{backgroundColor: '#d2492a'}}>
         <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>Archived Intakes</h1>
       </div>
 
@@ -139,7 +139,7 @@ function ArchivedIntakes() {
             </Card.Body>
           </Card>
 
-          <Card id='card2' className="text-center mx-auto" style={{ background: '#a40084', width: '10rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
+          <Card id='card2' className="text-center mx-auto" style={{ background: '#d2492a', width: '10rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
                 {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
