@@ -66,7 +66,7 @@ function PendingIntakes() {
 
 
     // Get Intake using Status
-    getIntakesByStatus("pending-admin").then((pendingIntakes) => {
+    getIntakesByStatus("pending-admin" || "pending-client" || "pending-programlead").then((pendingIntakes) => {
       console.log(pendingIntakes.data);
       setPendingIntakes(pendingIntakes);
       loadIntakes(pendingIntakes.data);
