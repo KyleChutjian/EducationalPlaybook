@@ -5,6 +5,8 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
+//import { AiOutlineSetting } from "react-icons/bs";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 
 function AdminNav() {
@@ -27,7 +29,8 @@ function AdminNav() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <NavDropdown title="Settings" id="basic-nav-dropdown">
+            <NavDropdown 
+              title={<i class="bi bi-gear"></i>} id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Manage Accounts</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#action/3.4">

@@ -103,15 +103,14 @@ function Login() {
       
       <div style={{height:'100%'}} className="" id="loginScreen">
         <div className="container text-center">
-          <h2 style={{fontFamily: 'Bitter', fontWeight:'normal' , marginTop:'50px', marginBottom:'20px', color:'whitesmoke'}} className="display-4">Login to:</h2>
-          <h2> <img src="./white-ep-logo.png" alt="bug" height={70} style={{marginBottom:'20px'}}/> </h2>
+          <h1> <img src="./EP logo 2.png" alt="bug" height={270} style={{marginTop:'40px' , marginBottom:'20px'}}/> </h1>
         </div>
  
         {/* <form id="loginForm" className='text-center' onSubmit={handleSubmit}> */}
         <div id="loginForm" className='form-container text-center' style={{ height:'100%', opacity:'90%'}}>
           <div style={{paddingBottom: "0.5%"}}>
               <TextField 
-                style={{width:'40%', background:'white'}}
+                style={{width:'50%', background:'white'}}
                 label="yourname@hhchealth.org"
                 name="email"
                 value={account.email}
@@ -120,7 +119,7 @@ function Login() {
           </div>
           <div id="password" className="mb-3">
               <TextField
-                style={{width:'40%', background:'white'}}
+                style={{width:'50%', background:'white'}}
                 label="Password"
                 name="password"
                 type="password"
@@ -166,10 +165,10 @@ function Login() {
               </Modal>
           </div>
           <div className="login-button" style={{paddingBottom: "0.3%"}}>
-            <button type="submit" onClick={handleSubmit} className="btn btn-success" style={{width:'20%',fontFamily: 'Bitter', background:'#d2492a'}}>Login</button>
+            <button type="submit" onClick={handleSubmit} className="btn btn-success" style={{width:'50%',fontFamily: 'Bitter', background:'#d2492a'}}>Login</button>
           </div>
           <div className="create-account-button">
-            <Button variant="primary" onClick={handleOpenModal} style={{width:'20%',fontFamily: 'Bitter', background: '#a40084'}}>Create New Account</Button>
+            <Button variant="primary" onClick={handleOpenModal} style={{width:'50%',fontFamily: 'Bitter', background: '#a40084'}}>Create New Account</Button>
           </div>
           
           

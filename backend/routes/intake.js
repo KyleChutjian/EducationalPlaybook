@@ -23,7 +23,7 @@ router.get("/", async (req,res) => {
 });
 
 // Get Intake Forms by Status
-router.get("/get-intakes/:status", async (req,res) => {
+router.get("/get-intakes-status/:status", async (req,res) => {
     const status = req.params.status.toLowerCase();
     try {
         switch (status) {
