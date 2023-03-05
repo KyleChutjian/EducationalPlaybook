@@ -11,7 +11,7 @@ function CurriculumDash() {
   const history = useNavigate();
   const [ curriculumTitle, setCurriculumTitle ] = useState("");
   const [ adminNavbar, setAdminNavbar ] = useState(false);
-  localStorage.setItem("currentIntakeId", "63f52c4d02554f88c031c537"); // TEMPORARY, waiting for sadjell
+  //localStorage.setItem("currentIntakeId", "63f52c4d02554f88c031c537"); // TEMPORARY, waiting for sadjell
   const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
   
   useEffect(() => {

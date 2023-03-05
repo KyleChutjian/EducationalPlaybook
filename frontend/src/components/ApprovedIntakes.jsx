@@ -34,6 +34,7 @@ function ApprovedIntakes() {
 
 
   const history = useNavigate();
+  const intakeArray = new Array();
 
   const toApprovedIntake = () => {
     // Update the route
@@ -41,10 +42,13 @@ function ApprovedIntakes() {
     history(path);
   };
 
+
+  
+
   const toLogin = () => {
     // Update the route
-    let path = '/login';
-    history(path);
+    let path1 = '/login';
+    history(path1);
   };
 
 
@@ -74,11 +78,32 @@ function ApprovedIntakes() {
       //console.log(approvedIntakes.data);
       setApprovedIntakes(approvedIntakes);
       loadIntakes(approvedIntakes.data);
-      console.log(approvedIntakes.data);
+      for(var i = 0; i < approvedIntakes.data.length; i++){
+
+        if(intakeArray.length == 0){
+          intakeArray.push(approvedIntakes.data[i]._id);
+          console.log(intakeArray.indexOf(i));
+          console.log(intakeArray[i]);
+        }
+        else{
+          if(intakeArray.indexOf(i) == -1){
+            console.log(intakeArray.indexOf(i));
+            console.log(intakeArray[i]);
+            intakeArray.push(approvedIntakes.data[i]._id);
+          }
+        }
+        
+
+      }
+
+      console.log(intakeArray);
+      
+
     });
       
   }, []);
 
+ 
   const loadIntakes = (intakes) => {
     setApprovedIntakes(
       intakes.map((approvedIntakes, index) => {
@@ -91,7 +116,11 @@ function ApprovedIntakes() {
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
                 {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
-                <Button name={index} onClick={reroute} variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}><u>{`Approved Intake ${index}`}</u></Button>
+                <Button name={index} onClick={() =>{
+                  localStorage.setItem("currentIntakeId", intakeArray[index]);
+                  history('/curriculumDash');
+
+                } } variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}><u>{`Approved Intake ${index}`}</u></Button>
               </Card.Title>
             </Card.Body>
           </Card>
@@ -110,16 +139,18 @@ function ApprovedIntakes() {
 
   const reroute = (e) => {
     const index = e.target.name;
-    //console.log(index);
+
     //console.log(approvedIntakes);
-    console.log(approvedIntakes == null);
+    //console.log(approvedIntakes == null);
+   
+
    
     if(approvedIntakes != null){
       console.log(approvedIntakes);
-      localStorage.setItem("currentIntakeId", approvedIntakes[index]._id);
+      //localStorage.setItem("currentIntakeId", approvedIntakes[index]._id);
       //console.log(index);
       console.log(approvedIntakes[index]._id);
-      history('/curriculumDash');
+      //history('/curriculumDash');
 
     }
    
