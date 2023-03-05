@@ -8,6 +8,27 @@ import ClientNav from './ClientNav';
 function SubmitIntake() {
   const history = useNavigate();
 
+  const [intakeId, setIntakeId] = useState(null);
+  const [clientId, setClientId] = useState("");
+  const [intakeResponse, setIntakeResponse] = useState(["","","","","",""]);
+  const [intakeName, setIntakeName] = useState("");
+  const [isRadio1Visible, setIsRadio1Visible] = useState(false);
+  const [isRadio2Visible, setIsRadio2Visible] = useState(false);
+  const [radio1YesHTML, setRadio1YesHTML] = useState(<div></div>)
+  const [radio1NoHTML, setRadio1NoHTML] = useState(<div></div>)
+  const [radio2YesHTML, setRadio2YesHTML] = useState(<div></div>)
+  const [radio2NoHTML, setRadio2NoHTML] = useState(<div></div>)
+
+  const radioResponse1HTML = <div>
+    <h3 style={{fontFamily: 'Bitter', fontSize:'20px', paddingTop:'1%'}}>What was the problem?</h3>
+    <MDBTextArea id='question3' rows={4} name="question3" defaultValue={intakeResponse[2]} onChange={handleIntakeResponseChange}/>
+  </div>;
+
+  const radioResponse2HTML = <div>
+    <h3 style={{fontFamily: 'Bitter', fontSize:'20px', paddingTop:'1%'}}>What has the data shown?</h3>
+    <MDBTextArea id='question4' rows={4} name="question4" defaultValue={intakeResponse[3]} onChange={handleIntakeResponseChange}/>
+  </div>
+
   useEffect(() => {
 
     // Get Current User
@@ -19,7 +40,37 @@ function SubmitIntake() {
       if (res.data.length === 1) {
         // If there is an open intake form, set intakeId and intakeResponse variables
         setIntakeId(res.data[0]._id);
+        setIntakeName(res.data[0].name);
         setIntakeResponse(res.data[0].intakeResponse);
+
+        // Radio 1
+        if (res.data[0].intakeResponse[2] === '') {
+          // console.log("Setting radio1 to No")
+          setRadio1YesHTML(<input type='radio' id='yes' name='radio1' value='yes' onClick={handleRadioButtons}/>)
+          setRadio1NoHTML(<input defaultChecked={true} type='radio' id='no' name='radio1' value='no' onClick={handleRadioButtons}/>)
+          setIsRadio1Visible(false);
+          
+        } else {
+          // console.log("Setting radio1 to Yes");
+          setRadio1YesHTML(<input defaultChecked={true} type='radio' id='yes' name='radio1' value='yes' onClick={handleRadioButtons}/>)
+          setRadio1NoHTML(<input type='radio' id='no' name='radio1' value='no' onClick={handleRadioButtons}/>)
+          setIsRadio1Visible(true);
+        }
+
+        // Radio 2
+        if (res.data[0].intakeResponse[3] === '') {
+          // console.log("Setting radio2 to No")
+          setRadio2YesHTML(<input type='radio' id='yes' name='radio2' value='yes' onClick={handleRadioButtons}/>)
+          setRadio2NoHTML(<input defaultChecked={true} type='radio' id='no' name='radio2' value='no' onClick={handleRadioButtons}/>)
+          setIsRadio2Visible(false);
+          
+        } else {
+          // console.log("Setting radio2 to Yes");
+          setRadio2YesHTML(<input defaultChecked={true} type='radio' id='yes' name='radio2' value='yes' onClick={handleRadioButtons}/>)
+          setRadio2NoHTML(<input type='radio' id='no' name='radio2' value='no' onClick={handleRadioButtons}/>)
+          setIsRadio2Visible(true);
+        }
+
       } else if (res.data.length !== 0) {
         // If more than 1 intake form is open, something is wrong
         console.error(`User with id ${res.data[0].clientId} has more than 1 pending-client intake`);
@@ -28,9 +79,7 @@ function SubmitIntake() {
     })
   }, []);
 
-  const [intakeId, setIntakeId] = useState(null);
-  const [clientId, setClientId] = useState("");
-  const [intakeResponse, setIntakeResponse] = useState(["","","","","",""]);
+
 
   // Updates intakeResponse with new changes
   function handleIntakeResponseChange(e) {
@@ -48,12 +97,65 @@ function SubmitIntake() {
     });
   }
 
+  function handleIntakeNameChange(e) {
+    const { value } = e.target;
+    // console.log(name + ":" + value);
+    setIntakeName(value)
+  }
+
+  function handleRadioButtons(e) {
+    // Radio1/Radio2, Yes/No
+    const name = e.target.name; // Radio1/Radio2
+    const value = e.target.value; // Yes/No
+
+    if (name === "radio1") {
+        if (value === "yes") {
+          console.log(`opening ${name} response`);
+          setIsRadio1Visible(true);
+        } else {
+          console.log(`closing ${name} response`);
+          setIsRadio1Visible(false);
+          // setIntakeResponse((old) => {
+          //   old[2] = '';
+          //   return old;
+          // });
+        }
+    }
+
+    if (name === "radio2") {
+      if (value === "yes") {
+        console.log(`opening ${name} response`);
+        setIsRadio2Visible(true);
+      } else {
+        console.log(`closing ${name} response`);
+        setIsRadio2Visible(false);
+        // setIntakeResponse((old) => {
+        //   old[3] = '';
+        //   return old;
+        // });
+      }
+  }
+
+  }
+
   // Submit Button
   function handleSubmit(e) {
     e.preventDefault();
     console.log("Submit");
 
+    // If radio1 is 'No', remove saved response
+    if (!isRadio1Visible) {
+      intakeResponse[2] = '';
+    }
+
+    // If radio2 is 'No', remove saved response
+    if (!isRadio2Visible) {
+      intakeResponse[3] = '';
+    }
+    console.log(intakeResponse);
+
     submitIntake({
+      name: intakeName,
       intakeId: intakeId,
       clientId: clientId,
       intakeResponse: intakeResponse
@@ -65,7 +167,19 @@ function SubmitIntake() {
   function handleSaveAndClose(e) {
     e.preventDefault();
     console.log("Save & Close");
+
+    // If radio1 is 'No', remove saved response
+    if (!isRadio1Visible) {
+      intakeResponse[2] = '';
+    }
+
+    // If radio2 is 'No', remove saved response
+    if (!isRadio2Visible) {
+      intakeResponse[3] = '';
+    }
+    console.log(intakeResponse);
     saveIntake({
+      name: intakeName,
       intakeId: intakeId,
       clientId: clientId,
       intakeResponse: intakeResponse
@@ -87,9 +201,14 @@ function SubmitIntake() {
       </div>
       
       <div className="intake-body container" style={{paddingTop: "1%"}}>
+        {/* Name of Intake */}
+        <div className="row question1-wrapper">
+          <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Name of Problem: </h3>
+          <MDBTextArea id='question1' rows={1} defaultValue={intakeName} onChange={handleIntakeNameChange}/>
+        </div>
 
         {/* Question 1 */}
-        <div className="row question1-wrapper">
+        <div className="row question1-wrapper" style={{paddingTop: "2%"}}>
           <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Why is this training needed?</h3>
           <MDBTextArea id='question1' rows={4} name="question1" defaultValue={intakeResponse[0]} onChange={handleIntakeResponseChange}/>
         </div>
@@ -103,13 +222,41 @@ function SubmitIntake() {
         {/* Question 3 */}
         <div className="row question3-wrapper" style={{paddingTop: "2%"}}>
           <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Was there an identified problem that brought this to your attention? If so, what was the problem?</h3>
-          <MDBTextArea id='question3' rows={4} name="question3" defaultValue={intakeResponse[2]} onChange={handleIntakeResponseChange}/>
+          
+          {/* Identified Problem: Yes */}
+          <div className="yes">
+            <label htmlFor='yes'>Yes</label>
+            {radio1YesHTML}
+            {/* <input type='radio' id='yes' name='radio1' value='yes' onClick={handleRadioButtons}/> */}
+          </div>
+          {/* Identified Problem: No */}
+          <div className="no">
+            <label htmlFor='no'>No</label>
+            {radio1NoHTML}
+            {/* <input type='radio' id='no' name='radio1' value='no' defaultChecked={true} onClick={handleRadioButtons}/> */}
+          </div>
+          {isRadio1Visible ? radioResponse1HTML : null}
+          
         </div>
 
         {/* Question 4 */}
         <div className="row question4-wrapper" style={{paddingTop: "2%"}}>
-          <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Is there data? If so, what has the data shown?</h3>
-          <MDBTextArea id='question4' rows={4} name="question4" defaultValue={intakeResponse[3]} onChange={handleIntakeResponseChange}/>
+          <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Is there data?</h3>
+
+          {/* Data: Yes */}
+          <div className="yes">
+            <label htmlFor='yes'>Yes</label>
+            {radio2YesHTML}
+            {/* <input type='radio' id='yes' name='radio2' value='yes' onClick={handleRadioButtons}/> */}
+          </div>
+          {/* Identified Problem: No */}
+          <div className="no">
+            <label htmlFor='no'>No</label>
+            {radio2NoHTML}
+            {/* <input type='radio' id='no' name='radio2' value='no' onClick={handleRadioButtons}/> */}
+          </div>
+          {isRadio2Visible ? radioResponse2HTML : null}
+
         </div>
 
         {/* Question 5 */}

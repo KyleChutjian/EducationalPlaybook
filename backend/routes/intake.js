@@ -117,11 +117,13 @@ router.put("/save-intake", async (req, res) => {
     try {
         const clientId = req.body.clientId;
         const intakeId = req.body.intakeId;
+        const intakeName = req.body.name;
+        console.log(intakeName);
         // If intake does not already exist
         if (intakeId === "" || intakeId === null || intakeId === "null") {
             // Make new curriculum
             const newCurriculum = new Curriculum({
-                name: null,
+                name: intakeName,
                 objectives: [
                     ["Sample Objective #1", "Sample Objective #1 Description"]
                 ], // Preset curriculum objective
@@ -139,6 +141,7 @@ router.put("/save-intake", async (req, res) => {
 
             // Making new intake form
             const newIntake = new Intake({
+                name: intakeName,
                 clientId: clientId, 
                 programLeadId: null, 
                 curriculumId: newCurriculumId, 
@@ -179,7 +182,7 @@ router.put("/submit-intake", async (req, res) => {
 
             // Make new curriculum
             const newCurriculum = new Curriculum({
-                name: null,
+                name: req.body.name,
                 objectives: [
                     ["Sample Objective #1", "Sample Objective #1 Description"]
                 ], // Preset curriculum objective
@@ -197,6 +200,7 @@ router.put("/submit-intake", async (req, res) => {
 
             // Making a new intake form
             const newIntake = new Intake({
+                name: req.body.name,
                 clientId: clientId,
                 programLeadId: null,
                 curriculumId: newCurriculumId,
