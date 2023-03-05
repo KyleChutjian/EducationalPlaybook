@@ -34,6 +34,9 @@ function ArchivedIntakes() {
 
   const history = useNavigate();
 
+  const archIntakeArray = new Array();
+  const archIntakeNameArray = new Array();
+
   const toArchivedIntake = () => {
     // Update the route
     let path = '/curriculumDash';
@@ -41,8 +44,8 @@ function ArchivedIntakes() {
   };
   const toLogin = () => {
     // Update the route
-    let path = '/login';
-    history(path);
+    let path1 = '/login';
+    history(path1);
   };
 
 
@@ -68,6 +71,20 @@ function ArchivedIntakes() {
       console.log("Hello World");
       setArchivedIntakes(archivedIntakes);
       loadIntakes(archivedIntakes.data);
+
+      for(var i = 0; i < archivedIntakes.data.length; i++){
+        var current = archivedIntakes.data[i]._id;
+        var currentName = archivedIntakes.data[i].name;
+
+        if(archIntakeArray.indexOf(current) < 0){
+            console.log(archIntakeArray.indexOf(current));
+            console.log(current);
+            archIntakeArray.push(current);
+            archIntakeNameArray.push(currentName);
+          }
+      }
+
+      console.log(archIntakeArray);
     });
       
   }, []);
@@ -84,11 +101,14 @@ function ArchivedIntakes() {
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
                 {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
-                <Button name={index} onClick={reroute} variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}><u>{`Archived Intake ${index}`}</u></Button>
+                <Button name={index} onClick={() =>{
+                  localStorage.setItem("currentIntakeId", archIntakeArray[index]);
+                  toArchivedIntake();
+                } } variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}>{archIntakeNameArray[index]}<u>{}</u></Button>
               </Card.Title>
             </Card.Body>
           </Card>
-              
+
             </div>
           </div>
         )
@@ -96,23 +116,7 @@ function ArchivedIntakes() {
     ))
   }
 
-  const reroute = (e) => {
-    const index = e.target.name;
-    //console.log(index);
-    //console.log(approvedIntakes);
-    console.log(archivedIntakes == null);
-   
-    if(archivedIntakes != null){
-      console.log(archivedIntakes);
-      localStorage.setItem("currentIntakeId", archivedIntakes[index]._id);
-      //console.log(index);
-      console.log(archivedIntakes[index]._id);
-      history('/curriculumDash');
-
-    }
-   
-    
-  }
+  
 
 
   
@@ -124,7 +128,7 @@ function ArchivedIntakes() {
         {adminNavbar ? <AdminNav/> : <ClientNav/>}
       </div>
       {/* Jumbotron */}
-      <div className='p-5 text-center' style={{backgroundColor: '#d2492a'}}>
+      <div className='p-5 text-center' style={{backgroundColor: '#d2492a', color:'whitesmoke'}}>
         <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>Archived Intakes</h1>
       </div>
 

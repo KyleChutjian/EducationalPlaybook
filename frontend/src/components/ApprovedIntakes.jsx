@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { loginUser } from '../services/authService';
 import AdminNav from '../components/AdminNav';
 import ClientNav from '../components/ClientNav';
-import { getIntakesByStatus} from '../services/intakeService';
+import { getIntakeByIntakeId, getIntakeDataByIntakeId, getIntakesByStatus} from '../services/intakeService';
 import {Card} from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 
@@ -34,7 +34,9 @@ function ApprovedIntakes() {
 
 
   const history = useNavigate();
-  const intakeArray = new Array();
+  const approvIntakeArray = new Array();
+  const approvIntakeNameArray = new Array();
+
 
   const toApprovedIntake = () => {
     // Update the route
@@ -79,24 +81,18 @@ function ApprovedIntakes() {
       setApprovedIntakes(approvedIntakes);
       loadIntakes(approvedIntakes.data);
       for(var i = 0; i < approvedIntakes.data.length; i++){
+        var current = approvedIntakes.data[i]._id;
+        var currentName = approvedIntakes.data[i].name;
 
-        if(intakeArray.length == 0){
-          intakeArray.push(approvedIntakes.data[i]._id);
-          console.log(intakeArray.indexOf(i));
-          console.log(intakeArray[i]);
-        }
-        else{
-          if(intakeArray.indexOf(i) == -1){
-            console.log(intakeArray.indexOf(i));
-            console.log(intakeArray[i]);
-            intakeArray.push(approvedIntakes.data[i]._id);
+        if(approvIntakeArray.indexOf(current) < 0){
+            console.log(approvIntakeArray.indexOf(current));
+            console.log(current);
+            approvIntakeArray.push(current);
+            approvIntakeNameArray.push(currentName);
           }
-        }
-        
-
       }
 
-      console.log(intakeArray);
+      console.log(approvIntakeArray);
       
 
     });
@@ -117,10 +113,9 @@ function ApprovedIntakes() {
               <Card.Title style={{fontSize:'30px'}}>
                 {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
                 <Button name={index} onClick={() =>{
-                  localStorage.setItem("currentIntakeId", intakeArray[index]);
-                  history('/curriculumDash');
-
-                } } variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}><u>{`Approved Intake ${index}`}</u></Button>
+                  localStorage.setItem("currentIntakeId", approvIntakeArray[index]);
+                  toApprovedIntake();
+                } } variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}>{approvIntakeNameArray[index]}<u>{}</u></Button>
               </Card.Title>
             </Card.Body>
           </Card>
@@ -137,25 +132,7 @@ function ApprovedIntakes() {
 
   }
 
-  const reroute = (e) => {
-    const index = e.target.name;
-
-    //console.log(approvedIntakes);
-    //console.log(approvedIntakes == null);
-   
-
-   
-    if(approvedIntakes != null){
-      console.log(approvedIntakes);
-      //localStorage.setItem("currentIntakeId", approvedIntakes[index]._id);
-      //console.log(index);
-      console.log(approvedIntakes[index]._id);
-      //history('/curriculumDash');
-
-    }
-   
-    
-  }
+  
 
 
 
@@ -182,7 +159,7 @@ function ApprovedIntakes() {
       </div>
       {/* Jumbotron */}
       <div className='p-5 text-center' style={{backgroundColor: '#6E9A35'}}>
-        <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>Approved Intakes</h1>
+        <h1 className='mb-3' style={{fontFamily: 'Bitter', color:'whitesmoke'}}>Approved Intakes</h1>
       </div>
 
         <div className="intake-body container" style={{paddingTop: "1%"}}>

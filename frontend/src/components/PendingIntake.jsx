@@ -34,6 +34,9 @@ function PendingIntakes() {
 
   const history = useNavigate();
 
+  const pendIntakeArray = new Array();
+  const pendIntakeNameArray = new Array();
+
   const toPendingIntake = () => {
     // Update the route
     let path = '/curriculumDash';
@@ -63,22 +66,49 @@ function PendingIntakes() {
 
 
     // Get Intake using Status
-    getIntakesByStatus("pending").then((pendingIntakes) => {
+    getIntakesByStatus("pending-admin").then((pendingIntakes) => {
       console.log(pendingIntakes.data);
-      console.log("Hello World");
       setPendingIntakes(pendingIntakes);
-      loadIntakes(pendingIntakes);
+      loadIntakes(pendingIntakes.data);
+
+
+      for(var i = 0; i < pendingIntakes.data.length; i++){
+        var current = pendingIntakes.data[i]._id;
+        var currentName = pendingIntakes.data[i].name;
+
+        if(pendIntakeArray.indexOf(current) < 0){
+            console.log(pendIntakeArray.indexOf(current));
+            console.log(current);
+            pendIntakeArray.push(current);
+            pendIntakeNameArray.push(currentName);
+          }
+      }
+
+      console.log(pendIntakeArray);
     });
       
-  }, [currentIntakeId]);
+  }, []);
 
   const loadIntakes = (intakes) => {
     setPendingIntakes(
       intakes.map((pendingIntakes, index) => {
         return(
-          <div className="container" key={pendingIntakes[0]}>
+          <div className="container" key={index}>
             <div className="row" style={{paddingTop: "1%"}}>
-              <button onClick={reroute(index)}>${pendingIntakes[0]}</button>
+
+
+            <Card id='card2' className="text-center mx-auto" style={{ background: '#D3D3D3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
+            <Card.Body>
+              <Card.Title style={{fontSize:'30px'}}>
+                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
+                <Button name={index} onClick={() =>{
+                  localStorage.setItem("currentIntakeId", pendIntakeArray[index]);
+                  toPendingIntake();
+                } } variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}><u>{pendIntakeNameArray[index]}</u></Button>
+              </Card.Title>
+            </Card.Body>
+          </Card>
+
             </div>
           </div>
         )
@@ -86,10 +116,7 @@ function PendingIntakes() {
     ))
   }
 
-  const reroute = (index) => {
-    localStorage.setItem("currentIntakeId", pendingIntakes[index]);
-    history('/curriculum')
-  }
+ 
 
 
   
@@ -101,56 +128,16 @@ function PendingIntakes() {
         {adminNavbar ? <AdminNav/> : <ClientNav/>}
       </div>
       {/* Jumbotron */}
-      <div className='p-5 text-center' style={{backgroundColor: '#d2492a'}}>
-        <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>Pending Intakes</h1>
+      <div className='p-5 text-center' style={{backgroundColor: '#0098C3'}}>
+        <h1 className='mb-3' style={{fontFamily: 'Bitter', color:'whitesmoke'}}>Pending Intakes</h1>
       </div>
 
-        <div className="intake-body container" style={{paddingTop: "1%"}}>
-          {/* Intake 1 */}
-          <Card id='card2' className="text-center mx-auto" style={{ background: '#D3D3D3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
-            <Card.Body>
-              <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
-                <Button onClick={toPendingIntake} variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Intake #001</u></Button>
-              </Card.Title>
-            </Card.Body>
-          </Card>
-          
-         
-
-          {/* Intake 2 */}
-          <Card id='card2' className="text-center mx-auto" style={{ background: '#D3D3D3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
-            <Card.Body>
-              <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
-                <Button variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Intake #002</u></Button>
-              </Card.Title>
-            </Card.Body>
-          </Card>
-          
-
-          {/* Intake 3 */}
-          <Card id='card2' className="text-center mx-auto" style={{ background: '#D3D3D3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
-            <Card.Body>
-              <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
-                <Button variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Intake #003</u></Button>
-              </Card.Title>
-            </Card.Body>
-          </Card>
-
-          <Card id='card2' className="text-center mx-auto" style={{ background: '#d2492a', width: '10rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
-            <Card.Body>
-              <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
-                <Button variant='outline-dark' size='sm' style={{width: "100px", fontSize: "15px"}}><u>See More</u></Button>
-              </Card.Title>
-            </Card.Body>
-          </Card>
-
-          
+      <div className="intake-body container" style={{paddingTop: "1%"}}>
+          {pendingIntakes}       
         </div>
-      </div>
+
+    
+    </div>
 
     
      
