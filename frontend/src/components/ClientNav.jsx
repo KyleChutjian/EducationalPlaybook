@@ -25,7 +25,7 @@ function ClientNav() {
     <Navbar bg="light" expand="lg" className="ms-auto">
       <Container>
         <Navbar.Brand onClick={toHome}>
-        <img src="./final-logo.png" alt="bug" height={40} />
+        <img src="./nav logo2.png" alt="bug" height={70} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

@@ -32,7 +32,6 @@ from 'mdb-react-ui-kit';
 
 function ApprovedIntakes() {
 
-
   const history = useNavigate();
 
   const toApprovedIntake = () => {
@@ -48,17 +47,11 @@ function ApprovedIntakes() {
   };
 
 
-
-
-
-
-
   const [ adminNavbar, setAdminNavbar ] = useState(false);
   const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
 
   //Approved Intake Hooks
   const [approvedIntakes, setApprovedIntakes] = useState(null);
-
 
 
   useEffect(() => {
@@ -111,7 +104,7 @@ function ApprovedIntakes() {
   const reroute = (e) => {
     const index = e.target.name;
     //console.log(index);
-    //console.log(approvedIntakes);
+   // console.log(approvedIntakes);
     console.log(approvedIntakes == null);
    
     if(approvedIntakes != null){
@@ -125,20 +118,6 @@ function ApprovedIntakes() {
    
     
   }
-
-
-
-
-  
-
-
- 
-  
-  
-  
-  
-  
-
   
 
   

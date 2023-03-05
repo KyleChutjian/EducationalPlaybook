@@ -34,7 +34,7 @@ function AdminDashboard() {
   // Button Handling
   const toClientDash = () => {
       // Update the route
-      let path = '/dashboard';
+      let path = '/clientDashboard';
       localStorage.setItem("permission-level", "client");
       history(path);
   };
