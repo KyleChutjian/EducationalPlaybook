@@ -34,7 +34,7 @@ function AdminDashboard() {
   // Button Handling
   const toClientDash = () => {
       // Update the route
-      let path = '/dashboard';
+      let path = '/clientDashboard';
       localStorage.setItem("permission-level", "client");
       history(path);
   };
@@ -81,7 +81,7 @@ function AdminDashboard() {
             <Dropdown.Item hidden={hideProgramLeadDashboard} onClick={toPLDash}>Program Lead Dashboard</Dropdown.Item>
           </DropdownButton>
           <h3> Welcome, {adminFirstName}!</h3>
-      </div> 
+      </div>  
 
       {/* Buttons */}
       <div className="col d-flex justify-content-center">

@@ -32,7 +32,6 @@ from 'mdb-react-ui-kit';
 
 function ApprovedIntakes() {
 
-
   const history = useNavigate();
   const approvIntakeArray = new Array();
   const approvIntakeNameArray = new Array();
@@ -54,17 +53,11 @@ function ApprovedIntakes() {
   };
 
 
-
-
-
-
-
   const [ adminNavbar, setAdminNavbar ] = useState(false);
   const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
 
   //Approved Intake Hooks
   const [approvedIntakes, setApprovedIntakes] = useState(null);
-
 
 
   useEffect(() => {
@@ -132,20 +125,7 @@ function ApprovedIntakes() {
 
   }
 
-  
 
-
-
-
-  
-
-
- 
-  
-  
-  
-  
-  
 
   
 
