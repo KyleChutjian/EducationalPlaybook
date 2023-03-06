@@ -55,7 +55,7 @@ function ViewIntake() {
       </header>
 
       {/* Jumbotron */}
-      <div className='p-5 text-center bg-info'>
+      <div className='p-5 text-center' style={{backgroundColor: '#0098C3', color:'whitesmoke'}}>
         <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>View Intake Form: {intakeName}</h1>
       </div>
 

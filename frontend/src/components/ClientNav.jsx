@@ -22,7 +22,7 @@ function ClientNav() {
 
     return (
     <div>
-    <Navbar bg="light" expand="lg" className="ms-auto">
+    <Navbar bg="light" expand="lg" className="ms-auto" style={{borderBottom:"1px"}}>
       <Container>
         <Navbar.Brand onClick={toHome}>
         <img src="./nav logo2.png" alt="bug" height={70} />

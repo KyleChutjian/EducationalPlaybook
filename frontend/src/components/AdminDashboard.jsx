@@ -94,7 +94,7 @@ function AdminDashboard() {
                 {/* <MDBCardLink onClick={button1} style={{color:'whitesmoke'}}>
                   {button1Option}
                   </MDBCardLink>  */}
-                  <Button onClick={pendingIntakes} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}><u>Pending Forms</u></Button>
+                  <Button onClick={pendingIntakes} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>Pending Forms</Button>
               </Card.Title>
             </Card.Body>
           </Card>
@@ -104,7 +104,7 @@ function AdminDashboard() {
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
                 {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
-                <Button onClick={approvedIntakes} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Approved Forms</u></Button>
+                <Button onClick={approvedIntakes} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}>Approved Forms</Button>
               </Card.Title>
             </Card.Body>
           </Card>
@@ -114,7 +114,7 @@ function AdminDashboard() {
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
                 {/* <MDBCardLink disabled={disableViewCourse} href='#' style={{color:'whitesmoke'}}>View Course</MDBCardLink>  */}
-                <Button onClick={archivedIntakes} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Archived Forms</u></Button>
+                <Button onClick={archivedIntakes} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}>Archived Forms</Button>
               </Card.Title>
             </Card.Body>
           </Card>
@@ -125,7 +125,7 @@ function AdminDashboard() {
               {/* <Card.Title style={{fontSize:'30px'}}>
                 <MDBCardLink href='#' style={{color:'whitesmoke'}}>View Completed Courses</MDBCardLink> 
               </Card.Title> */}
-              <Button onClick={successRate} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}><u>Success Rate</u></Button>
+              <Button onClick={successRate} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>Success Rate</Button>
             </Card.Body>
           </Card> 
         </Container>

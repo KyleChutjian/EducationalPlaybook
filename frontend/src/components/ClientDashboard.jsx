@@ -139,7 +139,7 @@ function ClientDashboard() {
       </div>
 
       {/* Header, viewing dashboards */}
-      <div className="container-fluid text-sm-center p-3 bg-light" style={{fontFamily: 'Bitter'}}>
+      <div className="container-fluid text-sm-center p-3" style={{fontFamily: 'Bitter'}}>
             <DropdownButton disabled={hideAdminDashboard && hideProgramLeadDashboard} variant='light' size='lg' id="chooseUserType" 
             title={
               <span className="my-auto" style={{color:'black', fontSize:'35px'}}>Client Dashboard</span>
@@ -165,7 +165,7 @@ function ClientDashboard() {
           <Card id='card2' className="text-center mx-auto" style={{ background: '#a40084', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
             <Card.Body>
              
-              <Button onClick={viewCompletedCoursesButton} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>View Completed Courses</Button>
+              <Button onClick={viewCompletedCoursesButton} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>Completed Curriculums</Button>
             </Card.Body>
           </Card> 
         </Container>

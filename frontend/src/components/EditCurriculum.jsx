@@ -402,7 +402,7 @@ function EditCurriculum() {
       </div>
 
       {/* Jumbotron */}
-      <div className='p-5 text-center' style={{backgroundColor: "#F59375"}}>
+      <div className='p-5 text-center' style={{background: '#d2492a', color:'whitesmoke'}}>
         <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>{curriculumTitle}</h1>
       </div>
 
