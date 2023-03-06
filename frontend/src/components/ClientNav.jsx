@@ -30,7 +30,7 @@ function ClientNav() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <NavDropdown title={<i class="bi bi-person"></i>} id="basic-nav-dropdown">
+            <NavDropdown title={<i className="bi bi-person"></i>} id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>

@@ -33,6 +33,12 @@ function ViewIntake() {
       getIntakeByIntakeId(currentIntakeId).then((result) => {
         setIntakeName(result.data.name)
         setIntakeResponse(result.data.intakeResponse);
+        if (result.data.intakeResponse[2] === '') {
+          result.data.intakeResponse[2] = 'No';
+        }
+        if (result.data.intakeResponse[3] === '') {
+          result.data.intakeResponse[3] = 'No';
+        }
       });
     }
 

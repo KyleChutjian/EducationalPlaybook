@@ -20,7 +20,7 @@ function ClientDashboard() {
   const [ hideProgramLeadDashboard, setHideProgramLeadDashboard ] = useState(true);
   
   useEffect(() => {
-
+    document.body.style.backgroundColor = 'white';
     // Get current user
     const currentUser = getCurrentUser();
 

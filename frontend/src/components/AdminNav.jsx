@@ -30,7 +30,7 @@ function AdminNav() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             <NavDropdown 
-              title={<i class="bi bi-gear"></i>} id="basic-nav-dropdown">
+              title={<i className="bi bi-gear"></i>} id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Manage Accounts</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#action/3.4">

@@ -11,7 +11,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 function Curriculum() {
   // TEMPORARY, when Sadjell is done this will be removed
-  localStorage.setItem("currentIntakeId", "64001af5f037081c00fb95b4"); 
+  // localStorage.setItem("currentIntakeId", "64001af5f037081c00fb95b4"); 
 
 
   const fileInput = React.createRef();

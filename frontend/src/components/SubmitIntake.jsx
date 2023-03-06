@@ -34,7 +34,6 @@ function SubmitIntake() {
     // Get Current User
     const currentUser = getCurrentUser();
     setClientId(currentUser.id);
-    
     // Use clientId to get their only pending-client intake form
     getIntakesByClientIdByStatus(currentUser.id, "pending-client").then((res) => {
       if (res.data.length === 1) {
@@ -42,16 +41,14 @@ function SubmitIntake() {
         setIntakeId(res.data[0]._id);
         setIntakeName(res.data[0].name);
         setIntakeResponse(res.data[0].intakeResponse);
-
+        
         // Radio 1
         if (res.data[0].intakeResponse[2] === '') {
-          // console.log("Setting radio1 to No")
           setRadio1YesHTML(<input type='radio' id='yes' name='radio1' value='yes' onClick={handleRadioButtons}/>)
           setRadio1NoHTML(<input defaultChecked={true} type='radio' id='no' name='radio1' value='no' onClick={handleRadioButtons}/>)
           setIsRadio1Visible(false);
           
         } else {
-          // console.log("Setting radio1 to Yes");
           setRadio1YesHTML(<input defaultChecked={true} type='radio' id='yes' name='radio1' value='yes' onClick={handleRadioButtons}/>)
           setRadio1NoHTML(<input type='radio' id='no' name='radio1' value='no' onClick={handleRadioButtons}/>)
           setIsRadio1Visible(true);
@@ -59,27 +56,33 @@ function SubmitIntake() {
 
         // Radio 2
         if (res.data[0].intakeResponse[3] === '') {
-          // console.log("Setting radio2 to No")
           setRadio2YesHTML(<input type='radio' id='yes' name='radio2' value='yes' onClick={handleRadioButtons}/>)
           setRadio2NoHTML(<input defaultChecked={true} type='radio' id='no' name='radio2' value='no' onClick={handleRadioButtons}/>)
           setIsRadio2Visible(false);
           
         } else {
-          // console.log("Setting radio2 to Yes");
           setRadio2YesHTML(<input defaultChecked={true} type='radio' id='yes' name='radio2' value='yes' onClick={handleRadioButtons}/>)
           setRadio2NoHTML(<input type='radio' id='no' name='radio2' value='no' onClick={handleRadioButtons}/>)
           setIsRadio2Visible(true);
         }
 
-      } else if (res.data.length !== 0) {
+      } else if (res.data.length === 0) {
+        // Preset Radio 1 to No
+        setRadio1YesHTML(<input type='radio' id='yes' name='radio1' value='yes' onClick={handleRadioButtons}/>)
+        setRadio1NoHTML(<input defaultChecked={true} type='radio' id='no' name='radio1' value='no' onClick={handleRadioButtons}/>)
+        setIsRadio1Visible(false);
+
+        // Preset Radio 2 to No
+        setRadio2YesHTML(<input type='radio' id='yes' name='radio2' value='yes' onClick={handleRadioButtons}/>)
+        setRadio2NoHTML(<input defaultChecked={true} type='radio' id='no' name='radio2' value='no' onClick={handleRadioButtons}/>)
+        setIsRadio2Visible(false);
+        
+      } else {
         // If more than 1 intake form is open, something is wrong
         console.error(`User with id ${res.data[0].clientId} has more than 1 pending-client intake`);
       }
-
     })
   }, []);
-
-
 
   // Updates intakeResponse with new changes
   function handleIntakeResponseChange(e) {
@@ -97,14 +100,14 @@ function SubmitIntake() {
     });
   }
 
+  // Updates intakeName with new changes
   function handleIntakeNameChange(e) {
     const { value } = e.target;
-    // console.log(name + ":" + value);
     setIntakeName(value)
   }
 
+  // Updates radio buttons when either one is clicked
   function handleRadioButtons(e) {
-    // Radio1/Radio2, Yes/No
     const name = e.target.name; // Radio1/Radio2
     const value = e.target.value; // Yes/No
 
@@ -115,10 +118,6 @@ function SubmitIntake() {
         } else {
           console.log(`closing ${name} response`);
           setIsRadio1Visible(false);
-          // setIntakeResponse((old) => {
-          //   old[2] = '';
-          //   return old;
-          // });
         }
     }
 
@@ -129,10 +128,6 @@ function SubmitIntake() {
       } else {
         console.log(`closing ${name} response`);
         setIsRadio2Visible(false);
-        // setIntakeResponse((old) => {
-        //   old[3] = '';
-        //   return old;
-        // });
       }
   }
 
@@ -227,13 +222,11 @@ function SubmitIntake() {
           <div className="yes">
             <label htmlFor='yes'>Yes</label>
             {radio1YesHTML}
-            {/* <input type='radio' id='yes' name='radio1' value='yes' onClick={handleRadioButtons}/> */}
           </div>
           {/* Identified Problem: No */}
           <div className="no">
             <label htmlFor='no'>No</label>
             {radio1NoHTML}
-            {/* <input type='radio' id='no' name='radio1' value='no' defaultChecked={true} onClick={handleRadioButtons}/> */}
           </div>
           {isRadio1Visible ? radioResponse1HTML : null}
           
@@ -247,13 +240,11 @@ function SubmitIntake() {
           <div className="yes">
             <label htmlFor='yes'>Yes</label>
             {radio2YesHTML}
-            {/* <input type='radio' id='yes' name='radio2' value='yes' onClick={handleRadioButtons}/> */}
           </div>
           {/* Identified Problem: No */}
           <div className="no">
             <label htmlFor='no'>No</label>
             {radio2NoHTML}
-            {/* <input type='radio' id='no' name='radio2' value='no' onClick={handleRadioButtons}/> */}
           </div>
           {isRadio2Visible ? radioResponse2HTML : null}
 
