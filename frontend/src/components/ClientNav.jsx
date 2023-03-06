@@ -5,6 +5,9 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
+//import { AiOutlineSetting } from "react-icons/bs";
+import "bootstrap-icons/font/bootstrap-icons.css";
+
 
 
 function ClientNav() {
@@ -22,12 +25,12 @@ function ClientNav() {
     <Navbar bg="light" expand="lg" className="ms-auto">
       <Container>
         <Navbar.Brand onClick={toHome}>
-        <img src="./final-logo.png" alt="bug" height={40} />
+        <img src="./nav logo2.png" alt="bug" height={70} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <NavDropdown title="Logout" id="basic-nav-dropdown">
+            <NavDropdown title={<i class="bi bi-person"></i>} id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>
