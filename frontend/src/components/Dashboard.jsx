@@ -134,7 +134,7 @@ function Dashboard() {
       </div>
 
       {/* Header, name of curriculum development plan */}
-      <div className='p-5 text-center' style={{backgroundColor: "lightslategrey"}}>
+      <div className='p-5 text-center'>
         <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>{curriculumName}</h1>
       </div>
 
@@ -149,7 +149,7 @@ function Dashboard() {
                 {/* <MDBCardLink onClick={button1} style={{color:'whitesmoke'}}>
                   {button1Option}
                   </MDBCardLink>  */}
-                  <Button onClick={viewIntakeButton} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}><u>View Intake</u></Button>
+                  <Button onClick={viewIntakeButton} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>View Intake</Button>
               </Card.Title>
             </Card.Body>
           </Card>
@@ -159,7 +159,7 @@ function Dashboard() {
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
                 {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
-                <Button onClick={needsAssessmentButton} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Needs Assessment</u></Button>
+                <Button onClick={needsAssessmentButton} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}>Needs Assessment</Button>
               </Card.Title>
             </Card.Body>
           </Card>
@@ -169,7 +169,7 @@ function Dashboard() {
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
                 {/* <MDBCardLink disabled={disableViewCourse} href='#' style={{color:'whitesmoke'}}>View Course</MDBCardLink>  */}
-                <Button onClick={viewCourseButton} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}><u>View Course</u></Button>
+                <Button onClick={viewCourseButton} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}>Curriculum</Button>
               </Card.Title>
             </Card.Body>
           </Card>

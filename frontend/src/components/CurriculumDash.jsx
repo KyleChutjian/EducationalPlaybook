@@ -56,7 +56,7 @@ function CurriculumDash() {
         {adminNavbar ? <AdminNav/> : <ClientNav/>}
       </div>
       {/* Jumbotron */}
-      <div className='p-5 text-center' style={{backgroundColor: "lightslategrey"}}>
+      <div className='p-5 text-center'>
         <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>{curriculumTitle}</h1>
       </div>
       {/* Buttons */}
@@ -70,7 +70,7 @@ function CurriculumDash() {
                 {/* <MDBCardLink onClick={button1} style={{color:'whitesmoke'}}>
                   {button1Option}
                   </MDBCardLink>  */}
-                  <Button onClick={intakeData} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}><u>Intake Data</u></Button>
+                  <Button onClick={intakeData} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>Intake Data</Button>
               </Card.Title>
             </Card.Body>
           </Card>
@@ -80,7 +80,7 @@ function CurriculumDash() {
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
                 {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
-                <Button onClick={needsAssessment} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Needs Assessment</u></Button>
+                <Button onClick={needsAssessment} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}>Needs Assessment</Button>
               </Card.Title>
             </Card.Body>
           </Card>
@@ -90,7 +90,7 @@ function CurriculumDash() {
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
                 {/* <MDBCardLink disabled={disableViewCourse} href='#' style={{color:'whitesmoke'}}>View Course</MDBCardLink>  */}
-                <Button onClick={viewCourse} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Course</u></Button>
+                <Button onClick={viewCourse} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}>Curriculum</Button>
               </Card.Title>
             </Card.Body>
           </Card>
@@ -101,7 +101,7 @@ function CurriculumDash() {
               {/* <Card.Title style={{fontSize:'30px'}}>
                 <MDBCardLink href='#' style={{color:'whitesmoke'}}>View Completed Courses</MDBCardLink> 
               </Card.Title> */}
-              <Button onClick={editCourse} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}><u>Edit Course</u></Button>
+              <Button onClick={editCourse} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>Edit Curriculum</Button>
             </Card.Body>
           </Card> 
         </Container>

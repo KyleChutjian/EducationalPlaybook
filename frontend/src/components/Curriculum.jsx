@@ -11,7 +11,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 function Curriculum() {
   // TEMPORARY, when Sadjell is done this will be removed
-  localStorage.setItem("currentIntakeId", "64001af5f037081c00fb95b4"); 
+  // localStorage.setItem("currentIntakeId", "64001af5f037081c00fb95b4"); 
 
 
   const fileInput = React.createRef();
@@ -302,7 +302,7 @@ function Curriculum() {
       </div>
 
       {/* Jumbotron */}
-      <div className='p-5 text-center' style={{backgroundColor: "#F59375"}}>
+      <div className='p-5 text-center' style={{backgroundColor: '#d2492a', color:'whitesmoke'}}>
         <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>{curriculumTitle}</h1>
       </div>
 

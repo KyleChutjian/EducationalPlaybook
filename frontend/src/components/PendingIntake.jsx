@@ -104,7 +104,7 @@ function PendingIntakes() {
                 <Button name={index} onClick={() =>{
                   localStorage.setItem("currentIntakeId", pendIntakeArray[index]);
                   toPendingIntake();
-                } } variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}><u>{pendIntakeNameArray[index]}</u></Button>
+                } } variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}>{pendIntakeNameArray[index]}</Button>
               </Card.Title>
             </Card.Body>
           </Card>

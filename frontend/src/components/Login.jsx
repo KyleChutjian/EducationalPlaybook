@@ -18,18 +18,6 @@ import {
 from 'mdb-react-ui-kit';
 import ClientNav from './ClientNav';
 
-// import { Modal } from '@mui/material';
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4
-};
-
 
 function Login() {
     const history = useNavigate();

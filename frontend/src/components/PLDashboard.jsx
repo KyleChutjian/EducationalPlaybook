@@ -42,7 +42,7 @@ function PLDashboard() {
 
     const toClientDash = () => {
       // Update the route
-      let path = '/dashboard';
+      let path = '/clientdashboard';
       localStorage.setItem("permission-level", "client");
       history(path);
     };

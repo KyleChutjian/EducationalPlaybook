@@ -22,7 +22,7 @@ function ClientNav() {
 
     return (
     <div>
-    <Navbar bg="light" expand="lg" className="ms-auto">
+    <Navbar bg="light" expand="lg" className="ms-auto" style={{borderBottom:"1px"}}>
       <Container>
         <Navbar.Brand onClick={toHome}>
         <img src="./nav logo2.png" alt="bug" height={70} />
@@ -30,7 +30,7 @@ function ClientNav() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <NavDropdown title={<i class="bi bi-person"></i>} id="basic-nav-dropdown">
+            <NavDropdown title={<i className="bi bi-person"></i>} id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>

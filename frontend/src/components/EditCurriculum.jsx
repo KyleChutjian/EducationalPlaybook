@@ -10,7 +10,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 function EditCurriculum() {
   // TEMPORARY, when Sadjell is done this will be removed
-  localStorage.setItem("currentIntakeId", "63fe1f4558003c8c92cdb1fe"); 
+  // localStorage.setItem("currentIntakeId", "63fe1f4558003c8c92cdb1fe"); 
 
 
   const fileInput = React.createRef();
@@ -402,7 +402,7 @@ function EditCurriculum() {
       </div>
 
       {/* Jumbotron */}
-      <div className='p-5 text-center' style={{backgroundColor: "#F59375"}}>
+      <div className='p-5 text-center' style={{background: '#d2492a', color:'whitesmoke'}}>
         <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>{curriculumTitle}</h1>
       </div>
 
@@ -465,7 +465,7 @@ function EditCurriculum() {
       {/* Create New Course Step Modal */}
       <Modal show={openAddCourseStepModal} onHide={handleCloseNewCourseStep}>
         <Modal.Header closeButton>
-          <Modal.Title>New Learning Objective</Modal.Title>
+          <Modal.Title>New Course Step</Modal.Title>
         </Modal.Header>
         <Modal.Body>
 
