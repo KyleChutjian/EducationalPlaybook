@@ -465,7 +465,7 @@ function EditCurriculum() {
       {/* Create New Course Step Modal */}
       <Modal show={openAddCourseStepModal} onHide={handleCloseNewCourseStep}>
         <Modal.Header closeButton>
-          <Modal.Title>New Learning Objective</Modal.Title>
+          <Modal.Title>New Course Step</Modal.Title>
         </Modal.Header>
         <Modal.Body>
 
