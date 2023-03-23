@@ -96,8 +96,9 @@ export function getNeedsAssessmentByIntakeId(intakeId) {
 
 // Edit Needs Assessment by IntakeId
 export function editNeedsAssessmentByIntakeId(intakeId, data) {
+    console.log("hey");
     http.setJwt(getJwt());
-    return http.get(`${apiEndPointIntake}/${intakeId}/edit-needsAssessment`, data);
+    return http.put(`${apiEndPointIntake}/${intakeId}/edit-needsAssessment`, data);
 }
 
 // Get Intakes By ProgramLeadId By Status

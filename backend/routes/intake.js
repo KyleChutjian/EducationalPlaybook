@@ -124,15 +124,9 @@ router.put("/save-intake", async (req, res) => {
             // Make new curriculum
             const newCurriculum = new Curriculum({
                 name: intakeName,
-                objectives: [
-                    ["Sample Objective #1", "Sample Objective #1 Description"]
-                ], // Preset curriculum objective
-                steps: [
-                    ["Step #1", "Step #1 Description"]
-                ], // Preset curriculum lesson
-                resources: [
-                    ["Sample Link Title", "Link", "https://www.google.com/"]
-                ]
+                objectives: ["Sample Learning Objective"], // Preset curriculum objective
+                steps: [["Step #1", "Step #1 Description"]], // Preset curriculum lesson
+                resources: [["Sample Link Title", "Link", "https://www.google.com/"]] // Preset resource link
             });
 
             // Save curriculum and get curriculumid
@@ -148,7 +142,7 @@ router.put("/save-intake", async (req, res) => {
                 intakeResponse: req.body.intakeResponse, 
                 status: "pending-client",
                 needsAssessment: [
-                    ["Focus Area", "Desired Future State", "Current State", "Identified Gap"] // first row of table
+                    ["", "", "", ""] // first row of table
                 ]
             });
 
@@ -183,15 +177,9 @@ router.put("/submit-intake", async (req, res) => {
             // Make new curriculum
             const newCurriculum = new Curriculum({
                 name: req.body.name,
-                objectives: [
-                    ["Sample Objective #1", "Sample Objective #1 Description"]
-                ], // Preset curriculum objective
-                steps: [
-                    ["Step #1", "Step #1 Description"]
-                ], // Preset curriculum lesson
-                resources: [
-                    ["Sample Link Title", "Link", "https://www.google.com/"]
-                ]
+                objectives: ["Sample Learning Objective"], // Preset curriculum objective
+                steps: [["Step #1", "Step #1 Description"]], // Preset curriculum lesson
+                resources: [["Sample Link Title", "Link", "https://www.google.com/"]] // Preset resource link
             });
 
             // Save curriculum and get curriculumid
@@ -207,7 +195,7 @@ router.put("/submit-intake", async (req, res) => {
                 intakeResponse: req.body.intakeResponse,
                 status: "pending-admin",
                 needsAssessment: [
-                    ["Focus Area", "Desired Future State", "Current State", "Identified Gap"] // first row of table
+                    ["", "", "", ""] // first row of table
                 ]
             });
 
