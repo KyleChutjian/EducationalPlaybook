@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react'
 import AdminNav from '../components/AdminNav';
 import ClientNav from '../components/ClientNav';
 import { useNavigate } from "react-router-dom";
-import { getCurriculumByIntakeId, getCurriculumByCurriculumId } from '../services/curriculumService';
+import { getCurriculumByIntakeId, getCurriculumByCurriculumId, saveCurriculum } from '../services/curriculumService';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { MDBTextArea } from 'mdb-react-ui-kit';
 import Dropdown from 'react-bootstrap/Dropdown';
+import deleteIcon from '../resources/delete-icon.png';
+// import fs from 'fs';
+// import {fs} from 'fs';
+// var fs = require('fs');
 
 function EditCurriculum() {
-  // TEMPORARY, when Sadjell is done this will be removed
-  // localStorage.setItem("currentIntakeId", "63fe1f4558003c8c92cdb1fe"); 
-
-
   const fileInput = React.createRef();
   const history = useNavigate();
 
@@ -27,10 +27,7 @@ function EditCurriculum() {
   const [ curriculumLearningObjectives, setCurriciulumLearningObjectives ] = useState("");
   const [ learningObjectives, setLearningObjectives ] = useState(<div></div>);
   const [openAddObjectiveModal, setOpenAddObjectiveModal] = useState(false);
-  const [newLearningObjective, setNewLearningObjective] = useState({
-    title: "",
-    description: ""
-  });
+  const [newLearningObjective, setNewLearningObjective] = useState("");
   const handleOpenNewLearningObjective = () => setOpenAddObjectiveModal(true);
   const handleCloseNewLearningObjective = () => setOpenAddObjectiveModal(false);
 
@@ -64,6 +61,11 @@ function EditCurriculum() {
   const handleCloseNewResource = () => setOpenAddResourceModal(false);
 
   useEffect(() => {
+    // console.log("test");
+    loadLearningObjectives(curriculumLearningObjectives);
+  }, [curriculumLearningObjectives]);
+
+  useEffect(() => {
     // Permissions
     const permissionLevel = localStorage.getItem("permission-level");
     if (permissionLevel === "admin") {
@@ -73,9 +75,7 @@ function EditCurriculum() {
     // Get Curriculum using CurrentIntakeId
     getCurriculumByIntakeId(currentIntakeId).then((curriculum) => {
       setCurriculumId(curriculum.data._id);
-      setCurriculumTitle(`Edit Curriculum Development Plan: ${curriculum.data.name}`);
-      return(curriculum)
-    }).then((curriculum) => {
+      setCurriculumTitle(`Edit ${curriculum.data.name}`);
       setCurriciulumLearningObjectives(curriculum.data.objectives);
       setCurriculumSteps(curriculum.data.steps);
       setCurriculumResources(curriculum.data.resources);
@@ -84,18 +84,23 @@ function EditCurriculum() {
       loadResources(curriculum.data.resources);
     });
       
-  }, [currentIntakeId]);
+  }, [curriculumTitle]);
 
   // Curriculum Learning Objective Functions:
   const loadLearningObjectives = (objectives) => {
+    if (objectives === "") {
+      return <div></div>
+    }
     setLearningObjectives(
       objectives.map((learningObjective, index) => {
         return(
-          <div className="container" key={learningObjective[0]}>
+          <div className="container" key={`${learningObjective}${index}`}>
             <div className="row" style={{paddingTop: "1%"}}>
-              <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Learning Objective #${index+1}`}</b></h3>
-              <MDBTextArea className="col-md-3" rows={1} name={`title${index}`} defaultValue={learningObjective[0]} onChange={handleLearningObjectivesResponseChange}/>
-              <MDBTextArea style={{marginTop: "1%", marginBottom: "1%"}} rows={4} name={`description${index}`} defaultValue={learningObjective[1]} onChange={handleLearningObjectivesResponseChange}/>
+              <span style={{display: "flex"}}>
+                <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Learning Objective #${index+1}`}</b></h3>
+                <img src={deleteIcon} alt='delete-icon' height='23px' style={{paddingLeft: "1%"}} name={`objective${index}`} onClick={deleteLearningObjective}/>
+              </span>
+              <MDBTextArea style={{marginTop: "0%", marginBottom: "1%"}} rows={4} name={`objective${index}`} defaultValue={learningObjective} onChange={handleLearningObjectivesResponseChange}/>
               {index !== objectives.length-1 ? <hr style={{height: "2px"}}></hr> : null}
             </div>
           </div>
@@ -107,38 +112,36 @@ function EditCurriculum() {
     const { name, value} = e.target;
     let indexString, index;
     setCurriciulumLearningObjectives((oldObjectives) => {
-      if (name.includes("title")) {
-        indexString = name.split("title")[1];
-        index = parseInt(indexString);
-        oldObjectives[index][0] = value;
-      } else if (name.includes("description")) {
-        indexString = name.split("description")[1];
-        index = parseInt(indexString);
-        
-        oldObjectives[index][1] = value;
-      } else {
-        console.log("Something went wrong");
-      }
+      indexString = name.split("objective")[1];
+      index = parseInt(indexString);
+      oldObjectives[index] = value;
       return oldObjectives;
     });
   }
   const createNewLearningObjectiveModal = (e) => {
     e.preventDefault();
     setOpenAddObjectiveModal(false);
-    
-    const newLearningObjectiveArray = [newLearningObjective.title, newLearningObjective.description];
-    curriculumLearningObjectives.push(newLearningObjectiveArray);
-    loadLearningObjectives(curriculumLearningObjectives)
-  };
-  function handleLearningObjectiveModalChange(e) {
-    const { name, value } = e.target;
 
-    setNewLearningObjective((old) => {
-      return {
-        ...old,
-        [name]: value,
-      };
-    });
+    var newLearningObjectives = curriculumLearningObjectives;
+    newLearningObjectives = newLearningObjectives.concat(newLearningObjective);
+
+    setCurriciulumLearningObjectives(newLearningObjectives);
+    loadLearningObjectives(newLearningObjectives);
+  };
+  const deleteLearningObjective = (e) => {
+    e.preventDefault();
+    const indexString = e.target.name.split('objective')[1];
+    const index = parseInt(indexString);
+    console.log(e.target.name);
+    console.log(curriculumLearningObjectives)
+    curriculumLearningObjectives.splice(index, 1);
+    console.log(curriculumLearningObjectives)
+    setCurriciulumLearningObjectives(curriculumLearningObjectives);
+    loadLearningObjectives(curriculumLearningObjectives);
+  }
+  function handleLearningObjectiveModalChange(e) {
+    const { value } = e.target;
+    setNewLearningObjective(value);
   }
 
   // Curriculum Step Functions:
@@ -148,7 +151,10 @@ function EditCurriculum() {
         return(
           <div className="container" key={step[0]}>
             <div className="row" style={{paddingTop: "1%"}}>
-              <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Course Step #${index+1}`}</b></h3>
+              <span style={{display: "flex"}}>
+                <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Course Step #${index+1}`}</b></h3>
+                <img src={deleteIcon} alt='delete-icon' height='23px' style={{paddingLeft: "1%"}} name={`step${index}`} onClick={deleteCourseStep}/>
+              </span>
               <MDBTextArea className="col-md-3" rows={1} name={`title${index}`} defaultValue={step[0]} onChange={handleCourseStepsResponseChange}/>
               <MDBTextArea style={{marginTop: "1%", marginBottom: "1%"}} rows={4} name={`description${index}`} defaultValue={step[1]} onChange={handleCourseStepsResponseChange}/>
               {index !== steps.length-1 ? <hr style={{height: "2px"}}></hr> : null}
@@ -185,6 +191,15 @@ function EditCurriculum() {
     curriculumSteps.push(newCourseStepArray);
     loadSteps(curriculumSteps);
   };
+  const deleteCourseStep = (e) => {
+    e.preventDefault();
+    const indexString = e.target.name.split('step')[1];
+    const index = parseInt(indexString);
+    curriculumSteps.splice(index, 1);
+    setCurriculumSteps(curriculumSteps);
+    loadSteps(curriculumSteps);
+  }
+
   function handleCourseStepModalChange(e) {
     const { name, value } = e.target;
 
@@ -201,14 +216,13 @@ function EditCurriculum() {
     if (type === "Link") {
       return <MDBTextArea className="col-md-3" rows={1} name={`output${index}`} defaultValue={output} onChange={handleResourceResponseChange}/>
     } else if (type === "File") {
-      console.log(output);
+      // console.log(output);
       return <div>
         <h3 style={{fontFamily: 'Bitter', fontSize:'16px', marginTop: "1%"}}>{`Replace \"${output.name}\":`}</h3>
         <input type='file' className="form-control" id="fileInput" name={`file${index}`} onChange={handleResourceResponseChange} ref={fileInput}/>
       </div>
     }
   }
-
   const loadResources = (resources) => {
     if (typeof resources === 'undefined') {
       return <div></div>
@@ -219,7 +233,11 @@ function EditCurriculum() {
           <div className="container" key={resource[0]}>
             <div className="row" style={{paddingTop: "1%"}}>
               {/* Resource Header [Resource #1 - Link] */}
-              <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Resource #${index+1} - ${resource[1]}`}</b></h3>
+              <span style={{display: "flex"}}>
+                <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Resource #${index+1}`}</b></h3>
+                <img src={deleteIcon} alt='delete-icon' height='23px' style={{paddingLeft: "1%"}} name={`resource${index}`} onClick={deleteResource}/>
+              </span>
+              {/* <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Resource #${index+1} - ${resource[1]}`}</b></h3> */}
 
               {/* Resource Title [Sample Link Title]*/}
               <MDBTextArea style={{marginTop: "1%", marginBottom: "1%"}} className="col-md-3" rows={1} name={`title${index}`} defaultValue={resource[0]} onChange={handleResourceResponseChange}/>
@@ -234,7 +252,6 @@ function EditCurriculum() {
       }
     ))
   }
-
   const handleResourceResponseChange = (e) => {
     const { name, value} = e.target;
     let indexString, index;
@@ -263,6 +280,18 @@ function EditCurriculum() {
   const createNewResourceModal = (e) => {
     e.preventDefault();
     setOpenAddResourceModal(false);
+    console.log(`Original upload (File Object):`);
+    console.log(newResource.output);
+
+    // If resource is a file, change it from File -> Base64 -> Buffer
+    if (typeof newResource.output === 'object') {
+      // fs.writeFile("../files", newResource.output, (err) => {
+      //   if (err) {
+      //     return console.log(err);
+      //   }
+      // })
+    }
+
     const newResourceArray = [newResource.title, newResource.type, newResource.output];
     if (typeof curriculumResources === 'undefined') {
       setCurriculumResources(newResourceArray)
@@ -273,6 +302,14 @@ function EditCurriculum() {
     
     loadResources(curriculumResources);
   };
+  const deleteResource = (e) => {
+    e.preventDefault();
+    const indexString = e.target.name.split('resource')[1];
+    const index = parseInt(indexString);
+    curriculumResources.splice(index, 1);
+    setCurriculumResources(curriculumResources);
+    loadResources(curriculumResources);
+  }
   function handleResourceModalChange(e) {
     const { name, value } = e.target;
 
@@ -312,8 +349,8 @@ function EditCurriculum() {
     if (type === "Link") {
       extraOption = 
       <div className="form-group" style={{paddingTop: "2%"}}>
-        <label>Link URL</label>
-        <input type='url' className="form-control" id="linkInput" name="link" onChange={handleResourceModalChange}/>
+        {/* <label>Link URL</label> */}
+        <input type='url' className="form-control" id="linkInput" name="link" placeholder='Link URL' onChange={handleResourceModalChange}/>
       </div>
     } else if (type === "File") {
       extraOption = 
@@ -323,15 +360,21 @@ function EditCurriculum() {
     }
     setResourceExtraOption(extraOption);
   }
-
   // Save Changes Button
   const saveChanges = () => {
     console.log(curriculumLearningObjectives)
     console.log(curriculumSteps);
     console.log(curriculumResources);
-    console.log(curriculumResources[1][2])
+    saveCurriculum(curriculumId, {
+      steps: curriculumSteps,
+      objectives: curriculumLearningObjectives,
+      // resources: curriculumResources
+      resources: [["Sample Link Title", "Link", "https://www.google.com/"]] // Temporary until files are implemented
+    });
+    history("/curriculum");
   }
 
+  // Unfinished
   const handleFile = (e) => {
     e.preventDefault();
     console.log(fileInput.current.files[0]);
@@ -403,7 +446,7 @@ function EditCurriculum() {
 
       {/* Jumbotron */}
       <div className='p-5 text-center' style={{background: '#d2492a', color:'whitesmoke'}}>
-        <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>{curriculumTitle}</h1>
+        <h1 style={{fontFamily: 'Bitter'}}>{curriculumTitle}</h1>
       </div>
 
       {/* Learning Objectives */}
@@ -426,15 +469,8 @@ function EditCurriculum() {
           <Modal.Body>
 
             <form id="createLearningObjectiveForm">
-              <div className="form-group">
-                <label>Name of Learning Objective</label>
-                <input type="text" className="form-control" id="titleInput" name="title" onChange={handleLearningObjectiveModalChange}/>
-              </div>
-              <div className="form-group">
-                <label>Description of New Learning Objective</label>
-                {/* <input style={{height: "75px"}} type="text" className="form-control" id="descriptionInput" name="description" onChange={handleLearningObjectiveModalChange}/> */}
-                <MDBTextArea rows={4} className="form-control" name="description" onChange={handleLearningObjectiveModalChange}></MDBTextArea>
-                {/* <MDBTextArea className="col-md-3" rows={1} name={`title${index}`} defaultValue={learningObjective[0]} onChange={handleLearningObjectivesResponseChange}/> */}
+              <div className="form-group" style={{paddingTop: "1%"}}>
+                <MDBTextArea rows={4} className="form-control" name="description" placeholder='Description of Learning Objective' onChange={handleLearningObjectiveModalChange}></MDBTextArea>
               </div>
             </form>   
           </Modal.Body>
@@ -471,12 +507,12 @@ function EditCurriculum() {
 
           <form id="createCourseStepForm">
             <div className="form-group">
-              <label>Name of Course Step</label>
-              <input type="text" className="form-control" id="titleInput" name="title" onChange={handleCourseStepModalChange}/>
+              {/* <label>Name of Course Step</label> */}
+              <input type="text" className="form-control" id="titleInput" name="title" placeholder='Name of Course Step' onChange={handleCourseStepModalChange}/>
             </div>
-            <div className="form-group">
-              <label>Description of New Course Step</label>
-              <MDBTextArea rows={4} className="form-control" name="description" onChange={handleCourseStepModalChange}></MDBTextArea>
+            <div className="form-group" style={{paddingTop: "1%"}}>
+              {/* <label>Description of New Course Step</label> */}
+              <MDBTextArea rows={4} className="form-control" name="description" placeholder='Description of Course Step' onChange={handleCourseStepModalChange}></MDBTextArea>
             </div>
           </form>   
         </Modal.Body>
@@ -507,10 +543,10 @@ function EditCurriculum() {
           </Modal.Header>
           <Modal.Body>
 
-            <form id="createResourceForm" onSubmit={handleFile}>
+            <form id="createResourceForm">
               <div className="form-group">
-                <label>Name of Resource</label>
-                <input type="text" className="form-control" id="titleInput" name="title" onChange={handleResourceModalChange}/>
+                {/* <label>Name of Resource</label> */}
+                <input type="text" className="form-control" id="titleInput" name="title" placeholder='Name of Resource' onChange={handleResourceModalChange}/>
               </div>
               <div className="form-group">
                 <Dropdown onSelect={setResourceType}>

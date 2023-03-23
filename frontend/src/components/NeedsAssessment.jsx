@@ -34,8 +34,6 @@ function NeedsAssessment() {
   const [ needsAssessmentCards, setNeedsAssesmentCards ] = useState(<div></div>);
 
   useEffect(() => {
-
-    console.log("hello");
     // Permissions
     const permissionLevel = localStorage.getItem("permission-level");
     if (permissionLevel === "admin") {
@@ -44,11 +42,8 @@ function NeedsAssessment() {
 
     // Get Curriculum using CurrentIntakeId
     getIntakeByIntakeId(currentIntakeId).then((intake) => {
-      console.log(intake.data.needsAssessment);
       setCurrentIntakeId(intake.data._id);
       setIntakeTitle(`Needs Assessment: ${intake.data.name}`);
-      console.log(typeof intake.data.needsAssessment);
-      console.log(intake.data.needsAssessment[0]);
       setNeedsAssessmentData(intake.data.needsAssessment);
       loadNeedsAssessmentCards(intake.data.needsAssessment);
     });
@@ -60,7 +55,7 @@ function NeedsAssessment() {
     setNeedsAssesmentCards(
       cards.map((card, index) => {
         return(
-          <div className="container" key={card[0]}>
+          <div className="container" key={`${card[0]}${index}`}>
             <div className="col d-flex justify-content-center">
               <Card id='card1' className="text-right mx-auto" style={{width: '60rem', margin:'20px', color:'black', fontFamily: 'Bitter' }}>
                 <Card.Header style={{fontSize:'20px'}}> 
@@ -68,8 +63,8 @@ function NeedsAssessment() {
                 <Form.Control style={{width:'50%', marginLeft:'25%', textAlign:'center'}} defaultValue={card[0]} type="focusArea" placeholder='ex. Innovation' name={`focus${index}`} onChange={handleNeedsAssessmentResponseChange}/> </Card.Header>
                 <Card.Body>
 
-                  <div class="card-block">
-                    <div class="row">
+                  <div className="card-block">
+                    <div className="row">
                     <Form>
                       <Form.Group className="mb-3" controlId="formFutureState">
                         <Form.Label>Desired Furture State: </Form.Label>
@@ -135,11 +130,8 @@ function NeedsAssessment() {
   }
 
   const addNew = (e) => {
-    console.log(needsAssessmentData);
     var newNeedsAssessment = needsAssessmentData;
-    console.log(typeof needsAssessmentData);
     newNeedsAssessment = needsAssessmentData.concat([['','','','']]);
-    console.log(newNeedsAssessment);
     setNeedsAssessmentData(newNeedsAssessment);
     loadNeedsAssessmentCards(newNeedsAssessment);
   }
@@ -193,11 +185,14 @@ function NeedsAssessment() {
                 
           </div> */}
 
-                <div class='row'>
-                  <div class='col'>
-                    <Button style={{backgroundColor: '#0098C3', fontFamily: 'Bitter', justifyContent:'center', marginLeft:'48%'}} type="submit" onClick={addNew}>New</Button>
-                    <Button style={{backgroundColor: '#6E9A35', justifyContent:'center'}} variant="primary" type="submit" onClick={saveChanges}>Save</Button>
-                  </div>   
+                <div className='row'>
+                  {/* <div className='col'> */}
+                    <div style={{display: 'flex'}}>
+                      <Button style={{backgroundColor: '#0098C3', fontFamily: 'Bitter', justifyContent:'center', marginLeft:'46.6%', marginRight: '0%'}} type="submit" onClick={addNew}>New</Button>
+                      <Button style={{backgroundColor: '#6E9A35', fontFamily: 'Bitter', justifyContent:'center', marginLeft: '0.7%'}} variant="primary" type="submit" onClick={saveChanges}>Save</Button>
+                    </div>
+
+                  {/* </div>    */}
                 </div>
                 <br/>
                 <br/>

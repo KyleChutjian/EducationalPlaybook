@@ -27,6 +27,12 @@ export function deleteCurriculumByCurriculumId(curriculumId) {
     return http.delete(`${apiEndPointCurriculum}/${curriculumId}`);
 }
 
+// Save Curriculum by CurriculumId
+export function saveCurriculum(curriculumId, data) {
+    http.setJwt(getJwt());
+    return http.put(`${apiEndPointCurriculum}/${curriculumId}/saveChanges`, data);
+}
+
 // Get Learning Objectives by CurriculumId
 export function getLearningObjectivesByCurriculumId(curriculumId) {
     http.setJwt(getJwt());

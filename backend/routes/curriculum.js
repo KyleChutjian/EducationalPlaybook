@@ -58,6 +58,30 @@ router.delete("/:curriculumId", async (req, res) => {
     }
 });
 
+// Save Curriculum Changes
+router.put("/:curriculumId/saveChanges", async (req, res) => {
+    const curriculumId = req.params.curriculumId;
+    console.log(`Saving changes to curriculum with id: ${curriculumId}`);
+    try {
+        console.log(req.body.resources);
+
+        const curriculum = await Curriculum.findByIdAndUpdate(curriculumId, {
+            steps: req.body.steps,
+            objectives: req.body.objectives,
+            resources: req.body.resources
+        }, {returnDocument: "after"}).then((savedCurriculum) => {
+            console.log(savedCurriculum);
+            res.status(200).send(savedCurriculum);
+        });
+
+
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+// The rest are probably not needed:
+
 // Get Learning Objectives by CurriculumID
 router.get("/:curriculumId/learningObjectives", async (req, res) => {
     const curriculumId = req.params.curriculumId;
