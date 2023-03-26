@@ -214,11 +214,11 @@ function EditCurriculum() {
   // Curriculum Resource Functions:
   const loadResourceOutput = (type, output, index) => {
     if (type === "Link") {
-      return <MDBTextArea className="col-md-3" rows={1} name={`output${index}`} defaultValue={output} onChange={handleResourceResponseChange}/>
+      return <MDBTextArea className="col-md-3" rows={1} name={`output${index}`} placeholder='Enter Link' defaultValue={output} onChange={handleResourceResponseChange}/>
     } else if (type === "File") {
       // console.log(output);
       return <div>
-        <h3 style={{fontFamily: 'Bitter', fontSize:'16px', marginTop: "1%"}}>{`Replace \"${output.name}\":`}</h3>
+        {/* <h3 style={{fontFamily: 'Bitter', fontSize:'16px', marginTop: "1%"}}>{`Replace \"${output.name}\":`}</h3> */}
         <input type='file' className="form-control" id="fileInput" name={`file${index}`} onChange={handleResourceResponseChange} ref={fileInput}/>
       </div>
     }
@@ -230,17 +230,16 @@ function EditCurriculum() {
     setResources(
       resources.map((resource, index) => {
         return(
-          <div className="container" key={resource[0]}>
+          <div className="container" key={`${resource[0]}${index}`}>
             <div className="row" style={{paddingTop: "1%"}}>
               {/* Resource Header [Resource #1 - Link] */}
               <span style={{display: "flex"}}>
                 <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Resource #${index+1}`}</b></h3>
                 <img src={deleteIcon} alt='delete-icon' height='23px' style={{paddingLeft: "1%"}} name={`resource${index}`} onClick={deleteResource}/>
               </span>
-              {/* <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Resource #${index+1} - ${resource[1]}`}</b></h3> */}
 
               {/* Resource Title [Sample Link Title]*/}
-              <MDBTextArea style={{marginTop: "1%", marginBottom: "1%"}} className="col-md-3" rows={1} name={`title${index}`} defaultValue={resource[0]} onChange={handleResourceResponseChange}/>
+              <MDBTextArea style={{marginTop: "1%", marginBottom: "1%"}} className="col-md-3" rows={1} name={`title${index}`} placeholder='Enter Name of Resource' defaultValue={resource[0]} onChange={handleResourceResponseChange}/>
 
               {/* Resource Output [https://google.com]*/}
               {loadResourceOutput(resource[1], resource[2], index)}
@@ -267,7 +266,7 @@ function EditCurriculum() {
         
         oldResources[index][2] = value;
       } else if (name.includes("file")) {
-        console.log(`name: ${name}`);
+        // console.log(`name: ${name}`);
         indexString = name.split("file")[1];
         index = parseInt(indexString);
         oldResources[index][2] = e.target.files[0];
@@ -277,31 +276,6 @@ function EditCurriculum() {
       return oldResources;
     });
   }
-  const createNewResourceModal = (e) => {
-    e.preventDefault();
-    setOpenAddResourceModal(false);
-    console.log(`Original upload (File Object):`);
-    console.log(newResource.output);
-
-    // If resource is a file, change it from File -> Base64 -> Buffer
-    if (typeof newResource.output === 'object') {
-      // fs.writeFile("../files", newResource.output, (err) => {
-      //   if (err) {
-      //     return console.log(err);
-      //   }
-      // })
-    }
-
-    const newResourceArray = [newResource.title, newResource.type, newResource.output];
-    if (typeof curriculumResources === 'undefined') {
-      setCurriculumResources(newResourceArray)
-      
-    } else {
-      curriculumResources.push(newResourceArray);
-    }
-    
-    loadResources(curriculumResources);
-  };
   const deleteResource = (e) => {
     e.preventDefault();
     const indexString = e.target.name.split('resource')[1];
@@ -310,56 +284,177 @@ function EditCurriculum() {
     setCurriculumResources(curriculumResources);
     loadResources(curriculumResources);
   }
-  function handleResourceModalChange(e) {
-    const { name, value } = e.target;
 
-    if (name === 'title') {
-      // set the title
-      setNewResource((old) => {
-        return {
-          ...old,
-          [name]: value,
-        };
-      });
-    } else if (name === 'link') {
-      // set the type to link, update the output value
-      // newResource.type = 'Link';
-      setNewResource((old) => {
-        return {
-          title: old.title,
-          type: "Link",
-          output: value
-        }
-      })
-    } else if (name === 'file') {
-      // set the type to file, update the output value
-      setNewResource((old) => {
-        return {
-          title: old.title,
-          type: "File",
-          output: e.target.files[0]
-        }
-      })
+  const createNewLink = (e) => {
+    const newLinkResource = ['', 'Link', ''];
+
+    if (typeof curriculumResources === 'undefined') {
+      console.log("only resource");
+      setCurriculumResources(newLinkResource);
+    } else {
+      curriculumResources.push(newLinkResource);
+      setCurriculumResources(curriculumResources);
+      loadResources(curriculumResources);
     }
 
   }
-  const setResourceType = (type) => {
-    setResourceDropdownTypeName(type);
-    let extraOption;
-    if (type === "Link") {
-      extraOption = 
-      <div className="form-group" style={{paddingTop: "2%"}}>
-        {/* <label>Link URL</label> */}
-        <input type='url' className="form-control" id="linkInput" name="link" placeholder='Link URL' onChange={handleResourceModalChange}/>
-      </div>
-    } else if (type === "File") {
-      extraOption = 
-      <div className="form-group" style={{paddingTop: "2%"}}>
-        <input type='file' className="form-control" id="fileInput" name="file" onChange={handleResourceModalChange} ref={fileInput}/>
-      </div>
+
+  const createNewFile = (e) => {
+    const newFileResource = ['', 'File', ''];
+
+    if (typeof curriculumResources === 'undefined') {
+      console.log("only resource");
+      setCurriculumResources(newFileResource);
+    } else {
+      curriculumResources.push(newFileResource);
+      setCurriculumResources(curriculumResources);
+      loadResources(curriculumResources);
     }
-    setResourceExtraOption(extraOption);
+
   }
+
+
+
+  // const createNewResourceModal = (e) => {
+  //   e.preventDefault();
+  //   setOpenAddResourceModal(false);
+  //   console.log(`Original upload (File Object):`);
+  //   console.log(newResource.output);
+
+  //   // If resource is a file, change it from File -> Base64 -> Buffer
+  //   if (newResource.type === 'File') {
+  //     console.log('creating a new file');
+  //     // fs.writeFile("../files", newResource.output, (err) => {
+  //     //   if (err) {
+  //     //     return console.log(err);
+  //     //   }
+  //     // })
+  //   }
+
+  //   const newResourceArray = [newResource.title, newResource.type, newResource.output];
+  //   if (typeof curriculumResources === 'undefined') {
+  //     setCurriculumResources(newResourceArray)
+      
+  //   } else {
+  //     curriculumResources.push(newResourceArray);
+  //   }
+    
+  //   loadResources(curriculumResources);
+  // };
+  // function handleResourceModalChange(e) {
+  //   const { name, value } = e.target;
+
+  //   if (name === 'title') {
+  //     // set the title
+  //     setNewResource((old) => {
+  //       return {
+  //         ...old,
+  //         [name]: value,
+  //       };
+  //     });
+  //   } else if (name === 'link') {
+  //     // set the type to link, update the output value
+  //     // newResource.type = 'Link';
+  //     setNewResource((old) => {
+  //       return {
+  //         title: old.title,
+  //         type: "Link",
+  //         output: value
+  //       }
+  //     })
+  //   } else if (name === 'file') {
+  //     // set the type to file, update the output value
+  //     setNewResource((old) => {
+  //       return {
+  //         title: old.title,
+  //         type: "File",
+  //         output: e.target.files[0]
+  //       }
+  //     })
+  //   }
+
+  // }
+  // const setResourceType = (type) => {
+  //   setResourceDropdownTypeName(type);
+  //   let extraOption;
+  //   if (type === "Link") {
+  //     extraOption = 
+  //     <div className="form-group" style={{paddingTop: "2%"}}>
+  //       <input type='url' className="form-control" id="linkInput" name="link" placeholder='Link URL' onChange={handleResourceModalChange}/>
+  //     </div>
+  //   } else if (type === "File") {
+  //     extraOption = 
+  //     <div className="form-group" style={{paddingTop: "2%"}}>
+  //       <input type='file' className="form-control" id="fileInput" name="file" onChange={handleResourceModalChange} ref={fileInput}/>
+  //     </div>
+  //   }
+  //   setResourceExtraOption(extraOption);
+  // }
+  // const handleFile = (e) => {
+  //   e.preventDefault();
+  //   console.log(fileInput.current.files[0]);
+
+  //   var reader = new FileReader();
+  //   reader.readAsDataURL(fileInput.current.files[0]);
+  //   reader.onload = () => {
+  //     // console.log(reader.result);
+
+  //     // createCurriculum({resource: reader.result})
+  //     // .then((curriculum) => {
+  //     //   console.log(curriculum.data);
+  //     // });
+
+
+  //     getCurriculumByCurriculumId("63faaeab56b581e7c9934779").then((curriculum) => {
+  //       const curriculumResource = curriculum.data.resources;
+  //       console.log(curriculumResource);
+
+  //       const base64Resource = curriculumResource.toString("base64");
+
+  //       fetch(base64Resource).then((res) => res.blob()).then((blob) => {
+  //         const file = new File([blob], "New Document", {type: blob.type})
+  //         console.log(file);
+
+  //         // Downloading the file object
+  //         const link = document.createElement('a');
+  //         const url = URL.createObjectURL(file);
+  //         link.href = url;
+  //         link.download = file.name;
+  //         document.body.appendChild(link);
+  //         link.click();
+  //         document.body.removeChild(link);
+  //         window.URL.revokeObjectURL(url);
+  //       });
+  //     });
+
+
+  //     // For future implementation:
+
+  //     // createCurriculum({resource: reader.result}).then((curriculum) => {
+  //     //   console.log(curriculum);
+  //     // });
+
+  //     // fetch(reader.result).then((res) => res.blob()).then((blob) => {
+  //     //   const file = new File([blob], "New Document", {type: blob.type})
+  //     //   console.log(file);
+
+  //     //   // Downloading the file object
+  //     //   const link = document.createElement('a');
+  //     //   const url = URL.createObjectURL(file);
+  //     //   link.href = url;
+  //     //   link.download = file.name;
+  //     //   document.body.appendChild(link);
+  //     //   link.click();
+  //     //   document.body.removeChild(link);
+  //     //   window.URL.revokeObjectURL(url);
+  //     // })
+
+  //   }
+    
+  // }
+
+
+
   // Save Changes Button
   const saveChanges = () => {
     console.log(curriculumLearningObjectives)
@@ -372,70 +467,6 @@ function EditCurriculum() {
       resources: [["Sample Link Title", "Link", "https://www.google.com/"]] // Temporary until files are implemented
     });
     history("/curriculum");
-  }
-
-  // Unfinished
-  const handleFile = (e) => {
-    e.preventDefault();
-    console.log(fileInput.current.files[0]);
-
-    var reader = new FileReader();
-    reader.readAsDataURL(fileInput.current.files[0]);
-    reader.onload = () => {
-      // console.log(reader.result);
-
-      // createCurriculum({resource: reader.result})
-      // .then((curriculum) => {
-      //   console.log(curriculum.data);
-      // });
-
-
-      getCurriculumByCurriculumId("63faaeab56b581e7c9934779").then((curriculum) => {
-        const curriculumResource = curriculum.data.resources;
-        console.log(curriculumResource);
-
-        const base64Resource = curriculumResource.toString("base64");
-
-        fetch(base64Resource).then((res) => res.blob()).then((blob) => {
-          const file = new File([blob], "New Document", {type: blob.type})
-          console.log(file);
-
-          // Downloading the file object
-          const link = document.createElement('a');
-          const url = URL.createObjectURL(file);
-          link.href = url;
-          link.download = file.name;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          window.URL.revokeObjectURL(url);
-        });
-      });
-
-
-      // For future implementation:
-
-      // createCurriculum({resource: reader.result}).then((curriculum) => {
-      //   console.log(curriculum);
-      // });
-
-      // fetch(reader.result).then((res) => res.blob()).then((blob) => {
-      //   const file = new File([blob], "New Document", {type: blob.type})
-      //   console.log(file);
-
-      //   // Downloading the file object
-      //   const link = document.createElement('a');
-      //   const url = URL.createObjectURL(file);
-      //   link.href = url;
-      //   link.download = file.name;
-      //   document.body.appendChild(link);
-      //   link.click();
-      //   document.body.removeChild(link);
-      //   window.URL.revokeObjectURL(url);
-      // })
-
-    }
-    
   }
 
   return(
@@ -533,11 +564,17 @@ function EditCurriculum() {
 
         {/* Add New Resource */}
         <div className="add-resource text-center" style={{paddingTop: "1%"}}>
-            <Button variant="success" onClick={handleOpenNewResource}>Add New</Button>
-            <hr></hr>
+          <span>
+            <Button variant="success" onClick={createNewLink} style={{marginRight: '0.25%'}}>New Link</Button>
+            <Button variant="success" onClick={createNewFile} style={{marginLeft: '0.25%'}}>New File</Button>
+          </span>
+          
+          <hr></hr>
         </div>
+
+        
         {/* Create New Resource Modal */}
-        <Modal show={openAddResourceModal} onHide={handleCloseNewResource}>
+        {/* <Modal show={openAddResourceModal} onHide={handleCloseNewResource}>
           <Modal.Header closeButton>
             <Modal.Title>New Resource</Modal.Title>
           </Modal.Header>
@@ -545,10 +582,11 @@ function EditCurriculum() {
 
             <form id="createResourceForm">
               <div className="form-group">
-                {/* <label>Name of Resource</label> */}
                 <input type="text" className="form-control" id="titleInput" name="title" placeholder='Name of Resource' onChange={handleResourceModalChange}/>
               </div>
               <div className="form-group">
+
+
                 <Dropdown onSelect={setResourceType}>
                   <Dropdown.Toggle variant="success" id="resource-type-dropdown" style={{marginTop: "2%"}}>
                     {resourceDropdownTypeName}
@@ -571,7 +609,7 @@ function EditCurriculum() {
             <Button variant="secondary" onClick={handleCloseNewResource}>Close</Button>
           </Modal.Footer>
 
-        </Modal>
+        </Modal> */}
       </div>
 
       {/* Save Changes Button */}
