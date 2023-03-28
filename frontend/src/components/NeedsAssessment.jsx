@@ -1,14 +1,6 @@
 
 import React, { useState, useEffect } from 'react'
 
-import { useNavigate } from "react-router-dom";
-import { NavLink } from "react-router-dom";
-import Container from 'react-bootstrap/Container';
-import {Card} from 'react-bootstrap';
-import ClientNav from '../components/ClientNav';
-import { Dropdown, DropdownButton, Button } from 'react-bootstrap';
-import { loginUser } from '../services/authService';
-
 import AdminNav from '../components/AdminNav';
 import ClientNav from '../components/ClientNav';
 import Container from 'react-bootstrap/Container';
@@ -154,12 +146,6 @@ function NeedsAssessment() {
     loadNeedsAssessmentCards(newNeedsAssessment);
   }
 
-  
-<<<<<<< HEAD
-  return(
-    <div>Needs Assessment Screen</div>
-  );
-=======
     return(
         <div>
           <div>
@@ -222,7 +208,7 @@ function NeedsAssessment() {
 
         </div>
   )
->>>>>>> 6c8585a55081c8c512b20f9862127c3c0848a33e
+
 }
 
 export default NeedsAssessment;
