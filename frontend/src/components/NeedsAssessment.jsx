@@ -77,7 +77,7 @@ function NeedsAssessment() {
                     <div className="row">
                     <Form>
                       <Form.Group className="mb-3" controlId="formFutureState">
-                        <Form.Label>Desired Furture State: </Form.Label>
+                        <Form.Label>Desired Future State: </Form.Label>
                         <Form.Control type="futureState" defaultValue={card[1]} name={`future${index}`} onChange={handleNeedsAssessmentResponseChange} placeholder='At least 50% of our developer resources working on new features'/>
                       </Form.Group>
 

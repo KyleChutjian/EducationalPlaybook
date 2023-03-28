@@ -125,11 +125,11 @@ function Login() {
                     <form id="createAccountForm">
                       <div className="form-group">
                         <label htmlFor="firstNameLabel">First Name</label>
-                        <input type="text" className="form-control" id="inputFirstName" name="firstName" placeholder="Jane" onChange={handleModalChange}/>
+                        <input type="text" className="form-control" id="inputFirstName" name="firstName" placeholder="Enter First Name" onChange={handleModalChange}/>
                       </div>
                       <div className="form-group">
                         <label htmlFor="lastNameLabel">Last Name</label>
-                        <input type="text" className="form-control" id="inputLastName" name="lastName" placeholder="Doe" onChange={handleModalChange}/>
+                        <input type="text" className="form-control" id="inputLastName" name="lastName" placeholder="Enter Last Name" onChange={handleModalChange}/>
                       </div>
                       <div className="form-group">
                         <label htmlFor="emailLabel">Email</label>
