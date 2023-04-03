@@ -2,6 +2,7 @@ require('dotenv').config();
 const PORT = 3001;
 const express = require('express');
 const session = require("express-session");
+const fileUpload = require("express-fileupload");
 const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -15,15 +16,22 @@ var curriculums = require('./routes/curriculum');
 const app = express();
 
 // Middlewares
-app.use(bodyParser.json({limit: '10mb', extended: true}));
+app.use(bodyParser.json({limit: '50mb', extended: true}));
 
-app.use(bodyParser.urlencoded({limit: '10mb', extended:true}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended:true}));
 app.use(cors());
 app.use(session({
     secret: process.env.SECRET,
     resave: true,
     saveUninitialized: true
 }));
+app.use(fileUpload({
+    useTempFiles: true,
+    // safeFileNames: true,
+    preserveExtension: true,
+    tempFileDir: `${__dirname}/files`
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 

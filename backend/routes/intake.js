@@ -121,12 +121,18 @@ router.put("/save-intake", async (req, res) => {
         console.log(intakeName);
         // If intake does not already exist
         if (intakeId === "" || intakeId === null || intakeId === "null") {
+
             // Make new curriculum
             const newCurriculum = new Curriculum({
                 name: intakeName,
                 objectives: ["Sample Learning Objective"], // Preset curriculum objective
                 steps: [["Step #1", "Step #1 Description"]], // Preset curriculum lesson
-                resources: [["Sample Link Title", "Link", "https://www.google.com/"]] // Preset resource link
+                // resources: [["Sample Link Title", "Link", "https://www.google.com/"]] // Preset resource link
+                links: [{
+                    title: 'Sample Link Title',
+                    output: 'https://www.google.com/'
+                }], // Preset resource link
+                files: []
             });
 
             // Save curriculum and get curriculumid
@@ -158,6 +164,7 @@ router.put("/save-intake", async (req, res) => {
         }
 
     } catch (err) {
+        console.log(err);
         res.status(500).json(err);
     }
 });
@@ -179,7 +186,11 @@ router.put("/submit-intake", async (req, res) => {
                 name: req.body.name,
                 objectives: ["Sample Learning Objective"], // Preset curriculum objective
                 steps: [["Step #1", "Step #1 Description"]], // Preset curriculum lesson
-                resources: [["Sample Link Title", "Link", "https://www.google.com/"]] // Preset resource link
+                links: [{
+                    title: 'Sample Link Title',
+                    output: 'https://www.google.com/'
+                }], // Preset resource link
+                files: []
             });
 
             // Save curriculum and get curriculumid
