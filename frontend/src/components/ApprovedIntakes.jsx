@@ -1,34 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { NavLink } from "react-router-dom";
-import { loginUser } from '../services/authService';
 import AdminNav from '../components/AdminNav';
 import ClientNav from '../components/ClientNav';
-import { getIntakeByIntakeId, getIntakeDataByIntakeId, getIntakesByStatus} from '../services/intakeService';
+import { getIntakesByStatus} from '../services/intakeService';
 import {Card} from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Container from 'react-bootstrap/Container';
-import { saveIntake, submitIntake, getIntakebyStatus, adminApproveIntake, programleadApproveIntake, editIntakeByIntakeId } from '../services/intakeService';
-import {
-  MDBContainer,
-  MDBInput,
-  MDBCheckbox,
-  MDBNavbar,
-  MDBNavbarBrand,
-  MDBNavbarToggler,
-  MDBNavbarNav,
-  MDBNavbarItem,
-  MDBNavbarLink,
-  MDBCollapse,
-  MDBTextArea,
-  MDBBtn,
-  MDBIcon
-}
-from 'mdb-react-ui-kit';
 
 function ApprovedIntakes() {
 

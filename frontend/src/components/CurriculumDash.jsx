@@ -19,7 +19,7 @@ function CurriculumDash() {
     const permissionLevel = localStorage.getItem("permission-level");
     if (permissionLevel === "admin") {
       setAdminNavbar(true);
-    } else if (permissionLevel === "programlead") {
+    } else if (permissionLevel === "projectlead") {
       setAdminNavbar(false);
     }
 

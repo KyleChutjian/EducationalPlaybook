@@ -167,189 +167,15 @@ router.post("/:curriculumId/uploadFiles", async (req, res) => {
             return res.status(200).send('Success');
         }
 
-        // titles.forEach((specificTitle) => {
-        //     newFileArray.push({
-        //         title: specificTitle,
-        //         output:
-
-        //     })
-        // })
-
-        // await Curriculum.findById(curriculumId).then((curriculum) => {
-            
-        // })
-
-        var mongoResourceIndex;
-
-
-        // Deleting All Files with an output (They exist already, need to overwrite it)
-        // await Curriculum.findById(curriculumId).then(async (curriculum) => {
-        //     console.log(curriculum.resources);
-        //     await curriculum.resources.forEach(async (resource, index) => {
-        //         // Delete all files
-        //         if (resource.output !== "" && resource.type === 'file') {
-        //             console.log(`${__dirname}\\..\\files\\${resource.output}`)
-        //             await fs.unlink(`${__dirname}\\..\\files\\${resource.output}`);
-        //         }
-        //         // If current resource id is not in ids[], it was removed. Delete in MongoDB
-        //         if (!ids.includes(resource._id.toString()) && resource.type === 'file') {
-        //             console.log(`${resource._id} isn't in ids[], deleting resource index ${index} in Mongo`);
-        //             const update = {resource: index};
-
-        //             const deletedResource = await Curriculum.findByIdAndUpdate(curriculumId, {$pop: update});
-        //             console.log(`Deleted ${deletedResource.title} with output: ${deletedResource.output}`);
-        //         } else {
-        //             console.log(`ID ${resource._id} is in ids array`);
-        //         }
-        //     });
-        // });
-
-        // await Curriculum.findById(curriculumId).then((curriculum) => {
-        //     console.log('Resources After Removing Deleted Files');
-        //     console.log(curriculum.resources);
-        // })
-
-
-        // Multiple files
-        // if (typeof req.files.file.length === 'number') {
-        //     console.log('printing multiple files---------------------------------------------------------------------------------');
-        //     const uploadedFiles = [];
-        //     const errors = [];
-
-        //     const outputs = req.files.file.map((file) => {
-        //         return `${file.md5}_${file.name}`;
-        //     });
-
-        //     // Iterate through each file
-        //     req.files.file.forEach(async (file, fileIndex) => {
-        //         const saveAs = `${file.md5}_${file.name}`;
-
-        //         await Curriculum.findById(curriculumId).then((curriculum) => {
-        //             var fileCounter = 0;
-        //             curriculum.resources.forEach(async (resource, index) => {
-        //                 if (resource.type === 'file') {
-                            
-        //                     const update = {};
-        //                     update[`resources.${index}.output`] = outputs[fileCounter];
-        //                     fileCounter++;
-        //                     console.log(update);
-        //                     await Curriculum.findByIdAndUpdate(curriculumId, {$set: update});
-        //                 }
-
-
-        //                 // if (resource.output === "") {
-        //                 //     titles.forEach((currentTitle) => {
-        //                 //         if (currentTitle === resource.title) {
-        //                 //             const update = {};
-        //                 //             update[`resources.${index}.output`] = saveAs;
-
-        //                 //             Curriculum.findByIdAndUpdate(curriculumId, {$set: update});
-        //                 //         }
-        //                 //     })
-        //                 // }
-        //             });
-        //         });
-
-        //         // Curriculum.findByIdAndUpdate(curriculumId, {$set: update})
-
-                
-
-        //         file.mv(`${__dirname}\\..\\files\\${saveAs}`, (err) => {
-        //             if (err) {
-        //                 errors.push(err);
-        //             } else {
-        //                 uploadedFiles.push(saveAs);
-        //             }
-                    
-        //         });
-        //     });
-        //     if (errors.length > 0) {
-        //         return res.status(500).json({errors});
-        //     } else {
-
-
-        //         return res.status(200).json({uploadedFiles});
-        //     }
-        // } else { // One file
-        //     console.log('printing 1 file');
-
-        //     // if (ids[0] !== null) {
-
-        //     await Curriculum.findById(curriculumId).then((curriculum) => {
-        //         console.log(ids)
-        //         curriculum.resources.forEach((resource, index) => {
-        //             console.log(resource._id);
-                    
-        //             if (resource.type === 'file') {
-        //                 mongoResourceIndex = index;
-        //                 console.log(mongoResourceIndex);
-
-        //             }
-        //         })
-        //     });
-
-        //     //     // Get saved file locations
-
-
-        //     // } else {
-        //     //     console.log(`File ${req.files.file.name} id does not exist, only creating it`);
-        //     // }
-        //     const saveAs = `${req.files.file.md5}_${req.files.file.name}`;
-
-        //     await req.files.file.mv(`${__dirname}\\..\\files\\${saveAs}`, async (err) => {
-        //         if (err) {
-        //             console.log(err);
-        //             return res.status(500).send(err);
-        //         }
-
-        //         const update = {};
-        //         update[`resources.${mongoResourceIndex}.output`] = saveAs;
-        //         console.log(update);
-        //         await Curriculum.findByIdAndUpdate(curriculumId, {
-        //             $set: update
-        //         }, {new: true}).then((updatedCurriculum) => {
-        //             console.log(updatedCurriculum)
-        //         })
-
-        //         return res.status(200).json({status: 'uploaded', saveAs});
-        //     });
-        // }
-        console.log('end');
-        // res.status(200).send('Success');
-
     } catch (err) {
         console.log(err);
         res.status(500).json(err);
     }
     
-    
-    
-
-
-
-    
-    
-    // try {
-    //     console.log(req.body.resources);
-
-    //     const curriculum = await Curriculum.findByIdAndUpdate(curriculumId, {
-    //         steps: req.body.steps,
-    //         objectives: req.body.objectives,
-    //         resources: req.body.resources
-    //     }, {returnDocument: "after"}).then((savedCurriculum) => {
-    //         console.log(savedCurriculum);
-    //         res.status(200).send(savedCurriculum);
-    //     });
-
-
-    // } catch (err) {
-    //     res.status(500).json(err);
-    // }
 });
 
 // Save Curriculum Changes
 router.put("/:curriculumId/saveChanges", async (req, res) => {
-    console.log('\n\n\n\n\n\n\n');
     const curriculumId = req.params.curriculumId;
     console.log(`Saving changes to curriculum with id: ${curriculumId}`);
     
@@ -357,7 +183,6 @@ router.put("/:curriculumId/saveChanges", async (req, res) => {
         const objectives = req.body.objectives;
         const steps = req.body.steps;
         const links = req.body.links;
-        // const files = req.body.files;
         
         await Curriculum.findByIdAndUpdate(curriculumId, 
             {objectives: objectives, steps: steps, links: links}, 
@@ -365,116 +190,11 @@ router.put("/:curriculumId/saveChanges", async (req, res) => {
                 res.status(200).json(curriculum);
             });
 
-        
-
-        // Only deleting links/files
-        // await Curriculum.findById(curriculumId).then((curriculum) => {
-        //     if (curriculum.resources.length === 0) {
-        //         console.log('Push all resources');
-
-
-        //     }
-
-
-        //     // Not run if length is 0
-        //     curriculum.resources.forEach(async (resource, resourceIndex) => {
-        //         if (resourceIds.includes(resource._id.toString())) {
-        //             console.log(`Resource exists already, keeping ${resource.title} at index ${resourceIndex}`);
-
-
-        //         } else if (typeof resource._id === 'object') {
-        //             console.log(`Delete ${resource.title} at index ${resourceIndex}`);
-        //             console.log(`ResourceId: ${resource._id}`);
-        //             // const deletedResource = await Curriculum.findByIdAndUpdate(curriculumId, {$pull: {resources: {_id: resource._id}}}, {$new: true});
-        //             // console.log(deletedResource.resources);
-        //         } else {
-        //             // create new
-        //             console.log(`Creating new resource:`);
-        //             console.log(resource);
-        //         }
-        //     });
-        // });
-        // await resources.forEach(async (resource, resourceIndex) => {
-        //     console.log(resources[resourceIndex]._id);
-        //     if (typeof resources[resourceIndex]._id === 'undefined') {
-        //         console.log(`Pushing ${resource.title}`);
-        //         console.log(resource);
-        //         if (typeof resource.output !== 'string') {
-        //             resource.output = "";
-        //         }
-        //         const newResource = {
-        //             title: resource.title,
-        //             type: resource.type,
-        //             output: resource.output
-        //         }
-        //         console.log(newResource);
-        //         await Curriculum.findByIdAndUpdate(curriculumId, {$push: {'resources': {
-        //             title: resource.title,
-        //             type: resource.type,
-        //             output: resource.output.toString()
-        //         }}});
-        //     } else {
-        //         if (resource.type === 'file') {
-        //             // Only updating file's title
-        //             // console.log(resource);
-                    
-        //             await Curriculum.findById(curriculumId).then((curriculum) => {
-        //                 curriculum.resources.forEach(async (curriculumResource, index) => {
-        //                     if (curriculumResource._id.toString() === resource._id) {
-        //                         // console.log(`Updating ${resource.title}`);
-        //                         const update = {};
-        //                         update[`resources.${index}.title`] = resource.title;
-        //                         // console.log(update);
-        //                         // Update Title
-        //                         await Curriculum.findByIdAndUpdate(curriculumId, {
-        //                             $set: update
-        //                         });
-        //                     }
-        //                 })
-        //             })
-
-    
-        //         } else if (resource.type === 'link') {
-        //             console.log(resource);
-
-        //             await Curriculum.findById(curriculumId).then((curriculum) => {
-        //                 curriculum.resources.forEach(async (curriculumResource, index) => {
-        //                     if (curriculumResource._id.toString() === resource._id) {
-        //                         console.log(`Updating ${resource.title}`);
-        //                         const update = {};
-
-        //                         // Update Title
-        //                         update[`resources.${index}.title`] = resource.title;
-        //                         await Curriculum.findByIdAndUpdate(curriculumId, {
-        //                             $set: update
-        //                         });
-        //                         console.log(update);
-        //                         // Update Link
-        //                         update[`resources.${index}.output`] = resource.output;
-        //                         await Curriculum.findByIdAndUpdate(curriculumId, {
-        //                             $set: update
-        //                         });
-        //                         console.log(update);
-        //                     }
-        //                 });
-        //             });
-    
-        //         } else {
-        //             console.log('Something went wrong');
-        //         }
-        //     }
-
-
-        // });
-        // res.status(200).send('Updated');
-
     } catch (err) {
         console.log(err);
         res.status(500).json(err);
     }
     
-    
-
 });
 
 // The rest are probably not needed:

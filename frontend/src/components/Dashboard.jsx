@@ -21,66 +21,12 @@ function Dashboard() {
     // Get current user
     const currentUser = getCurrentUser();
 
-    // Gets the user's first name for the "Welcome, [Name]"
-    // getUserByUserId(currentUser.id).then((res) => {
-    //   setClientFirstName(res.data.firstName);
-    // });
-
-    // Gets Permissible Dashboard options
-    // getDashboardsByUserId(currentUser.id).then((res) => {
-    //   // console.log(res.data);
-    //   res.data.forEach((element) => {
-    //     switch(element) {
-    //       case "Admin":
-    //         setHideAdminDashboard(false);
-    //         break;
-    //       case "ProgramLead":
-    //         setHideProgramLeadDashboard(false);
-    //         break;
-
-    //       default:
-    //         break;
-    //     }
-    //   })
-    // });
-
     // Use ClientId to get Open Intake
     getOpenIntakeByClientId(currentUser.id).then((result) => {
       const currentIntake = result.data[0];
       localStorage.setItem("currentIntakeId", currentIntake._id);
       setCurriculumName(`Curriculum Development Plan: ${currentIntake.name}`)
 
-      // let status = "pending-client"
-      // if (typeof currentIntake !== "undefined") {
-      //   status = currentIntake.status;
-      // }
-      
-      // setCurrentStatus(status);
-      // switch (status) {
-      //   case "pending-client":
-      //     if (typeof currentIntake === "undefined") {
-      //       setButton1Option("Submit New Intake");
-      //     } else {
-      //       setButton1Option("Edit Intake");
-      //     }
-      //     setDisableNeedsAssessment(true);
-      //     setDisableViewCourse(true);
-      //     break;
-      //   case "pending-admin":
-      //   case "pending-programlead":
-      //     setButton1Option("View Pending Intake");
-      //     setDisableNeedsAssessment(true);
-      //     setDisableViewCourse(true);
-      //     break;
-      //   case "approved":
-      //     setButton1Option("View Approved Intake");
-      //     setDisableNeedsAssessment(false);
-      //     setDisableViewCourse(false);
-      //     break;
-      //   default:
-      //     console.log("Something went wrong, intake status is not open");
-      //     break;
-      // }
     });
 
   }, []);
@@ -113,18 +59,6 @@ function Dashboard() {
     let path2 = '/curriculum';
     history(path2);
   };
-  // const toAdminDash = () => {
-  //     // Update the route
-  //     let path = '/AdminDashboard';
-  //     localStorage.setItem("permission-level", "admin");
-  //     history(path);
-  // };
-  // const toPLDash = () => {
-  //   // Update the route
-  //   let path = '/PLdashboard';
-  //   localStorage.setItem("permission-level", "programlead");
-  //   history(path);
-  // };
 
     
   return(  
@@ -176,18 +110,6 @@ function Dashboard() {
         </Container>
       </div>
 
-
-            {/* Header, viewing dashboards */}
-      {/* <div className="container-fluid text-sm-center p-3 bg-light" style={{fontFamily: 'Bitter'}}>
-            <DropdownButton disabled={hideAdminDashboard && hideProgramLeadDashboard} variant='light' size='lg' id="chooseUserType" 
-            title={
-              <span className="my-auto" style={{color:'black', fontSize:'35px'}}>Client Dashboard</span>
-            }>
-            <Dropdown.Item hidden={hideAdminDashboard} onClick={toAdminDash}>Admin Dashboard</Dropdown.Item>
-            <Dropdown.Item hidden={hideProgramLeadDashboard} onClick={toPLDash}>Program Lead Dashboard</Dropdown.Item>
-          </DropdownButton>
-          <h3> Welcome, {clientFirstName}!</h3>
-      </div>  */}
     </div>
 
   )

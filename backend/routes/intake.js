@@ -29,7 +29,7 @@ router.get("/get-intakes-status/:status", async (req,res) => {
         switch (status) {
             case "pending-client":
             case "pending-admin":
-            case "pending-programlead":
+            case "pending-projectlead":
             case "approved":
             case "archived":
                 console.log(`Getting intake forms with status: ${status}`);
@@ -69,7 +69,7 @@ router.get("/client/:clientId/:status", async (req, res) => {
         switch (status) {
             case "pending-client":
             case "pending-admin":
-            case "pending-programlead":
+            case "pending-projectlead":
             case "approved":
             case "archived":
                 console.log(`Getting all ${status} intakes for clientId: ${clientId}`);
@@ -97,7 +97,7 @@ router.get("/open-intake/client/:clientId", async (req, res) => {
             $or:[
                 {status: "pending-client"},
                 {status: "pending-admin"}, 
-                {status: "pending-programlead"},
+                {status: "pending-projectlead"},
                 {status: "approved"}
             ]
         }).then((result) => {
@@ -143,7 +143,7 @@ router.put("/save-intake", async (req, res) => {
             const newIntake = new Intake({
                 name: intakeName,
                 clientId: clientId, 
-                programLeadId: null, 
+                projectLeadIds: [], 
                 curriculumId: newCurriculumId, 
                 intakeResponse: req.body.intakeResponse, 
                 status: "pending-client",
@@ -201,7 +201,7 @@ router.put("/submit-intake", async (req, res) => {
             const newIntake = new Intake({
                 name: req.body.name,
                 clientId: clientId,
-                programLeadId: null,
+                projectLeadIds: [],
                 curriculumId: newCurriculumId,
                 intakeResponse: req.body.intakeResponse,
                 status: "pending-admin",
@@ -231,20 +231,20 @@ router.put("/submit-intake", async (req, res) => {
 // Admin Approve Submitted Intake Form
 router.put("/approve-intake/admin", async (req, res) => {
     const intakeId = req.body.intakeId;
-    const programLeadId = req.body.programLeadId;
+    const projectLeadIds = req.body.projectLeadIds;
     try {
         const intake = await Intake.findByIdAndUpdate(intakeId, {
-           programLeadId: programLeadId,
-           status: "pending-programlead" 
+            projectLeadIds: projectLeadIds,
+           status: "pending-projectlead" 
         });
-        res.status(200).send(`Successfully approved this intake form, awaiting Program-Lead approval`);
+        res.status(200).send(`Successfully approved this intake form, awaiting Project-Lead approval`);
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
-// Program-Lead Approve Submitted Intake Form
-router.put("/approve-intake/programlead", async (req, res) => {
+// Project-Lead Approve Submitted Intake Form
+router.put("/approve-intake/projectlead", async (req, res) => {
     try {
         const intakeId = req.body.intakeId;
         const curriculumName = req.body.curriculumName;
@@ -343,20 +343,20 @@ router.put("/:intakeId/edit-needsAssessment", async (req, res) => {
     }
 });
 
-// Get Intakes By ProgramLeadID By Status
-router.get("/programLead/:programLeadId/:status", async (req, res) => {
-    const programLeadId = req.params.programLeadId;
+// Get Intakes By ProjectLeadID By Status
+router.get("/projectLead/:projectLeadId/:status", async (req, res) => {
+    const projectLeadId = req.params.projectLeadId;
     const status = req.params.status.toLowerCase();
     try {
         switch (status) {
             case "pending-client":
             case "pending-admin":
-            case "pending-programlead":
+            case "pending-projectlead":
             case "approved":
             case "archived":
-                console.log(`Getting all ${status} intakes for programLeadId: ${programLeadId}`);
+                console.log(`Getting all ${status} intakes for projectLeadId: ${projectLeadId}`);
                 const intakes = await Intake.find({
-                    programLeadId: programLeadId,
+                    projectLeadId: projectLeadId,
                     status: status
                 });
                 res.status(200).json(intakes);

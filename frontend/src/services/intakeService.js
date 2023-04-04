@@ -52,10 +52,10 @@ export function adminApproveIntake(data) {
     return http.put(`${apiEndPointIntake}/approve-intake/admin`, data);
 }
 
-// Program-Lead Approve Submitted Intake Form
-export function programleadApproveIntake(data) {
+// Project-Lead Approve Submitted Intake Form
+export function projectleadApproveIntake(data) {
     http.setJwt(getJwt());
-    return http.get(`${apiEndPointIntake}/approve-intake/programlead`, data);
+    return http.get(`${apiEndPointIntake}/approve-intake/projectlead`, data);
 }
 
 // Archive Intake by IntakeId
@@ -101,8 +101,8 @@ export function editNeedsAssessmentByIntakeId(intakeId, data) {
     return http.put(`${apiEndPointIntake}/${intakeId}/edit-needsAssessment`, data);
 }
 
-// Get Intakes By ProgramLeadId By Status
-export function getIntakesByProgramLeadIdByStatus(programLeadId, status) {
+// Get Intakes By ProjectLeadId By Status
+export function getIntakesByProjectLeadIdByStatus(projectLeadId, status) {
     http.setJwt(getJwt());
-    return http.get(`${apiEndPointIntake}/programlead/${programLeadId}/${status}`);
+    return http.get(`${apiEndPointIntake}/projectlead/${projectLeadId}/${status}`);
 }
