@@ -31,9 +31,17 @@ function Curriculum() {
   const [ courseSteps, setCourseSteps ] = useState(<div></div>);
 
   // Resource Hooks
-  const [ curriculumResources, setCurriculumResources ] = useState("");
-  const [ resources, setResources ] = useState(<div></div>);
-  const [ resourceExtraOption, setResourceExtraOption ] = useState(<div></div>);
+  // const [ curriculumResources, setCurriculumResources ] = useState("");
+  // const [ resources, setResources ] = useState(<div></div>);
+  // const [ resourceExtraOption, setResourceExtraOption ] = useState(<div></div>);
+
+  // Link Hooks
+  const [ curriculumLinks, setCurriculumLinks ] = useState("");
+  const [ links, setLinks ] = useState(<div></div>);
+
+  // File Hooks
+  const [ curriculumFiles, setCurriculumFiles ] = useState([]);
+  const [ files, setFiles ] = useState(<div></div>);
 
   useEffect(() => {
     // Permissions
@@ -50,10 +58,12 @@ function Curriculum() {
       setCurriculumTitle(curriculum.data.name);
       setCurriciulumLearningObjectives(curriculum.data.objectives);
       setCurriculumSteps(curriculum.data.steps);
-      setCurriculumResources(curriculum.data.resources);
+      setCurriculumLinks(curriculum.data.links);
+      setCurriculumFiles(curriculum.data.files);
       loadLearningObjectives(curriculum.data.objectives);
       loadSteps(curriculum.data.steps);
-      loadResources(curriculum.data.resources);
+      loadLinks(curriculum.data.links);
+      loadFiles(curriculum.data.files);
     });
       
   }, [currentIntakeId]);
@@ -85,7 +95,7 @@ function Curriculum() {
             <div className="row" style={{paddingTop: "1%"}}>
               <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Course Step #${index+1}`}</b></h3>
               {/* <MDBTextArea readonly className="col-md-3" rows={1} name={`title${index}`} defaultValue={step[0]} /> */}
-              <p className='col-md-12' name={`title${index}`} style={{border: '1px solid black', minHeight:'30px', marginTop: '1%', marginBottom: '1%'}}>{step[0]}</p>
+              {/* <p className='col-md-12' name={`title${index}`} style={{border: '1px solid black', minHeight:'30px', marginTop: '1%', marginBottom: '1%'}}>{step[0]}</p> */}
               {/* <MDBTextArea readonly style={{marginTop: "1%", marginBottom: "1%"}} rows={4} name={`description${index}`} defaultValue={step[1]} /> */}
               <p className='col-md-12' name={`description${index}`} style={{border: '1px solid black', minHeight:'100px', marginTop: '1%', marginBottom: '1%'}}>{step[1]}</p>
               {/* {index !== steps.length-1 ? <hr style={{height: "2px"}}></hr> : null} */}
@@ -96,7 +106,7 @@ function Curriculum() {
     ))
   }
 
-  // Curriculum Resource Functions:
+  // Curriculum Attachment Functions:
   const loadResourceOutput = (type, output, index) => {
     if (type === "Link") {
       // return <MDBTextArea readonly className="col-md-3" rows={1} name={`output${index}`} defaultValue={output} />
@@ -111,25 +121,49 @@ function Curriculum() {
     }
   }
 
-  const loadResources = (resources) => {
-    if (typeof resources === 'undefined') {
+  //change to links and files
+  const loadLinks = (links) => {
+    if (typeof links === 'undefined') {
       return <div></div>
     }
-    setResources(
-      resources.map((resource, index) => {
+    console.log(links);
+    setLinks(
+      links.map((link, index) => {
         return(
-          <div className="container" key={`${resource[0]}${index}`}>
+          <div className="container" key={`${link[0]}${index}`}>
+            <div className="row" style={{paddingTop: "1%"}}>
+              {console.log(link)}
+                <span style={{display: 'flex'}}>
+                  <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Link #${index+1}: `}<a href={link.output} className="link-primary">{link.title}</a></b></h3>
+                </span> 
+                
+              {index !== links.length-1 ? <hr style={{height: "2px", marginTop: "1%"}}></hr> : null}
+            </div>
+          </div>
+        )
+      }
+    ))
+  }
+
+  const loadFiles = (files) => {
+    if (typeof files === 'undefined') {
+      return <div></div>
+    }
+    setFiles(
+      files.map((file, index) => {
+        return(
+          <div className="container" key={`${file[0]}${index}`}>
             <div className="row" style={{paddingTop: "1%"}}>
               {
-                resource[1] === 'Link' ? 
+                file[1] === 'Link' ? 
                 <span style={{display: 'flex'}}>
-                  <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Resource #${index+1}: `}<a href={resource[2]} className="link-primary">{resource[0]}</a></b></h3>
-                </span> : loadResourceOutput(resource[2], index)
+                  <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`File #${index+1}: `}<a href={file[2]} className="link-primary">{file[0]}</a></b></h3>
+                </span> : loadResourceOutput(file[2], index)
                 
               }
 
 
-              {index !== resources.length-1 ? <hr style={{height: "2px", marginTop: "1%"}}></hr> : null}
+              {index !== files.length-1 ? <hr style={{height: "2px", marginTop: "1%"}}></hr> : null}
             </div>
           </div>
         )
@@ -155,7 +189,7 @@ function Curriculum() {
               <h1 style={{fontFamily: 'Bitter', verticalAlign: 'middle', borderBottom: '0', margin: '0%'}}>{curriculumTitle}</h1>
               {/* Edit Button */}
               {
-                permissionLevel ==='admin' || permissionLevel === 'projectlead' ?
+                permissionLevel ==='admin' || permissionLevel === 'programlead' ?
                 <button style={{border: 'none', backgroundColor: 'inherit', paddingLeft: '1%', paddingBottom: '0%'}}>
                   <img src={editIcon} alt='edit-icon' height='25px' onClick={editCurriculum}/>
                 </button> : null
@@ -191,11 +225,19 @@ function Curriculum() {
         <hr></hr>
       </div>
 
-      {/* Resources */}
-      <div className="resources-container">
-        <h3 className="resources-title text-center" style={{fontFamily: 'Bitter', paddingTop: "1%", color: "#B05139"}}><b>Resources</b></h3>
-        {/* Loaded Resources */}
-        {resources}
+      {/* Links */}
+      <div className="links-container">
+        <h3 className="links-title text-center" style={{fontFamily: 'Bitter', paddingTop: "1%", color: "#B05139"}}><b>Links</b></h3>
+        {/* Loaded Links */}
+        {links}
+        <hr></hr>
+      </div>
+
+       {/* Files */}
+       <div className="files-container">
+        <h3 className="files-title text-center" style={{fontFamily: 'Bitter', paddingTop: "1%", color: "#B05139"}}><b>Attachments</b></h3>
+        {/* Loaded Files */}
+        {files}
         <hr></hr>
       </div>
 
