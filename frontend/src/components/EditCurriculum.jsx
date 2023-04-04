@@ -6,6 +6,7 @@ import { getCurriculumByIntakeId, getFileByPath, uploadFiles, saveCurriculum } f
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { MDBTextArea } from 'mdb-react-ui-kit';
+import { MDBCheckbox } from 'mdb-react-ui-kit';
 import deleteIcon from '../resources/delete-icon.png';
 
 function EditCurriculum() {
@@ -153,7 +154,17 @@ function EditCurriculum() {
                 <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Course Step #${index+1}`}</b></h3>
                 <img src={deleteIcon} alt='delete-icon' height='23px' style={{paddingLeft: "1%"}} name={`step${index}`} onClick={deleteCourseStep}/>
               </span>
-              <MDBTextArea className="col-md-3" rows={1} name={`title${index}`} defaultValue={step[0]} onChange={handleCourseStepsResponseChange}/>
+              <div>
+                <h6>Select the training formats needed for these learning objectives:</h6>
+                <MDBCheckbox name='inlineCheck' id='inlineCheckbox1' value='option1' label='Lecture' inline />
+                <MDBCheckbox name='inlineCheck' id='inlineCheckbox2' value='option2' label='Hands-on Skills' inline />
+                <MDBCheckbox name='inlineCheck' id='inlineCheckbox3' value='option3' label='Mannequin-based Simulation' inline />
+                <MDBCheckbox name='inlineCheck' id='inlineCheckbox3' value='option3' label='Standardized Patient' inline />
+                <MDBCheckbox name='inlineCheck' id='inlineCheckbox3' value='option3' label='In-Situ Training' inline />
+                <MDBCheckbox name='inlineCheck' id='inlineCheckbox3' value='option3' label='Other' inline />
+
+              </div>
+              {/* <MDBTextArea className="col-md-3" rows={1} name={`title${index}`} defaultValue={step[0]} onChange={handleCourseStepsResponseChange}/> */}
               <MDBTextArea style={{marginTop: "1%", marginBottom: "1%"}} rows={4} name={`description${index}`} defaultValue={step[1]} onChange={handleCourseStepsResponseChange}/>
               {index !== steps.length-1 ? <hr style={{height: "2px"}}></hr> : null}
             </div>
