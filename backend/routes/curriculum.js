@@ -4,7 +4,9 @@ const router = express.Router();
 
 const Curriculum = require("../models/Curriculum");
 const Intake = require("../models/IntakeForm");
-const fs = require('node:fs/promises');
+const fsPromise = require('node:fs/promises');
+const fs = require('fs');
+
 
 // Ignoring verification for now
 const {
@@ -65,9 +67,10 @@ router.get('/getFile/:path', async (req, res) => {
     try {
         // Removing /routes from current directory
         const directory = __dirname.substring(0, __dirname.length-7);
-        console.log(req.params.path);
+        const decodedPath = decodeURIComponent(req.params.path);
+        console.log(decodedPath);
         // Build filepath
-        const path = `${directory}\\files\\${req.params.path}`;
+        const path = `${directory}\\files\\${decodedPath}`;
 
         // Send file
         res.sendFile(path);
@@ -95,7 +98,13 @@ router.post("/:curriculumId/uploadFiles", async (req, res) => {
             curriculum.files.forEach(async (file) => {
                 if (file.output !== "") {
                     console.log(`${__dirname}\\..\\files\\${file.output}`)
-                    await fs.unlink(`${__dirname}\\..\\files\\${file.output}`);
+                    if (fs.existsSync(`${__dirname}\\..\\files\\${file.output}`)) {
+                        await fsPromise.unlink(`${__dirname}\\..\\files\\${file.output}`);
+                    } else {
+                        console.log('File below not found:')
+                        console.log(`${__dirname}\\..\\files\\${file.output}`)
+                    }
+                    
                 }
             });
         });

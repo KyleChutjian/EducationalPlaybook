@@ -18,7 +18,7 @@ const app = express();
 // Middlewares
 app.use(bodyParser.json({limit: '50mb', extended: true}));
 
-app.use(bodyParser.urlencoded({limit: '50mb', extended:true}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended:true, parameterLimit: 10000}));
 app.use(cors());
 app.use(session({
     secret: process.env.SECRET,
@@ -27,7 +27,6 @@ app.use(session({
 }));
 app.use(fileUpload({
     useTempFiles: true,
-    // safeFileNames: true,
     preserveExtension: true,
     tempFileDir: `${__dirname}/files`
 }));

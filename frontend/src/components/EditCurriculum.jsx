@@ -78,7 +78,6 @@ function EditCurriculum() {
       replaceFileOutputs(curriculum.data.files).then((result) => {
         // setCurriculumFiles(result);
         setTimeout(() => {
-          console.log(result);
           setCurriculumFiles(result)
         }, 100)
       });
@@ -134,10 +133,7 @@ function EditCurriculum() {
     e.preventDefault();
     const indexString = e.target.name.split('objective')[1];
     const index = parseInt(indexString);
-    console.log(e.target.name);
-    console.log(curriculumLearningObjectives)
     curriculumLearningObjectives.splice(index, 1);
-    console.log(curriculumLearningObjectives)
     setCurriciulumLearningObjectives(curriculumLearningObjectives);
     loadLearningObjectives(curriculumLearningObjectives);
   }
@@ -201,7 +197,6 @@ function EditCurriculum() {
     setCurriculumSteps(curriculumSteps);
     loadSteps(curriculumSteps);
   }
-
   function handleCourseStepModalChange(e) {
     const { name, value } = e.target;
 
@@ -258,7 +253,6 @@ function EditCurriculum() {
       } else {
         console.log("Something went wrong");
       }
-      console.log(oldLinks);
       return oldLinks;
     });
   }
@@ -269,7 +263,6 @@ function EditCurriculum() {
     }
 
     if (typeof curriculumLinks === 'undefined') {
-      console.log("only resource");
       setCurriculumLinks([newLink]);
     } else {
       curriculumLinks.push(newLink);
@@ -296,7 +289,6 @@ function EditCurriculum() {
     setFiles(files.forEach((specificFile, index) => {
       if (typeof specificFile.output === 'string') {
         // Get the file from backend files directory
-        console.log(specificFile.output);
         getFileByPath(specificFile.output).then((result) => {
           var fileName;
           if (typeof specificFile.output === 'string') {
@@ -326,13 +318,10 @@ function EditCurriculum() {
 
       }
     }))
-    // if (files === "") {
-    //   return [];
-    // }
+
     return files;
 
   }
-
   const loadFiles = async (files) => {
     if (typeof files === 'undefined' || files === "") {
       return <div></div>
@@ -366,7 +355,6 @@ function EditCurriculum() {
       )
     }))
   }
-
   const handleFileResponseChange = (e) => {
     const { name, value} = e.target;
     let indexString, index;
@@ -396,7 +384,6 @@ function EditCurriculum() {
     }
 
     if (typeof curriculumFiles === 'undefined') {
-      console.log("only resource");
       setCurriculumFiles([newFileResource]);
     } else {
       curriculumFiles.push(newFileResource);
@@ -449,17 +436,7 @@ function EditCurriculum() {
       })
     })
 
-
-    // await saveCurriculum(curriculumId, savedData).then(async () => {
-    //   setTimeout(async () => {
-    //     // await uploadFiles(curriculumId, fileData);
-    //   }, 100)
-      
-    // })
-    
-    
-
-    // history("/curriculum");
+    history("/curriculum");
   }
 
   return(
