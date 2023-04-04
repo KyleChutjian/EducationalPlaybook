@@ -33,6 +33,20 @@ export function saveCurriculum(curriculumId, data) {
     return http.put(`${apiEndPointCurriculum}/${curriculumId}/saveChanges`, data);
 }
 
+export function getFileByPath(filePath) {
+    http.setJwt(getJwt());
+    const encodedPath = encodeURIComponent(filePath);
+    return http.get(`${apiEndPointCurriculum}/getFile/${encodedPath}`);
+}
+
+// Upload files to server
+export function uploadFiles(curriculumId, data) {
+    http.setJwt(getJwt());
+    return http.post(`${apiEndPointCurriculum}/${curriculumId}/uploadFiles`, data);
+}
+
+// The rest are probably not needed:
+
 // Get Learning Objectives by CurriculumId
 export function getLearningObjectivesByCurriculumId(curriculumId) {
     http.setJwt(getJwt());

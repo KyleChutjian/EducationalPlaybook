@@ -53,9 +53,9 @@ router.get("/get-accounts/:role", async (req, res) => {
             console.log("Finding all Admins");
             const users = await User.find({isAdmin:true});
             res.status(200).json(users);
-        } else if (role == "PROGRAMLEAD") {
+        } else if (role == "PROJECTLEAD") {
             console.log("Finding all PLs");
-            const users = await User.find({isProgramLead:true});
+            const users = await User.find({isProjectLead:true});
             res.status(200).json(users);
         } else {
             console.log("Invalid role, returning all users");
@@ -104,8 +104,8 @@ router.put("/manage-accounts/:userId/:role/:output", async(req, res) => {
             const user = await User.findByIdAndUpdate(userId, {isAdmin: output});
             res.status(200).json(user);
 
-        } else if (role == "PROGRAMLEAD") {
-            const user = await User.findByIdAndUpdate(userId, {isProgramLead: output});
+        } else if (role == "PROJECTLEAD") {
+            const user = await User.findByIdAndUpdate(userId, {isProjectLead: output});
             res.status(200).json(user);
         } else {
             console.log(`Invalid role: ${role}`);
@@ -135,7 +135,7 @@ router.get("/dashboards/:userId", async (req, res) => {
     try {
         const user = await User.findById(userId);
         if (user.isAdmin) dashboards.push("Admin");
-        if (user.isProgramLead) dashboards.push("ProgramLead");
+        if (user.isProjectLead) dashboards.push("ProjectLead");
         res.status(200).json(dashboards);
     } catch (err) {
         res.status(500).json(err);

@@ -155,7 +155,7 @@ function Curriculum() {
               <h1 style={{fontFamily: 'Bitter', verticalAlign: 'middle', borderBottom: '0', margin: '0%'}}>{curriculumTitle}</h1>
               {/* Edit Button */}
               {
-                permissionLevel ==='admin' || permissionLevel === 'programlead' ?
+                permissionLevel ==='admin' || permissionLevel === 'projectlead' ?
                 <button style={{border: 'none', backgroundColor: 'inherit', paddingLeft: '1%', paddingBottom: '0%'}}>
                   <img src={editIcon} alt='edit-icon' height='25px' onClick={editCurriculum}/>
                 </button> : null
