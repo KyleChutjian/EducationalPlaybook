@@ -1,11 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from '../services/authService';
-import { getIntakeByIntakeId, getOpenIntakeByClientId } from '../services/intakeService';
+import { getAccountsByRole } from '../services/userService';
+import { editIntakeStatusByIntakeId, getIntakeByIntakeId, getIntakesByProgramLeadIdByStatus, getOpenIntakeByClientId } from '../services/intakeService';
 import ClientNav from './ClientNav';
+import Modal from 'react-bootstrap/Modal';
+import {Card} from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 function ViewIntake() {
   const history = useNavigate();
+  const projectLeadNameArray = new Array();
+//Project Lead Hooks
+const [projectLeads, setProjectLeads] = useState(null);
+
+  const toAssignIntake = () => {
+    // Update the route
+    let path = '/AssignIntake';
+    history(path);
+  };
+  let buttonStatus = "";
+  const currentIntakeId = localStorage.getItem("currentIntakeId");
 
   useEffect(() => {
 
@@ -41,11 +56,94 @@ function ViewIntake() {
         }
       });
     }
+    // Get Accounts using Status
+    getAccountsByRole("PROGRAMLEAD").then((projectLeads) => {
+   
+      //loadLeads(projectLeads);
+
+      for(var i = 0; i < projectLeads.data.length; i++){
+        var currentName = projectLeads.data[i].firstName + " " + projectLeads.data[i].lastName;
+
+        if(projectLeadNameArray.indexOf(currentName) < 0){
+            projectLeadNameArray.push(currentName);
+          }
+      }
+
+      console.log(projectLeadNameArray);
+
+    });
+
+      
+
+
+    
+
+    
+
 
   }, []);
 
+  function editStatusToApprove(){
+    if(buttonStatus == "clicked"){
+      editIntakeStatusByIntakeId(currentIntakeId, "Approved");
+    }
+
+  }
+
+  function editStatusToDeny(){
+    if(buttonStatus == "clicked"){
+      editIntakeStatusByIntakeId(currentIntakeId, "Archived");
+    }
+
+  }
+
+
+
+  const loadLeads = (leads) => {
+    setProjectLeads(
+      leads.map((projectLeads, index) => {
+        return(
+          <div className="container" key={index}>
+            <div className="row" style={{paddingTop: "1%"}}>
+
+
+            <Card id='card2' className="text-center mx-auto" style={{ background: '#D3D3D3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
+            <Card.Body>
+              <Card.Title style={{fontSize:'30px'}}>
+                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
+                <Button name={index} variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}>{projectLeadNameArray[index]}<u>{}</u></Button>
+              </Card.Title>
+            </Card.Body>
+          </Card>
+
+            </div>
+          </div>
+        ) 
+      }
+    ))
+  }
+
+
+
+    // Modal open hook
+    const [open, setOpen] = useState(false);
+
+
+
+    // Handles Create New Account Submission
+    const submitModal = (e) => {
+      e.preventDefault();
+      setOpen(false);
+      
+    };
+
+
   const [intakeResponse, setIntakeResponse] = useState(["","","","","",""]);
   const [intakeName, setIntakeName] = useState("");
+
+  const handleOpenModal = () => setOpen(true);
+  const handleCloseModal = () => setOpen(false);
+
 
   return (
     <div className="intake-wrapper">
@@ -96,6 +194,72 @@ function ViewIntake() {
           <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>Who are your champions for this training development project? Please include name(s) and email(s). </b></h3>
           <p style={{border: "1px solid black", minHeight:"100px"}}>{intakeResponse[5]}</p>
         </div>
+
+        {/* Modal */}
+        <div className="mb-3">
+              <Modal show={open} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Assign Project Lead</Modal.Title>
+                </Modal.Header>
+                  <Modal.Body>
+
+                    {projectLeads}
+
+                  </Modal.Body>
+                  
+
+                  <Modal.Footer>
+                    <Button style={{background:'#6E9A35'}} onClick={submitModal}>Submit</Button>
+                    <Button variant="secondary" onClick={handleCloseModal}>Close</Button>
+                  </Modal.Footer>
+
+              </Modal>
+          </div>
+
+        
+
+         {/* Buttons */}
+
+         <div className="login-button" style={{paddingBottom: "0.3%"}}>
+            <button type="submit" onClick={()=>{
+
+            }} className="btn btn-success" style={{width:'50%',fontFamily: 'Bitter', background:'#d2492a'}}>Deny</button>
+          </div>
+          <div className="create-account-button">
+            <Button variant="primary" onClick={handleOpenModal} style={{width:'50%',fontFamily: 'Bitter', background: '#a40084'}}>Approve&Assign</Button>
+          </div>
+
+         {/* <div className="row" style={{paddingTop: "2%", paddingBottom: "5%"}}>
+          <div className="col-sm-12 text-center" style={{display: "flex", justifyContent: "center", columnGap: "20px"}}>
+
+
+            <button
+                  id="approveandassignbutton"
+                  className="btn btn-success btn-md center-block"
+                  style={{width: "150px", fontFamily:'Bitter'}}
+                  onClick={() => {
+                    buttonStatus = "clicked";
+                    editStatusToApprove();
+                  }}
+      
+
+                >Approve</button>
+            
+            <button 
+                  id="denybutton"
+                  className="btn btn-danger btn-md center-block"
+                  style={{width: "150px", fontFamily:'Bitter'}}
+                  onClick={() => {
+                    buttonStatus = "clicked";
+                    editStatusToDeny();
+                  }}
+                
+          
+
+                >Deny</button>
+
+          </div>
+        </div> */}
 
       </div> 
       
