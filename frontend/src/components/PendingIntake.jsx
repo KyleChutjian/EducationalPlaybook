@@ -1,34 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { NavLink } from "react-router-dom";
-import { loginUser } from '../services/authService';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import AdminNav from '../components/AdminNav';
 import ClientNav from '../components/ClientNav';
 import { Button } from 'react-bootstrap';
-import { getIntakesByStatus} from '../services/intakeService';
+import { getIntakesByStatus, getIntakesByProjectLeadIdByStatus } from '../services/intakeService';
+import { getAccountsByRole } from '../services/userService';
 import {Card} from 'react-bootstrap';
-import Container from 'react-bootstrap/Container';
-import { saveIntake, submitIntake, getIntakebyStatus, adminApproveIntake, programleadApproveIntake, editIntakeByIntakeId } from '../services/intakeService';
 
-import {
-  MDBContainer,
-  MDBInput,
-  MDBCheckbox,
-  MDBNavbar,
-  MDBNavbarBrand,
-  MDBNavbarToggler,
-  MDBNavbarNav,
-  MDBNavbarItem,
-  MDBNavbarLink,
-  MDBCollapse,
-  MDBTextArea,
-  MDBBtn,
-  MDBIcon
-}
-from 'mdb-react-ui-kit';
 
 function PendingIntakes() {
 
@@ -48,6 +26,15 @@ function PendingIntakes() {
     history(path);
   };
 
+  // Returns an array of intake objects
+  getIntakesByProjectLeadIdByStatus("63ec25944c32561072ec88db", "pending-projectlead").then((result) => {
+    console.log(result.data);
+  })
+
+  // Returns an array of user objects
+  getAccountsByRole("PROJECTLEAD").then((result) => {
+    console.log(result.data);
+  })
 
   const [ adminNavbar, setAdminNavbar ] = useState(false);
   const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
@@ -65,8 +52,9 @@ function PendingIntakes() {
     }
 
 
+
     // Get Intake using Status
-    getIntakesByStatus("pending-admin" || "pending-client" || "pending-programlead").then((pendingIntakes) => {
+    getIntakesByStatus("pending-admin" || "pending-client" || "pending-projectlead").then((pendingIntakes) => {
       console.log(pendingIntakes.data);
       setPendingIntakes(pendingIntakes);
       loadIntakes(pendingIntakes.data);

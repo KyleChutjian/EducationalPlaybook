@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const intakeFormSchema = new mongoose.Schema({
     name: {type: mongoose.Schema.Types.String, required: true},
     clientId: {type: mongoose.Schema.Types.ObjectId, required: true},
-    programLeadId: {type: mongoose.Schema.Types.ObjectId, required: false},
+    projectLeadIds: {type:[mongoose.Schema.Types.ObjectId], required: false},
     curriculumId: {type: mongoose.Schema.Types.ObjectId, required: true},
     status: {type: String, required: true},
     intakeResponse: {type: [String], required: true},

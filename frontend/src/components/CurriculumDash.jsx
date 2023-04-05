@@ -19,7 +19,7 @@ function CurriculumDash() {
     const permissionLevel = localStorage.getItem("permission-level");
     if (permissionLevel === "admin") {
       setAdminNavbar(true);
-    } else if (permissionLevel === "programlead") {
+    } else if (permissionLevel === "projectlead") {
       setAdminNavbar(false);
     }
 
@@ -63,7 +63,7 @@ function CurriculumDash() {
       <div className="col d-flex justify-content-center" style={{paddingTop: "0.5%"}}>
         <Container id='clientButtonContainer' fluid>
 
-          {/* Card1: Pending Forms */}
+          {/* Card1: Intake Data */}
           <Card id='card1' className="text-center mx-auto" style={{ background: '#0098C3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
@@ -75,7 +75,7 @@ function CurriculumDash() {
             </Card.Body>
           </Card>
 
-          {/* Card2: Approved Forms */}
+          {/* Card2: Needs Assessment */}
           <Card id='card2' className="text-center mx-auto" style={{ background: '#6E9A35', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
@@ -85,7 +85,7 @@ function CurriculumDash() {
             </Card.Body>
           </Card>
 
-          {/* Card3: Archived Forms */}
+          {/* Card3: Curriculum */}
           <Card id='card3' className="text-center mx-auto" style={{ background: '#d2492a', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
@@ -96,14 +96,11 @@ function CurriculumDash() {
           </Card>
 
           {/* Card4: Success Rate */}
-          <Card id='card4' className="text-center mx-auto" style={{ background: '#a40084', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
+          {/* <Card id='card4' className="text-center mx-auto" style={{ background: '#a40084', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
             <Card.Body>
-              {/* <Card.Title style={{fontSize:'30px'}}>
-                <MDBCardLink href='#' style={{color:'whitesmoke'}}>View Completed Courses</MDBCardLink> 
-              </Card.Title> */}
               <Button onClick={editCourse} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>Edit Curriculum</Button>
             </Card.Body>
-          </Card> 
+          </Card>  */}
         </Container>
       </div>
     </div>

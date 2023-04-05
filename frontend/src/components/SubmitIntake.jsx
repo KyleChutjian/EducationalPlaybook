@@ -274,9 +274,9 @@ function SubmitIntake() {
                   type="submit"
                   form="save-close-form"
                   onSubmit={handleSaveAndClose}
-                  style={{width: "150px", fontFamily:'Bitter'}}
+                  style={{width: "150px", fontFamily:'Bitter', backgroundColor: '#0098C3'}}
 
-                >Save & Close</button>
+                >Save & Return</button>
               </span>
             </form>
             {/* Submit Form */}
@@ -287,7 +287,7 @@ function SubmitIntake() {
                   className="btn btn-primary btm-md center-block"
                   type="submit"
                   onSubmit={handleSubmit}
-                  style={{width: "150px", display: "inline-block", verticalAlign: "top", fontFamily:'Bitter'}}
+                  style={{width: "150px", display: "inline-block", verticalAlign: "top", fontFamily:'Bitter', backgroundColor: '#6E9A35'}}
                   >Submit</button>
               </span>
             </form>

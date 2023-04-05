@@ -2,17 +2,14 @@ import React, { useEffect, useState } from 'react'
 import AdminNav from '../components/AdminNav';
 import ClientNav from '../components/ClientNav';
 import { useNavigate } from "react-router-dom";
-import { getCurriculumByIntakeId, getCurriculumByCurriculumId } from '../services/curriculumService';
+import { getCurriculumByIntakeId, getFileByPath, uploadFiles, saveCurriculum } from '../services/curriculumService';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { MDBTextArea } from 'mdb-react-ui-kit';
-import Dropdown from 'react-bootstrap/Dropdown';
+import { MDBCheckbox } from 'mdb-react-ui-kit';
+import deleteIcon from '../resources/delete-icon.png';
 
 function EditCurriculum() {
-  // TEMPORARY, when Sadjell is done this will be removed
-  // localStorage.setItem("currentIntakeId", "63fe1f4558003c8c92cdb1fe"); 
-
-
   const fileInput = React.createRef();
   const history = useNavigate();
 
@@ -27,10 +24,7 @@ function EditCurriculum() {
   const [ curriculumLearningObjectives, setCurriciulumLearningObjectives ] = useState("");
   const [ learningObjectives, setLearningObjectives ] = useState(<div></div>);
   const [openAddObjectiveModal, setOpenAddObjectiveModal] = useState(false);
-  const [newLearningObjective, setNewLearningObjective] = useState({
-    title: "",
-    description: ""
-  });
+  const [newLearningObjective, setNewLearningObjective] = useState("");
   const handleOpenNewLearningObjective = () => setOpenAddObjectiveModal(true);
   const handleCloseNewLearningObjective = () => setOpenAddObjectiveModal(false);
 
@@ -45,23 +39,22 @@ function EditCurriculum() {
   const handleOpenNewCourseStep = () => setOpenAddCourseStepModal(true);
   const handleCloseNewCourseStep = () => setOpenAddCourseStepModal(false);
 
-  // Resource Hooks
-  const [ curriculumResources, setCurriculumResources ] = useState("");
-  const [ resources, setResources ] = useState(<div></div>);
-  const [ resourceExtraOption, setResourceExtraOption ] = useState(<div></div>);
-  const [ openAddResourceModal, setOpenAddResourceModal ] = useState(false);
-  const [ newResource, setNewResource ] = useState({
-    title: "",
-    type: null, // [Link, File]
-    output: null, // [URL String, File Object]
-  });
-  const [ resourceDropdownTypeName, setResourceDropdownTypeName ] = useState("Type of Resource");
-  const handleOpenNewResource = () => {
-    setOpenAddResourceModal(true);
-    setResourceDropdownTypeName("Type of Resource");
-    setResourceExtraOption(<div></div>);
-  }
-  const handleCloseNewResource = () => setOpenAddResourceModal(false);
+  // Link Hooks
+  const [ curriculumLinks, setCurriculumLinks ] = useState("");
+  const [ links, setLinks ] = useState(<div></div>);
+
+  // File Hooks
+  const [ curriculumFiles, setCurriculumFiles ] = useState([]);
+  const [ files, setFiles ] = useState(<div></div>);
+
+
+  useEffect(() => {
+    loadLearningObjectives(curriculumLearningObjectives);
+  }, [curriculumLearningObjectives]);
+
+  useEffect(() => {
+    loadFiles(curriculumFiles);
+  }, [curriculumFiles])
 
   useEffect(() => {
     // Permissions
@@ -72,30 +65,44 @@ function EditCurriculum() {
 
     // Get Curriculum using CurrentIntakeId
     getCurriculumByIntakeId(currentIntakeId).then((curriculum) => {
+      // All works
       setCurriculumId(curriculum.data._id);
-      setCurriculumTitle(`Edit Curriculum Development Plan: ${curriculum.data.name}`);
-      return(curriculum)
-    }).then((curriculum) => {
+      setCurriculumTitle(`Edit ${curriculum.data.name}`);
       setCurriciulumLearningObjectives(curriculum.data.objectives);
       setCurriculumSteps(curriculum.data.steps);
-      setCurriculumResources(curriculum.data.resources);
+      setCurriculumLinks(curriculum.data.links);
       loadLearningObjectives(curriculum.data.objectives);
       loadSteps(curriculum.data.steps);
-      loadResources(curriculum.data.resources);
+      loadLinks(curriculum.data.links);
+      
+
+      replaceFileOutputs(curriculum.data.files).then((result) => {
+        // setCurriculumFiles(result);
+        setTimeout(() => {
+          setCurriculumFiles(result)
+        }, 100)
+      });
+
+      
     });
       
-  }, [currentIntakeId]);
+  }, [curriculumTitle]);
 
   // Curriculum Learning Objective Functions:
   const loadLearningObjectives = (objectives) => {
+    if (objectives === "") {
+      return <div></div>
+    }
     setLearningObjectives(
       objectives.map((learningObjective, index) => {
         return(
-          <div className="container" key={learningObjective[0]}>
+          <div className="container" key={`${learningObjective}${index}`}>
             <div className="row" style={{paddingTop: "1%"}}>
-              <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Learning Objective #${index+1}`}</b></h3>
-              <MDBTextArea className="col-md-3" rows={1} name={`title${index}`} defaultValue={learningObjective[0]} onChange={handleLearningObjectivesResponseChange}/>
-              <MDBTextArea style={{marginTop: "1%", marginBottom: "1%"}} rows={4} name={`description${index}`} defaultValue={learningObjective[1]} onChange={handleLearningObjectivesResponseChange}/>
+              <span style={{display: "flex"}}>
+                <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Learning Objective #${index+1}`}</b></h3>
+                <img src={deleteIcon} alt='delete-icon' height='23px' style={{paddingLeft: "1%"}} name={`objective${index}`} onClick={deleteLearningObjective}/>
+              </span>
+              <MDBTextArea style={{marginTop: "0%", marginBottom: "1%"}} rows={4} name={`objective${index}`} defaultValue={learningObjective} onChange={handleLearningObjectivesResponseChange}/>
               {index !== objectives.length-1 ? <hr style={{height: "2px"}}></hr> : null}
             </div>
           </div>
@@ -107,38 +114,33 @@ function EditCurriculum() {
     const { name, value} = e.target;
     let indexString, index;
     setCurriciulumLearningObjectives((oldObjectives) => {
-      if (name.includes("title")) {
-        indexString = name.split("title")[1];
-        index = parseInt(indexString);
-        oldObjectives[index][0] = value;
-      } else if (name.includes("description")) {
-        indexString = name.split("description")[1];
-        index = parseInt(indexString);
-        
-        oldObjectives[index][1] = value;
-      } else {
-        console.log("Something went wrong");
-      }
+      indexString = name.split("objective")[1];
+      index = parseInt(indexString);
+      oldObjectives[index] = value;
       return oldObjectives;
     });
   }
   const createNewLearningObjectiveModal = (e) => {
     e.preventDefault();
     setOpenAddObjectiveModal(false);
-    
-    const newLearningObjectiveArray = [newLearningObjective.title, newLearningObjective.description];
-    curriculumLearningObjectives.push(newLearningObjectiveArray);
-    loadLearningObjectives(curriculumLearningObjectives)
-  };
-  function handleLearningObjectiveModalChange(e) {
-    const { name, value } = e.target;
 
-    setNewLearningObjective((old) => {
-      return {
-        ...old,
-        [name]: value,
-      };
-    });
+    var newLearningObjectives = curriculumLearningObjectives;
+    newLearningObjectives = newLearningObjectives.concat(newLearningObjective);
+
+    setCurriciulumLearningObjectives(newLearningObjectives);
+    loadLearningObjectives(newLearningObjectives);
+  };
+  const deleteLearningObjective = (e) => {
+    e.preventDefault();
+    const indexString = e.target.name.split('objective')[1];
+    const index = parseInt(indexString);
+    curriculumLearningObjectives.splice(index, 1);
+    setCurriciulumLearningObjectives(curriculumLearningObjectives);
+    loadLearningObjectives(curriculumLearningObjectives);
+  }
+  function handleLearningObjectiveModalChange(e) {
+    const { value } = e.target;
+    setNewLearningObjective(value);
   }
 
   // Curriculum Step Functions:
@@ -148,8 +150,21 @@ function EditCurriculum() {
         return(
           <div className="container" key={step[0]}>
             <div className="row" style={{paddingTop: "1%"}}>
-              <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Course Step #${index+1}`}</b></h3>
-              <MDBTextArea className="col-md-3" rows={1} name={`title${index}`} defaultValue={step[0]} onChange={handleCourseStepsResponseChange}/>
+              <span style={{display: "flex"}}>
+                <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Course Step #${index+1}`}</b></h3>
+                <img src={deleteIcon} alt='delete-icon' height='23px' style={{paddingLeft: "1%"}} name={`step${index}`} onClick={deleteCourseStep}/>
+              </span>
+              <div>
+                <h6>Select the training formats needed for these learning objectives:</h6>
+                <MDBCheckbox name='inlineCheck' id='inlineCheckbox1' value='option1' label='Lecture' inline />
+                <MDBCheckbox name='inlineCheck' id='inlineCheckbox2' value='option2' label='Hands-on Skills' inline />
+                <MDBCheckbox name='inlineCheck' id='inlineCheckbox3' value='option3' label='Mannequin-based Simulation' inline />
+                <MDBCheckbox name='inlineCheck' id='inlineCheckbox3' value='option3' label='Standardized Patient' inline />
+                <MDBCheckbox name='inlineCheck' id='inlineCheckbox3' value='option3' label='In-Situ Training' inline />
+                <MDBCheckbox name='inlineCheck' id='inlineCheckbox3' value='option3' label='Other' inline />
+
+              </div>
+              {/* <MDBTextArea className="col-md-3" rows={1} name={`title${index}`} defaultValue={step[0]} onChange={handleCourseStepsResponseChange}/> */}
               <MDBTextArea style={{marginTop: "1%", marginBottom: "1%"}} rows={4} name={`description${index}`} defaultValue={step[1]} onChange={handleCourseStepsResponseChange}/>
               {index !== steps.length-1 ? <hr style={{height: "2px"}}></hr> : null}
             </div>
@@ -185,6 +200,14 @@ function EditCurriculum() {
     curriculumSteps.push(newCourseStepArray);
     loadSteps(curriculumSteps);
   };
+  const deleteCourseStep = (e) => {
+    e.preventDefault();
+    const indexString = e.target.name.split('step')[1];
+    const index = parseInt(indexString);
+    curriculumSteps.splice(index, 1);
+    setCurriculumSteps(curriculumSteps);
+    loadSteps(curriculumSteps);
+  }
   function handleCourseStepModalChange(e) {
     const { name, value } = e.target;
 
@@ -196,203 +219,235 @@ function EditCurriculum() {
     });
   }
 
-  // Curriculum Resource Functions:
-  const loadResourceOutput = (type, output, index) => {
-    if (type === "Link") {
-      return <MDBTextArea className="col-md-3" rows={1} name={`output${index}`} defaultValue={output} onChange={handleResourceResponseChange}/>
-    } else if (type === "File") {
-      console.log(output);
-      return <div>
-        <h3 style={{fontFamily: 'Bitter', fontSize:'16px', marginTop: "1%"}}>{`Replace \"${output.name}\":`}</h3>
-        <input type='file' className="form-control" id="fileInput" name={`file${index}`} onChange={handleResourceResponseChange} ref={fileInput}/>
-      </div>
-    }
-  }
-
-  const loadResources = (resources) => {
-    if (typeof resources === 'undefined') {
+  // Curriculum Link Functions:
+  const loadLinks = async (links) => {
+    if (typeof links === 'undefined' || links === "") {
       return <div></div>
     }
-    setResources(
-      resources.map((resource, index) => {
-        return(
-          <div className="container" key={resource[0]}>
-            <div className="row" style={{paddingTop: "1%"}}>
-              {/* Resource Header [Resource #1 - Link] */}
-              <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Resource #${index+1} - ${resource[1]}`}</b></h3>
 
-              {/* Resource Title [Sample Link Title]*/}
-              <MDBTextArea style={{marginTop: "1%", marginBottom: "1%"}} className="col-md-3" rows={1} name={`title${index}`} defaultValue={resource[0]} onChange={handleResourceResponseChange}/>
+    setLinks(links.map((link, index) => {
+      return(
+        <div className="container" key={`${link.title}${index}`}>
+          <div className="row" style={{paddingTop: "1%"}}>
+            {/* Resource Header [Resource #1 - Link] */}
+            <span style={{display: "flex"}}>
+              <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Link #${index+1}`}</b></h3>
+              <img src={deleteIcon} alt='delete-icon' height='23px' style={{paddingLeft: "1%"}} name={`link${index}`} onClick={deleteLink}/>
+            </span>
 
-              {/* Resource Output [https://google.com]*/}
-              {loadResourceOutput(resource[1], resource[2], index)}
+            {/* Link Title */}
+            <MDBTextArea style={{marginTop: "1%", marginBottom: "1%"}} className="col-md-3" rows={1} name={`title${index}`} placeholder='Enter Name of Link' defaultValue={link.title} onChange={handleLinkResponseChange}/>
 
-              {index !== resources.length-1 ? <hr style={{height: "2px", marginTop: "1%"}}></hr> : null}
-            </div>
+            {/* Link Output */}
+            <MDBTextArea className="col-md-3" rows={1} name={`output${index}`} placeholder='Enter Link' defaultValue={link.output} onChange={handleLinkResponseChange}/>
+
+            {index !== links.length-1 ? <hr style={{height: "2px", marginTop: "1%"}}></hr> : null}
           </div>
-        )
-      }
-    ))
+        </div>
+      )
+    }));
   }
-
-  const handleResourceResponseChange = (e) => {
+  const handleLinkResponseChange = (e) => {
     const { name, value} = e.target;
     let indexString, index;
     
-    setCurriculumResources((oldResources) => {
+    setCurriculumLinks((oldLinks) => {
       if (name.includes("title")) {
         indexString = name.split("title")[1];
         index = parseInt(indexString);
-        oldResources[index][0] = value;
+        oldLinks[index].title = value;
       } else if (name.includes("output")) {
         indexString = name.split("output")[1];
         index = parseInt(indexString);
         
-        oldResources[index][2] = value;
-      } else if (name.includes("file")) {
-        console.log(`name: ${name}`);
-        indexString = name.split("file")[1];
-        index = parseInt(indexString);
-        oldResources[index][2] = e.target.files[0];
+        oldLinks[index].output = value;
       } else {
         console.log("Something went wrong");
       }
-      return oldResources;
+      return oldLinks;
     });
   }
-  const createNewResourceModal = (e) => {
-    e.preventDefault();
-    setOpenAddResourceModal(false);
-    const newResourceArray = [newResource.title, newResource.type, newResource.output];
-    if (typeof curriculumResources === 'undefined') {
-      setCurriculumResources(newResourceArray)
-      
-    } else {
-      curriculumResources.push(newResourceArray);
+  const createNewLink = (e) => {
+    const newLink = {
+      title: '',
+      output: ''
     }
-    
-    loadResources(curriculumResources);
-  };
-  function handleResourceModalChange(e) {
-    const { name, value } = e.target;
 
-    if (name === 'title') {
-      // set the title
-      setNewResource((old) => {
-        return {
-          ...old,
-          [name]: value,
-        };
-      });
-    } else if (name === 'link') {
-      // set the type to link, update the output value
-      // newResource.type = 'Link';
-      setNewResource((old) => {
-        return {
-          title: old.title,
-          type: "Link",
-          output: value
-        }
-      })
-    } else if (name === 'file') {
-      // set the type to file, update the output value
-      setNewResource((old) => {
-        return {
-          title: old.title,
-          type: "File",
-          output: e.target.files[0]
-        }
-      })
+    if (typeof curriculumLinks === 'undefined') {
+      setCurriculumLinks([newLink]);
+    } else {
+      curriculumLinks.push(newLink);
+      setCurriculumLinks(curriculumLinks);
+      loadLinks(curriculumLinks);
     }
 
   }
-  const setResourceType = (type) => {
-    setResourceDropdownTypeName(type);
-    let extraOption;
-    if (type === "Link") {
-      extraOption = 
-      <div className="form-group" style={{paddingTop: "2%"}}>
-        <label>Link URL</label>
-        <input type='url' className="form-control" id="linkInput" name="link" onChange={handleResourceModalChange}/>
-      </div>
-    } else if (type === "File") {
-      extraOption = 
-      <div className="form-group" style={{paddingTop: "2%"}}>
-        <input type='file' className="form-control" id="fileInput" name="file" onChange={handleResourceModalChange} ref={fileInput}/>
-      </div>
+  const deleteLink = (e) => {
+    e.preventDefault();
+    const indexString = e.target.name.split('link')[1];
+    const index = parseInt(indexString);
+    curriculumLinks.splice(index, 1);
+    setCurriculumLinks(curriculumLinks);
+    loadLinks(curriculumLinks);
+  }
+
+  // Curriculum File Functions:
+  const replaceFileOutputs = async (files) => {
+    if (typeof files === 'undefined' || files === "") {
+      return [];
     }
-    setResourceExtraOption(extraOption);
+    
+    setFiles(files.forEach((specificFile, index) => {
+      if (typeof specificFile.output === 'string') {
+        // Get the file from backend files directory
+        getFileByPath(specificFile.output).then((result) => {
+          var fileName;
+          if (typeof specificFile.output === 'string') {
+            const firstUnderscoreIndex = specificFile.output.indexOf('_')+1;
+            var oneUnderscoreString = specificFile.output.substring(firstUnderscoreIndex);
+            const secondUnderscoreIndex = oneUnderscoreString.indexOf('_')+1;
+            fileName = oneUnderscoreString.substring(secondUnderscoreIndex);
+          } else {
+            fileName = specificFile.output.name;
+          }
+          
+          const blob = new Blob([result.data], {type: result.headers['content-type']});
+          const file = new File([blob], fileName, {type: result.headers['content-type']});
+
+          files[index].output = file;
+
+          setCurriculumFiles((oldFiles) => {
+            if (typeof oldFiles === 'object') {
+              return oldFiles;
+            }
+
+            oldFiles[index].output = file;
+            return oldFiles;
+          })
+        });
+        
+
+      }
+    }))
+
+    return files;
+
+  }
+  const loadFiles = async (files) => {
+    if (typeof files === 'undefined' || files === "") {
+      return <div></div>
+    }
+    setFiles(files.map((file, index) => {
+
+      return(
+        <div className="container" key={`${file.title}${index}`}>
+          <div className="row" style={{paddingTop: "1%"}}>
+            {/* Resource Header [Resource #1 - Link] */}
+            <span style={{display: "flex"}}>
+              <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Attachment #${index+1}`}</b></h3>
+              <img src={deleteIcon} alt='delete-icon' height='23px' style={{paddingLeft: "1%"}} name={`resource${index}`} onClick={deleteFile}/>
+            </span>
+
+            {/* Resource Title [Sample Link Title]*/}
+            <MDBTextArea style={{marginTop: "1%", marginBottom: "1%"}} className="col-md-3" rows={1} name={`title${index}`} placeholder='Enter Attachment Title' defaultValue={file.title} onChange={handleFileResponseChange}/>
+
+            <div>
+              {/* For displaying this file */}
+              <p>{`File name for displaying the file later: ${file.output.name}`}</p>
+
+              {/* For editing the file */}
+              <input type='file' className="form-control" id={`file${index}`} name={'file'} onChange={handleFileResponseChange} ref={fileInput}/>
+            </div>
+
+
+            {index !== files.length-1 ? <hr style={{height: "2px", marginTop: "1%"}}></hr> : null}
+          </div>
+        </div>
+      )
+    }))
+  }
+  const handleFileResponseChange = (e) => {
+    const { name, value} = e.target;
+    let indexString, index;
+    
+    setCurriculumFiles((oldFiles) => {
+      if (name.includes("title")) {
+        indexString = name.split("title")[1];
+        index = parseInt(indexString);
+        oldFiles[index].title = value;
+      } else if (name.includes("file")) {
+        indexString = e.target.id.split("file")[1];
+        index = parseInt(indexString);
+        oldFiles[index].output = e.target.files[0];
+        loadFiles(oldFiles);
+      } else {
+        console.log("Something went wrong");
+      }
+      
+      return oldFiles;
+    });
+  }
+  const createNewFile = (e) => {
+    const newFileResource = {
+      title: '',
+      output: '',
+      _id: null
+    }
+
+    if (typeof curriculumFiles === 'undefined') {
+      setCurriculumFiles([newFileResource]);
+    } else {
+      curriculumFiles.push(newFileResource);
+      setCurriculumFiles(curriculumFiles);
+      loadFiles(curriculumFiles);
+    }
+
+  }
+  const deleteFile = (e) => {
+    e.preventDefault();
+    const indexString = e.target.name.split('file')[1];
+    const index = parseInt(indexString);
+    curriculumFiles.splice(index, 1);
+    setCurriculumFiles(curriculumFiles);
+    loadFiles(curriculumFiles);
   }
 
   // Save Changes Button
-  const saveChanges = () => {
-    console.log(curriculumLearningObjectives)
-    console.log(curriculumSteps);
-    console.log(curriculumResources);
-    console.log(curriculumResources[1][2])
-  }
+  const saveChanges = async () => {
+    console.log(curriculumLinks);
+    console.log(curriculumFiles);
 
-  const handleFile = (e) => {
-    e.preventDefault();
-    console.log(fileInput.current.files[0]);
+    const fileData = new FormData();
 
-    var reader = new FileReader();
-    reader.readAsDataURL(fileInput.current.files[0]);
-    reader.onload = () => {
-      // console.log(reader.result);
+    // Get a list of _ids for each file
+    fileData.append('fileIds', JSON.stringify(curriculumFiles.map((file) => {
+      return file._id;
+    })));
 
-      // createCurriculum({resource: reader.result})
-      // .then((curriculum) => {
-      //   console.log(curriculum.data);
-      // });
+    // Get a list of titles for each file
+    fileData.append('fileTitles', JSON.stringify(curriculumFiles.map((file) => {
+      return file.title;
+    })));
 
-
-      getCurriculumByCurriculumId("63faaeab56b581e7c9934779").then((curriculum) => {
-        const curriculumResource = curriculum.data.resources;
-        console.log(curriculumResource);
-
-        const base64Resource = curriculumResource.toString("base64");
-
-        fetch(base64Resource).then((res) => res.blob()).then((blob) => {
-          const file = new File([blob], "New Document", {type: blob.type})
-          console.log(file);
-
-          // Downloading the file object
-          const link = document.createElement('a');
-          const url = URL.createObjectURL(file);
-          link.href = url;
-          link.download = file.name;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          window.URL.revokeObjectURL(url);
-        });
-      });
+    // Adding all files to formdata
+    curriculumFiles.forEach((file) => {
+      fileData.append('file', file.output, file.output.name);
+    });
 
 
-      // For future implementation:
-
-      // createCurriculum({resource: reader.result}).then((curriculum) => {
-      //   console.log(curriculum);
-      // });
-
-      // fetch(reader.result).then((res) => res.blob()).then((blob) => {
-      //   const file = new File([blob], "New Document", {type: blob.type})
-      //   console.log(file);
-
-      //   // Downloading the file object
-      //   const link = document.createElement('a');
-      //   const url = URL.createObjectURL(file);
-      //   link.href = url;
-      //   link.download = file.name;
-      //   document.body.appendChild(link);
-      //   link.click();
-      //   document.body.removeChild(link);
-      //   window.URL.revokeObjectURL(url);
-      // })
-
+    const savedData = {
+      objectives: curriculumLearningObjectives,
+      steps: curriculumSteps,
+      links: curriculumLinks
+      // files: curriculumFiles
     }
-    
+    saveCurriculum(curriculumId, savedData).then(() => {
+      setTimeout(() => {
+        uploadFiles(curriculumId, fileData);
+      })
+    })
+
+    history("/curriculum");
   }
 
   return(
@@ -403,7 +458,7 @@ function EditCurriculum() {
 
       {/* Jumbotron */}
       <div className='p-5 text-center' style={{background: '#d2492a', color:'whitesmoke'}}>
-        <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>{curriculumTitle}</h1>
+        <h1 style={{fontFamily: 'Bitter'}}>{curriculumTitle}</h1>
       </div>
 
       {/* Learning Objectives */}
@@ -426,15 +481,8 @@ function EditCurriculum() {
           <Modal.Body>
 
             <form id="createLearningObjectiveForm">
-              <div className="form-group">
-                <label>Name of Learning Objective</label>
-                <input type="text" className="form-control" id="titleInput" name="title" onChange={handleLearningObjectiveModalChange}/>
-              </div>
-              <div className="form-group">
-                <label>Description of New Learning Objective</label>
-                {/* <input style={{height: "75px"}} type="text" className="form-control" id="descriptionInput" name="description" onChange={handleLearningObjectiveModalChange}/> */}
-                <MDBTextArea rows={4} className="form-control" name="description" onChange={handleLearningObjectiveModalChange}></MDBTextArea>
-                {/* <MDBTextArea className="col-md-3" rows={1} name={`title${index}`} defaultValue={learningObjective[0]} onChange={handleLearningObjectivesResponseChange}/> */}
+              <div className="form-group" style={{paddingTop: "1%"}}>
+                <MDBTextArea rows={4} className="form-control" name="description" placeholder='Description of Learning Objective' onChange={handleLearningObjectiveModalChange}></MDBTextArea>
               </div>
             </form>   
           </Modal.Body>
@@ -471,12 +519,12 @@ function EditCurriculum() {
 
           <form id="createCourseStepForm">
             <div className="form-group">
-              <label>Name of Course Step</label>
-              <input type="text" className="form-control" id="titleInput" name="title" onChange={handleCourseStepModalChange}/>
+              {/* <label>Name of Course Step</label> */}
+              <input type="text" className="form-control" id="titleInput" name="title" placeholder='Name of Course Step' onChange={handleCourseStepModalChange}/>
             </div>
-            <div className="form-group">
-              <label>Description of New Course Step</label>
-              <MDBTextArea rows={4} className="form-control" name="description" onChange={handleCourseStepModalChange}></MDBTextArea>
+            <div className="form-group" style={{paddingTop: "1%"}}>
+              {/* <label>Description of New Course Step</label> */}
+              <MDBTextArea rows={4} className="form-control" name="description" placeholder='Description of Course Step' onChange={handleCourseStepModalChange}></MDBTextArea>
             </div>
           </form>   
         </Modal.Body>
@@ -489,53 +537,37 @@ function EditCurriculum() {
 
       </Modal>
 
-      {/* Resources */}
-      <div className="resources-container">
-        <h3 className="resources-title text-center" style={{fontFamily: 'Bitter', paddingTop: "1%", color: "#B05139"}}><b>Resources</b></h3>
-        {/* Loaded Resources */}
-        {resources}
+      {/* Links */}
+      <div className="links-container">
+        <h3 className="links-title text-center" style={{fontFamily: 'Bitter', paddingTop: "1%", color: "#B05139"}}><b>Links</b></h3>
+        {/* Loaded Links */}
+        {links}
 
-        {/* Add New Resource */}
+        {/* Add New Link */}
         <div className="add-resource text-center" style={{paddingTop: "1%"}}>
-            <Button variant="success" onClick={handleOpenNewResource}>Add New</Button>
-            <hr></hr>
+          <span>
+            <Button variant="success" onClick={createNewLink}>New Link</Button>
+          </span>
+          
+          <hr></hr>
         </div>
-        {/* Create New Resource Modal */}
-        <Modal show={openAddResourceModal} onHide={handleCloseNewResource}>
-          <Modal.Header closeButton>
-            <Modal.Title>New Resource</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+      </div>
 
-            <form id="createResourceForm" onSubmit={handleFile}>
-              <div className="form-group">
-                <label>Name of Resource</label>
-                <input type="text" className="form-control" id="titleInput" name="title" onChange={handleResourceModalChange}/>
-              </div>
-              <div className="form-group">
-                <Dropdown onSelect={setResourceType}>
-                  <Dropdown.Toggle variant="success" id="resource-type-dropdown" style={{marginTop: "2%"}}>
-                    {resourceDropdownTypeName}
-                  </Dropdown.Toggle>
+      {/* Files */}
+      <div className="attachments-container">
+        <h3 className="attachments-title text-center" style={{fontFamily: 'Bitter', paddingTop: "1%", color: "#B05139"}}><b>Attachments</b></h3>
+        {/* Loaded Links */}
+        {files}
 
-                  <Dropdown.Menu>
-                    <Dropdown.Item eventKey="Link">Link</Dropdown.Item>
-                    <Dropdown.Item eventKey="File">File</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-                {resourceExtraOption}
-
-              </div>
-            </form>   
-          </Modal.Body>
-                  
-
-          <Modal.Footer>
-            <Button variant="primary" onClick={createNewResourceModal}>Create</Button>
-            <Button variant="secondary" onClick={handleCloseNewResource}>Close</Button>
-          </Modal.Footer>
-
-        </Modal>
+        {/* Add New Link */}
+        <div className="add-attachments text-center" style={{paddingTop: "1%"}}>
+          <span>
+            <Button variant="success" onClick={createNewFile}>New Attachment</Button>
+          </span>
+          
+          <hr></hr>
+        </div>
+      
       </div>
 
       {/* Save Changes Button */}

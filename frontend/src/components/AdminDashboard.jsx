@@ -14,7 +14,7 @@ function AdminDashboard() {
   const history = useNavigate();
 
   const [ adminFirstName, setAdminFirstName ] = useState("");
-  const [ hideProgramLeadDashboard, setHideProgramLeadDashboard ] = useState(true);
+  const [ hideProjectLeadDashboard, setHideProjectLeadDashboard ] = useState(true);
 
   useEffect(() => {
     const currentUser = getCurrentUser();
@@ -25,8 +25,8 @@ function AdminDashboard() {
     });
 
     getDashboardsByUserId(currentUser.id).then((res) => {
-      if (res.data.includes("ProgramLead")) {
-        setHideProgramLeadDashboard(false);
+      if (res.data.includes("ProjectLead")) {
+        setHideProjectLeadDashboard(false);
       }
     });
   });
@@ -41,7 +41,7 @@ function AdminDashboard() {
   const toPLDash = () => {
     // Update the route
     let path = '/PLdashboard';
-    localStorage.setItem("permission-level", "programlead");
+    localStorage.setItem("permission-level", "projectlead");
     history(path);
   };
   const pendingIntakes = () => {
@@ -78,7 +78,7 @@ function AdminDashboard() {
               <span className="my-auto" style={{color:'black', fontSize:'35px'}}>Admin Dashboard</span>
             }>
             <Dropdown.Item onClick={toClientDash}>Client Dashboard</Dropdown.Item>
-            <Dropdown.Item hidden={hideProgramLeadDashboard} onClick={toPLDash}>Program Lead Dashboard</Dropdown.Item>
+            <Dropdown.Item hidden={hideProjectLeadDashboard} onClick={toPLDash}>Project Lead Dashboard</Dropdown.Item>
           </DropdownButton>
           <h3> Welcome, {adminFirstName}!</h3>
       </div>  

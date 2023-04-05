@@ -17,7 +17,7 @@ function ClientDashboard() {
   const [ button1Output, setButton1Output ] = useState("");
   const [ clientFirstName, setClientFirstName ] = useState("");
   const [ hideAdminDashboard, setHideAdminDashboard ] = useState(true);
-  const [ hideProgramLeadDashboard, setHideProgramLeadDashboard ] = useState(true);
+  const [ hideProjectLeadDashboard, setHideProjectLeadDashboard ] = useState(true);
   
   useEffect(() => {
     document.body.style.backgroundColor = 'white';
@@ -37,8 +37,8 @@ function ClientDashboard() {
           case "Admin":
             setHideAdminDashboard(false);
             break;
-          case "ProgramLead":
-            setHideProgramLeadDashboard(false);
+          case "ProjectLead":
+            setHideProjectLeadDashboard(false);
             break;
 
           default:
@@ -68,7 +68,7 @@ function ClientDashboard() {
           setButton1Output("/submitIntake");
           break;
         case "pending-admin":
-        case "pending-programlead":
+        case "pending-projectlead":
           setButton1Option("View Pending Intake");
           setButton1Output("/viewintake");
           break;
@@ -127,7 +127,7 @@ function ClientDashboard() {
   const toPLDash = () => {
     // Update the route
     let path = '/PLdashboard';
-    localStorage.setItem("permission-level", "programlead");
+    localStorage.setItem("permission-level", "projectlead");
     history(path);
   };
 
@@ -140,12 +140,12 @@ function ClientDashboard() {
 
       {/* Header, viewing dashboards */}
       <div className="container-fluid text-sm-center p-3" style={{fontFamily: 'Bitter'}}>
-            <DropdownButton disabled={hideAdminDashboard && hideProgramLeadDashboard} variant='light' size='lg' id="chooseUserType" 
+            <DropdownButton disabled={hideAdminDashboard && hideProjectLeadDashboard} variant='light' size='lg' id="chooseUserType" 
             title={
               <span className="my-auto" style={{color:'black', fontSize:'35px'}}>Client Dashboard</span>
             }>
             <Dropdown.Item hidden={hideAdminDashboard} onClick={toAdminDash}>Admin Dashboard</Dropdown.Item>
-            <Dropdown.Item hidden={hideProgramLeadDashboard} onClick={toPLDash}>Program Lead Dashboard</Dropdown.Item>
+            <Dropdown.Item hidden={hideProjectLeadDashboard} onClick={toPLDash}>Project Lead Dashboard</Dropdown.Item>
           </DropdownButton>
           <h3> Welcome, {clientFirstName}!</h3>
       </div> 
