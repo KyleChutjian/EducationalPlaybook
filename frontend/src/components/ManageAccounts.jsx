@@ -30,7 +30,7 @@ function ManageAccounts() {
             <AdminNav/>
           </div>
 
-          <h1>ManageAccounts Screen</h1>
+          <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>Manage Accounts</h1>
         </div>
   )
 }
