@@ -356,9 +356,10 @@ router.get("/projectLead/:projectLeadId/:status", async (req, res) => {
             case "archived":
                 console.log(`Getting all ${status} intakes for projectLeadId: ${projectLeadId}`);
                 const intakes = await Intake.find({
-                    projectLeadId: projectLeadId,
+                    projectLeadIds: {$in: projectLeadId},
                     status: status
                 });
+                console.log(intakes);
                 res.status(200).json(intakes);
                 break;
 

@@ -76,19 +76,28 @@ function NeedsAssessment() {
                   <div className="card-block">
                     <div className="row">
                     <Form>
-                      <Form.Group className="mb-3" controlId="formFutureState">
-                        <Form.Label>Desired Future State: </Form.Label>
-                        <Form.Control type="futureState" defaultValue={card[1]} name={`future${index}`} onChange={handleNeedsAssessmentResponseChange} placeholder='At least 50% of our developer resources working on new features'/>
-                      </Form.Group>
-
                       <Form.Group className="mb-3" controlId="formCurrentState">
                         <Form.Label>Current State: </Form.Label>
                         <Form.Control type="currentState" placeholder='Only 10% of our developer resources are working on new features' defaultValue={card[2]} name={`current${index}`} onChange={handleNeedsAssessmentResponseChange}/>
+                        <Form.Text id="subtext" muted>
+                          Describe the current state of resources for this focus area
+                        </Form.Text>
+                      </Form.Group>
+
+                      <Form.Group className="mb-3" controlId="formFutureState">
+                        <Form.Label>Desired Future State: </Form.Label>
+                        <Form.Control type="futureState" defaultValue={card[1]} name={`future${index}`} onChange={handleNeedsAssessmentResponseChange} placeholder='At least 50% of our developer resources working on new features'/>
+                        <Form.Text id="subtext" muted>
+                          Describe the desired allocated resources for this focus area
+                        </Form.Text>
                       </Form.Group>
 
                       <Form.Group className="mb-3" controlId="formCurrentState">
                         <Form.Label>Identified Gap: </Form.Label>
                         <Form.Control type="currentState" defaultValue={card[3]} name={`gap${index}`} placeholder='ex. 40%' onChange={handleNeedsAssessmentResponseChange}/>
+                        <Form.Text id="subtext" muted>
+                          Identify the gap as a percentage (the difference between your current and desired states)
+                        </Form.Text>
                       </Form.Group>
                     </Form>
                        
@@ -197,8 +206,8 @@ function NeedsAssessment() {
                 <div className='row'>
                   {/* <div className='col'> */}
                     <div style={{display: 'flex'}}>
-                      <Button style={{backgroundColor: '#0098C3', fontFamily: 'Bitter', justifyContent:'center', marginLeft:'46.6%', marginRight: '0%'}} type="submit" onClick={addNew}>New</Button>
-                      <Button style={{backgroundColor: '#6E9A35', fontFamily: 'Bitter', justifyContent:'center', marginLeft: '0.7%'}} variant="primary" type="submit" onClick={saveChanges}>Save</Button>
+                      <Button style={{backgroundColor: '#0098C3', fontFamily: 'Bitter', marginLeft:'39%', minWidth:'160px', maxHeight:'40px'}} type="submit" onClick={addNew}>Add Focus Area</Button>
+                      <Button style={{backgroundColor: '#6E9A35', fontFamily: 'Bitter', marginLeft: '5px', marginRight: '50%', minWidth:'160px', maxHeight:'40px'}} variant="primary" type="submit" onClick={saveChanges}>Save</Button>
                     </div>
 
                   {/* </div>    */}

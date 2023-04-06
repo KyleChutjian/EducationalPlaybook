@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import AdminNav from '../components/AdminNav';
 import ClientNav from '../components/ClientNav';
 import { Button } from 'react-bootstrap';
-import { getIntakesByStatus} from '../services/intakeService';
+import { getIntakesByStatus, getIntakesByProjectLeadIdByStatus } from '../services/intakeService';
+import { getAccountsByRole } from '../services/userService';
 import {Card} from 'react-bootstrap';
 
 
@@ -25,6 +26,15 @@ function PendingIntakes() {
     history(path);
   };
 
+  // Returns an array of intake objects
+  getIntakesByProjectLeadIdByStatus("63ec25944c32561072ec88db", "pending-projectlead").then((result) => {
+    console.log(result.data);
+  })
+
+  // Returns an array of user objects
+  getAccountsByRole("PROJECTLEAD").then((result) => {
+    console.log(result.data);
+  })
 
   const [ adminNavbar, setAdminNavbar ] = useState(false);
   const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
@@ -40,6 +50,7 @@ function PendingIntakes() {
     if (permissionLevel === "admin") {
       setAdminNavbar(true);
     }
+
 
 
     // Get Intake using Status

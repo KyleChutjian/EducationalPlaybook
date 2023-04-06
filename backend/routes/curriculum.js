@@ -68,10 +68,11 @@ router.get('/getFile/:path', async (req, res) => {
         // Removing /routes from current directory
         const directory = __dirname.substring(0, __dirname.length-7);
         const decodedPath = decodeURIComponent(req.params.path);
-        console.log(decodedPath);
+        
         // Build filepath
-        const path = `${directory}\\files\\${decodedPath}`;
-
+        const path = `${directory}//files//${decodedPath}`;
+        const test = fs.existsSync(path);
+        console.log(test);
         // Send file
         res.sendFile(path);
     } catch (err) {
@@ -97,7 +98,7 @@ router.post("/:curriculumId/uploadFiles", async (req, res) => {
         await Curriculum.findById(curriculumId).then((curriculum) => {
             curriculum.files.forEach(async (file) => {
                 if (file.output !== "") {
-                    console.log(`${__dirname}\\..\\files\\${file.output}`)
+                    // console.log(`${__dirname}\\..\\files\\${file.output}`)
                     if (fs.existsSync(`${__dirname}\\..\\files\\${file.output}`)) {
                         await fsPromise.unlink(`${__dirname}\\..\\files\\${file.output}`);
                     } else {
