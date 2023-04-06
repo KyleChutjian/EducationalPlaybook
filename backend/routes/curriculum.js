@@ -70,8 +70,9 @@ router.get('/getFile/:path', async (req, res) => {
         const decodedPath = decodeURIComponent(req.params.path);
         console.log(decodedPath);
         // Build filepath
-        const path = `${directory}\\files\\${decodedPath}`;
-
+        const path = `${directory}//files//${decodedPath}`;
+        const test = fs.existsSync(path);
+        console.log(test);
         // Send file
         res.sendFile(path);
     } catch (err) {

@@ -9,6 +9,7 @@ import Modal from 'react-bootstrap/Modal';
 import { MDBTextArea } from 'mdb-react-ui-kit';
 import Dropdown from 'react-bootstrap/Dropdown';
 import editIcon from '../resources/edit-icon.png';
+import { getFileByPath } from '../services/curriculumService';
 
 function Curriculum() {
   const fileInput = React.createRef();
@@ -44,6 +45,11 @@ function Curriculum() {
   const [ files, setFiles ] = useState(<div></div>);
 
   useEffect(() => {
+    console.log(curriculumFiles);
+    loadFiles(curriculumFiles);
+  }, [curriculumFiles])
+
+  useEffect(() => {
     // Permissions
     // const permissionLevel = localStorage.getItem("permission-level");
 
@@ -63,8 +69,17 @@ function Curriculum() {
       loadLearningObjectives(curriculum.data.objectives);
       loadSteps(curriculum.data.steps);
       loadLinks(curriculum.data.links);
-      loadFiles(curriculum.data.files);
+
+      replaceFileOutputs(curriculum.data.files).then((result) => {
+        // setCurriculumFiles(result);
+        setTimeout(() => {
+          console.log(result);
+          setCurriculumFiles(result)
+        }, 100)
+      });
+
     });
+
       
   }, [currentIntakeId]);
 
@@ -106,6 +121,49 @@ function Curriculum() {
     ))
   }
 
+    // Curriculum File Functions:
+    const replaceFileOutputs = async (files) => {
+      if (typeof files === 'undefined' || files === "") {
+        return [];
+      }
+      
+      setFiles(files.forEach((specificFile, index) => {
+        if (typeof specificFile.output === 'string') {
+          // Get the file from backend files directory
+          getFileByPath(specificFile.output).then((result) => {
+            var fileName;
+            if (typeof specificFile.output === 'string') {
+              const firstUnderscoreIndex = specificFile.output.indexOf('_')+1;
+              var oneUnderscoreString = specificFile.output.substring(firstUnderscoreIndex);
+              const secondUnderscoreIndex = oneUnderscoreString.indexOf('_')+1;
+              fileName = oneUnderscoreString.substring(secondUnderscoreIndex);
+            } else {
+              fileName = specificFile.output.name;
+            }
+            
+            const blob = new Blob([result.data], {type: result.headers['content-type']});
+            const file = new File([blob], fileName, {type: result.headers['content-type']});
+  
+            files[index].output = file;
+  
+            setCurriculumFiles((oldFiles) => {
+              if (typeof oldFiles === 'object') {
+                return oldFiles;
+              }
+  
+              oldFiles[index].output = file;
+              return oldFiles;
+            })
+          });
+          
+  
+        }
+      }))
+  
+      return files;
+  
+    }
+
   // Curriculum Attachment Functions:
   const loadResourceOutput = (type, output, index) => {
     if (type === "Link") {
@@ -113,7 +171,6 @@ function Curriculum() {
       // return <p className='col-md-12' name={`output${index}`} style={{border: '1px solid black', minHeight:'30px', marginTop: '1%', marginBottom: '1%'}}>{output}</p>
       return null;
     } else if (type === "File") {
-      console.log(output);
       return <div>
         <h3 style={{fontFamily: 'Bitter', fontSize:'16px', marginTop: "1%"}}>{`Replace \"${output.name}\":`}</h3>
         <input readonly type='file' className="form-control" id="fileInput" name={`file${index}`} ref={fileInput}/>
@@ -126,13 +183,12 @@ function Curriculum() {
     if (typeof links === 'undefined') {
       return <div></div>
     }
-    console.log(links);
     setLinks(
       links.map((link, index) => {
         return(
           <div className="container" key={`${link[0]}${index}`}>
             <div className="row" style={{paddingTop: "1%"}}>
-              {console.log(link)}
+                {console.log(link)}
                 <span style={{display: 'flex'}}>
                   <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Link #${index+1}: `}<a href={link.output} className="link-primary">{link.title}</a></b></h3>
                 </span> 
@@ -145,23 +201,32 @@ function Curriculum() {
     ))
   }
 
+  const handleFileClick = (e) => {
+    const {name, value} = e.target;
+    console.log(e.target.name);
+    console.log(name);
+    console.log(typeof value);
+    console.log(curriculumFiles);
+    const index = parseInt(value, 10);
+    console.log(String.valueOf(value));
+    console.log(curriculumFiles[index]);
+    console.log(index);
+  }
+
   const loadFiles = (files) => {
     if (typeof files === 'undefined') {
       return <div></div>
     }
+    console.log(files);
     setFiles(
       files.map((file, index) => {
         return(
           <div className="container" key={`${file[0]}${index}`}>
             <div className="row" style={{paddingTop: "1%"}}>
-              {
-                file[1] === 'Link' ? 
+            {console.log(file)}
                 <span style={{display: 'flex'}}>
-                  <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`File #${index+1}: `}<a href={file[2]} className="link-primary">{file[0]}</a></b></h3>
-                </span> : loadResourceOutput(file[2], index)
-                
-              }
-
+                  <Button style={{fontFamily: 'Bitter', fontSize:'20px'}} name={index} onClick={handleFileClick}>{`File #${index+1}: `} {file.title}</Button>
+                </span> 
 
               {index !== files.length-1 ? <hr style={{height: "2px", marginTop: "1%"}}></hr> : null}
             </div>

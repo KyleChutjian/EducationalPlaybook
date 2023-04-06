@@ -197,8 +197,8 @@ function NeedsAssessment() {
                 <div className='row'>
                   {/* <div className='col'> */}
                     <div style={{display: 'flex'}}>
-                      <Button style={{backgroundColor: '#0098C3', fontFamily: 'Bitter', justifyContent:'center', marginLeft:'46.6%', minWidth:'200px', maxHeight:'40px'}} type="submit" onClick={addNew}>Add Focus Area</Button>
-                      <Button style={{backgroundColor: '#6E9A35', fontFamily: 'Bitter', justifyContent:'center', marginLeft: '0.7%', marginRight: '65%'}} variant="primary" type="submit" onClick={saveChanges}>Save</Button>
+                      <Button style={{backgroundColor: '#0098C3', fontFamily: 'Bitter', marginLeft:'39%', minWidth:'160px', maxHeight:'40px'}} type="submit" onClick={addNew}>Add Focus Area</Button>
+                      <Button style={{backgroundColor: '#6E9A35', fontFamily: 'Bitter', marginLeft: '5px', marginRight: '50%', minWidth:'160px', maxHeight:'40px'}} variant="primary" type="submit" onClick={saveChanges}>Save</Button>
                     </div>
 
                   {/* </div>    */}

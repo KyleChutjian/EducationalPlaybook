@@ -35,7 +35,10 @@ export function saveCurriculum(curriculumId, data) {
 
 export function getFileByPath(filePath) {
     http.setJwt(getJwt());
+    console.log(filePath);
     const encodedPath = encodeURIComponent(filePath);
+    const decodedPath = decodeURIComponent(encodedPath);
+    console.log(decodedPath);
     return http.get(`${apiEndPointCurriculum}/getFile/${encodedPath}`);
 }
 
