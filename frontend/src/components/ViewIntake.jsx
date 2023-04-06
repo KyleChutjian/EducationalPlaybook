@@ -7,10 +7,19 @@ import ClientNav from './ClientNav';
 import Modal from 'react-bootstrap/Modal';
 import {Card} from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
+import Multiselect from 'multiselect-react-dropdown';
+import Select from 'react-select';
+
 
 function ViewIntake() {
   const history = useNavigate();
   const projectLeadNameArray = new Array();
+  const projectLeadIdArray = new Array();
+  const option= [];
+  const leadName = [];
+
+
+
 //Project Lead Hooks
 const [projectLeads, setProjectLeads] = useState(null);
 
@@ -57,19 +66,43 @@ const [projectLeads, setProjectLeads] = useState(null);
       });
     }
     // Get Accounts using Status
-    getAccountsByRole("PROGRAMLEAD").then((projectLeads) => {
-   
-      //loadLeads(projectLeads);
+    getAccountsByRole("PROJECTLEAD").then((projectLeads) => {
+
+      setProjectLeads(projectLeads);
+      //loadLeads(projectLeads.data);
 
       for(var i = 0; i < projectLeads.data.length; i++){
         var currentName = projectLeads.data[i].firstName + " " + projectLeads.data[i].lastName;
+        var currentId = projectLeads.data[i]['_id'];
 
         if(projectLeadNameArray.indexOf(currentName) < 0){
-            projectLeadNameArray.push(currentName);
-          }
+          projectLeadNameArray.push(currentName);
+          projectLeadIdArray.push(currentId);
+          var obj = {};
+          obj['lead'] = currentName;
+          obj['id'] = currentId;
+          option.push(obj);
+
+        }
+    
+        //projectLeadIdArray.push(currentId['_id']);
+        // var obj = {};
+        // obj['lead'] = currentName;
+        // options.push(obj);
+
+
+
+        // 
       }
 
+      const test = option.map((o) => {return o.lead});
+      console.log(test);
+
       console.log(projectLeadNameArray);
+      console.log(projectLeadIdArray);
+      console.log(option);
+      //loadLeads(projectLeadNameArray)
+
 
     });
 
@@ -82,6 +115,7 @@ const [projectLeads, setProjectLeads] = useState(null);
 
 
   }, []);
+  //const [option] = useState(options);
 
   function editStatusToApprove(){
     if(buttonStatus == "clicked"){
@@ -101,26 +135,49 @@ const [projectLeads, setProjectLeads] = useState(null);
 
   const loadLeads = (leads) => {
     setProjectLeads(
-      leads.map((projectLeads, index) => {
-        return(
-          <div className="container" key={index}>
-            <div className="row" style={{paddingTop: "1%"}}>
+      
+      
+      leads.map((lead,index)=> {
+          return(
 
 
-            <Card id='card2' className="text-center mx-auto" style={{ background: '#D3D3D3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
-            <Card.Body>
-              <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
-                <Button name={index} variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}>{projectLeadNameArray[index]}<u>{}</u></Button>
-              </Card.Title>
-            </Card.Body>
-          </Card>
+                <option>{lead}</option>
 
-            </div>
-          </div>
-        ) 
+
+
+          )
+        
+          
+
+          
+
+
+     
+      // leads.map((projectLeads, index) => {
+      //   return(
+      //     <div className="container" key={index}>
+      //       <div className="row" style={{paddingTop: "1%"}}>
+
+
+            
+      //         {/* <h3>Assign Project Lead</h3>
+      //         <Multiselect options={options} displayValue = "Project Lead"/> */}
+
+      //     {/* <Card id='card2' className="text-center mx-auto" style={{ background: '#D3D3D3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
+      //       <Card.Body>
+      //         <Card.Title style={{fontSize:'30px'}}> */}
+      //           {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
+      //           {/* <Button name={index} variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}>{projectLeadNameArray[index]}<u>{}</u></Button>
+      //         </Card.Title>
+      //       </Card.Body>
+      //     </Card> */}
+
+      //       </div>
+      //     </div>
+      //   ) 
       }
-    ))
+     )
+    )
   }
 
 
@@ -141,8 +198,9 @@ const [projectLeads, setProjectLeads] = useState(null);
   const [intakeResponse, setIntakeResponse] = useState(["","","","","",""]);
   const [intakeName, setIntakeName] = useState("");
 
-  const handleOpenModal = () => setOpen(true);
+  const handleOpenModal = () =>setOpen(true);
   const handleCloseModal = () => setOpen(false);
+
 
 
   return (
@@ -203,7 +261,29 @@ const [projectLeads, setProjectLeads] = useState(null);
                 </Modal.Header>
                   <Modal.Body>
 
-                    {projectLeads}
+                   <Select class="select" options={projectLeadNameArray}>
+                   
+                   
+                   </Select>
+
+
+
+                    
+
+
+                  
+
+                   {/* <Select class="select" options={option}>
+                   
+                   
+                   </Select> */}
+                   <label class="form-label select-label">Example label</label>
+
+                 
+              
+                 
+
+                   
 
                   </Modal.Body>
                   
