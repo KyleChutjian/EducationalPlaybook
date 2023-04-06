@@ -112,6 +112,8 @@ function EditCurriculum() {
   }
   const handleLearningObjectivesResponseChange = (e) => {
     const { name, value} = e.target;
+    console.log(`name: ${name}`);
+    console.log(`value: ${value}`);
     let indexString, index;
     setCurriciulumLearningObjectives((oldObjectives) => {
       indexString = name.split("objective")[1];
@@ -353,7 +355,7 @@ function EditCurriculum() {
 
             <div>
               {/* For displaying this file */}
-              <p>{`File name for displaying the file later: ${file.output.name}`}</p>
+              <p>{`${file.output.name}`}</p>
 
               {/* For editing the file */}
               <input type='file' className="form-control" id={`file${index}`} name={'file'} onChange={handleFileResponseChange} ref={fileInput}/>
@@ -498,7 +500,7 @@ function EditCurriculum() {
 
       {/* Course Steps */}
       <div className="course-container">
-        <h3 className="learning-objectives-title text-center" style={{fontFamily: 'Bitter', paddingTop: "1%", color: "#B05139"}}><b>Course</b></h3>
+        <h3 className="learning-objectives-title text-center" style={{fontFamily: 'Bitter', paddingTop: "1%", color: "#B05139"}}><b>Course Plan</b></h3>
 
         {/* Load Course Steps */}
         {courseSteps}

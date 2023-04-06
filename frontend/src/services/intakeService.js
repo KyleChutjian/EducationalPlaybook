@@ -55,7 +55,7 @@ export function adminApproveIntake(data) {
 // Project-Lead Approve Submitted Intake Form
 export function projectleadApproveIntake(data) {
     http.setJwt(getJwt());
-    return http.get(`${apiEndPointIntake}/approve-intake/projectlead`, data);
+    return http.put(`${apiEndPointIntake}/approve-intake/projectlead`, data);
 }
 
 // Archive Intake by IntakeId
@@ -102,7 +102,13 @@ export function editNeedsAssessmentByIntakeId(intakeId, data) {
 }
 
 // Get Intakes By ProjectLeadId By Status
-export function getIntakesByProjectLeadIdByStatus(projectLeadId, status) {
+export function getIntakesByPermissionByStatus(permissionLevel, userId) {
     http.setJwt(getJwt());
-    return http.get(`${apiEndPointIntake}/projectlead/${projectLeadId}/${status}`);
+    return http.get(`${apiEndPointIntake}/getIntake-permission-status/${permissionLevel}/${userId}`);
+}
+
+// Assign Project-Leads by IntakeId
+export function assignProjectLeadsByIntakeId(intakeId, body) {
+    http.setJwt(getJwt());
+    return http.put(`${apiEndPointIntake}/assign-projectleads/${intakeId}`, body);
 }
