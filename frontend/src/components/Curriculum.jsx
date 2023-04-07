@@ -202,15 +202,21 @@ function Curriculum() {
   }
 
   const handleFileClick = (e) => {
-    const {name, value} = e.target;
-    console.log(e.target.name);
-    console.log(name);
-    console.log(typeof value);
-    console.log(curriculumFiles);
-    const index = parseInt(value, 10);
-    console.log(String.valueOf(value));
-    console.log(curriculumFiles[index]);
-    console.log(index);
+    const { name } = e.target;
+
+    const indexString = name.split("file")[1];
+    console.log(indexString);
+    const index = parseInt(indexString);
+    console.log(curriculumFiles[index].output);
+
+    const url = window.URL.createObjectURL(curriculumFiles[index].output);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', curriculumFiles[index].output.name);
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode.removeChild(link);
+
   }
 
   const loadFiles = (files) => {
@@ -225,7 +231,7 @@ function Curriculum() {
             <div className="row" style={{paddingTop: "1%"}}>
             {console.log(file)}
                 <span style={{display: 'flex'}}>
-                  <Button style={{fontFamily: 'Bitter', fontSize:'20px'}} name={index} onClick={handleFileClick}>{`File #${index+1}: `} {file.title}</Button>
+                  <Button style={{fontFamily: 'Bitter', fontSize:'20px'}} name={`file${index}`} onClick={handleFileClick}>{`File #${index+1}: `} {file.title}</Button>
                 </span> 
 
               {index !== files.length-1 ? <hr style={{height: "2px", marginTop: "1%"}}></hr> : null}
@@ -254,7 +260,7 @@ function Curriculum() {
               <h1 style={{fontFamily: 'Bitter', verticalAlign: 'middle', borderBottom: '0', margin: '0%'}}>{curriculumTitle}</h1>
               {/* Edit Button */}
               {
-                permissionLevel ==='admin' || permissionLevel === 'programlead' ?
+                permissionLevel ==='admin' || permissionLevel === 'projectlead' ?
                 <button style={{border: 'none', backgroundColor: 'inherit', paddingLeft: '1%', paddingBottom: '0%'}}>
                   <img src={editIcon} alt='edit-icon' height='25px' onClick={editCurriculum}/>
                 </button> : null
@@ -282,7 +288,7 @@ function Curriculum() {
 
       {/* Course Steps */}
       <div className="course-container">
-        <h3 className="learning-objectives-title text-center" style={{fontFamily: 'Bitter', paddingTop: "1%", color: "#B05139"}}><b>Course</b></h3>
+        <h3 className="learning-objectives-title text-center" style={{fontFamily: 'Bitter', paddingTop: "1%", color: "#B05139"}}><b>Course Plan</b></h3>
 
         {/* Load Course Steps */}
         {courseSteps}

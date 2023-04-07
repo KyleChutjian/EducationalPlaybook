@@ -247,13 +247,13 @@ router.put("/approve-intake/admin", async (req, res) => {
 router.put("/approve-intake/projectlead", async (req, res) => {
     try {
         const intakeId = req.body.intakeId;
-        const curriculumName = req.body.curriculumName;
+        // const curriculumName = req.body.curriculumName;
 
         // Update Status
         const intake = await Intake.findByIdAndUpdate(intakeId, {status: "approved"});
 
         // Update Curriculum Name
-        const curriculum = await Curriculum.findByIdAndUpdate(intake.curriculumId, {name: curriculumName});
+        // const curriculum = await Curriculum.findByIdAndUpdate(intake.curriculumId, {name: curriculumName});
         res.status(200).send(`Successfully approved this intake form, it has been moved to the 'Approved Intakes' screen.`);
     } catch (err) {
         res.status(500).json(err);
@@ -343,32 +343,55 @@ router.put("/:intakeId/edit-needsAssessment", async (req, res) => {
     }
 });
 
-// Get Intakes By ProjectLeadID By Status
-router.get("/projectLead/:projectLeadId/:status", async (req, res) => {
-    const projectLeadId = req.params.projectLeadId;
-    const status = req.params.status.toLowerCase();
-    try {
-        switch (status) {
-            case "pending-client":
-            case "pending-admin":
-            case "pending-projectlead":
-            case "approved":
-            case "archived":
-                console.log(`Getting all ${status} intakes for projectLeadId: ${projectLeadId}`);
-                const intakes = await Intake.find({
-                    projectLeadIds: {$in: projectLeadId},
-                    status: status
-                });
-                console.log(intakes);
-                res.status(200).json(intakes);
-                break;
+// Get Intakes By Permission Level By Status
+router.get("/getIntake-permission-status/:permission/:userId", async (req, res) => {
 
-            default:
-                res.status(500).send(`Invalid status: ${status}`);
+    try {
+        const permissionLevel = req.params.permission.toLowerCase();
+        const userId = req.params.userId;
+        if (permissionLevel === "admin") {
+            console.log(`Getting all pending-admin intakes as an administrator`);
+            const intakes = await Intake.find({
+                status: "pending-admin"
+            });
+            console.log(intakes);
+            res.status(200).json(intakes);
+        } else if (permissionLevel === "projectlead") {
+            console.log(`Getting all pending-projectlead intakes for projectLeadId: ${userId}`);
+            const intakes = await Intake.find({
+                projectLeadIds: {$in: userId},
+                status: "pending-projectlead"
+            });
+            console.log(intakes);
+            res.status(200).json(intakes);
+        } else {
+            console.log(`Something went wrong with permission: ${permissionLevel} and userid: ${userId}`);
+            res.status(500).send('Invalid permission level');
         }
+
     } catch (err) {
+        console.log(err);
         res.status(500).json(err);
     }
 });
+
+router.put("/assign-projectleads/:intakeId", async (req, res) => {
+    try {
+        console.log('test');
+        const intakeId = req.params.intakeId;
+        const projectLeadIds = req.body.projectLeadIds;
+        console.log(projectLeadIds);
+        Intake.findByIdAndUpdate(intakeId, {
+            projectLeadIds: projectLeadIds,
+            status: "pending-projectlead"
+        }, {new: true}).then((result) => {
+            console.log(result);
+            res.status(200).send(result);
+        })
+
+    } catch (err) {
+        res.status(500).json(err);
+    }
+})
 
 module.exports = router;
