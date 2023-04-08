@@ -19,6 +19,12 @@ function AdminNav() {
       history(path);
   };
 
+  const toManageAccounts = () => {
+    // Update the route
+    let path = '/ManageAccounts';
+    history(path);
+};
+
     return (
         <div>
     <Navbar bg="light" expand="lg" className="ms-auto">
@@ -31,9 +37,9 @@ function AdminNav() {
           <Nav className="ms-auto">
             <NavDropdown 
               title={<i className="bi bi-gear"></i>} id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Manage Accounts</NavDropdown.Item>
+              <NavDropdown.Item onClick={toManageAccounts}>Manage Accounts</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
+              <NavDropdown.Item>
                 Logout
               </NavDropdown.Item>
             </NavDropdown>    

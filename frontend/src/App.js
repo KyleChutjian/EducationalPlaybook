@@ -16,6 +16,7 @@ import SuccessRate from "./components/SuccessRate";
 import AdminNav from "./components/AdminNav";
 import PLDashboard from './components/PLDashboard';
 import ClientDashboard from './components/ClientDashboard';
+import React from "react";
 
 import {
   BrowserRouter as Router,

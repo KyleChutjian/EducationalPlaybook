@@ -1,6 +1,6 @@
 require('dotenv').config();
 const PORT = 3001;
-const express = require('express');
+const express  = require('express');
 const session = require("express-session");
 const fileUpload = require("express-fileupload");
 const mongoose = require('mongoose');
@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+console.log(process.env.PASSWORD)
 const mongooseConnectionString = `mongodb+srv://${process.env.LOGIN}:${process.env.PASSWORD}@cluster0.yb6wo5k.mongodb.net/test`;
 const User = require('./models/User');
 var users = require('./routes/users');
