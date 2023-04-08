@@ -9,6 +9,7 @@ import { Dropdown, DropdownButton, Button } from 'react-bootstrap';
 import { ListGroup } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { getIntakeByIntakeId, editNeedsAssessmentByIntakeId } from '../services/intakeService';
+import { useNavigate } from 'react-router-dom';
 
 import {
   MDBContainer,

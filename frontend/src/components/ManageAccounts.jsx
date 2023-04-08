@@ -18,13 +18,7 @@ from 'mdb-react-ui-kit';
 
 function ManageAccounts() {
 
-  //get each user from mongo as object? to turn into table items (below from admindash)
-    // Gets the user's first name for the "Welcome, [Name]"
-    // getUserByUserId(currentUser.id).then((res) => {
-    //   setAdminFirstName(res.data.firstName);
-    // });
-
-    //getUsers instead of getAccounts? (new method in userservice)
+     //getUsers instead of getAccounts? (new method in userservice)
     //getuserby something when checkbox clicked to update status (or foreach on save?)
     //
 
@@ -32,12 +26,15 @@ function ManageAccounts() {
     const users = getAccounts();
 
     useEffect(() => {
-      const tableItems = "";
 
-      for (let i = 0; i < users.length; i++) {
-        //format table item for each user using info
-        //341 ls15 video1 5 minutes in
-      }
+      /* const tableItems = users.map((user) => {
+        <tr>
+          <td>{user.email}</td>
+          <td>{user.lastName}, {user.firstName}</td>
+          <td><input className="form-check-input" type="checkbox" value="" id="checkAdmin" defaultChecked={user.isProgramLead} onChange={onChangeUser}/></td>
+          <td><input className="form-check-input" type="checkbox" value="" id="checkAdmin" defaultChecked={user.isAdmin} onChange={onChangeUser}/></td>
+        </tr> 
+      }); */
 
     }, [])
 
@@ -70,7 +67,7 @@ function ManageAccounts() {
             </thead>
             <tbody>
               <tr>
-                <th scope="row">thomas.nowicki@hhchealth.org</th>
+                <td scope="row">thomas.nowicki@hhchealth.org</td>
                 <td>Nowicki, Tom</td>
                 <td>
                   <input className="form-check-input" type="checkbox" value="" id="checkProgram" />
