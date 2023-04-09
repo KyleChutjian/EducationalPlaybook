@@ -6,13 +6,23 @@ import Container from 'react-bootstrap/Container';
 import {Card} from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { getCurriculumByIntakeId } from '../services/curriculumService';
+import Modal from 'react-bootstrap/Modal';
+import { getIntakeByIntakeId } from '../services/intakeService';
 
 function CurriculumDash() {
   const history = useNavigate();
   const [ curriculumTitle, setCurriculumTitle ] = useState("");
   const [ adminNavbar, setAdminNavbar ] = useState(false);
-  //localStorage.setItem("currentIntakeId", "63f52c4d02554f88c031c537"); // TEMPORARY, waiting for sadjell
-  const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
+  const [isRadio1Visible, setIsRadio1Visible] = useState(false);
+  const [isRadio2Visible, setIsRadio2Visible] = useState(false);
+  const [check, setIsBoxChecked] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [status, setStatus ] = useState("");
+   // TEMPORARY, waiting for sadjell
+  //const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
+  const [currentIntakeId, setCurrentIntakeId] = useState(localStorage.setItem("currentIntakeId", "64332c606ad1113507499c63"));
+
+  const radioResponse3HTML = <div class = "button-approved">Submit</div>;
   
   useEffect(() => {
 
@@ -49,6 +59,68 @@ function CurriculumDash() {
     let path = '/editcurriculum';
     history(path);
   };
+
+  const [open, setOpen] = useState(false);
+
+
+    // Handles Logging in
+    function handleSubmit(e) {
+        e.preventDefault();
+       
+    }
+
+    // Handles Create New Account Submission
+    const submitModal = (e) => {
+      if (success == true){
+        getIntakeByIntakeId(currentIntakeId).then((result) => {
+          setStatus("archived-success");
+        });
+
+      }
+      else{
+        getIntakeByIntakeId(currentIntakeId).setStatus("archived-fail");
+
+      }
+      console.log(currentIntakeId.status);
+      e.preventDefault();
+      setOpen(false);
+     
+    };
+
+  const handleOpenModal = () => setOpen(true);
+  const handleCloseModal = () => setOpen(false);
+
+
+  function handleRadioButtons(e) {
+    const name = e.target.name; // Radio1/Radio2
+    const value = e.target.value; // Yes/No
+
+    if (name === "radio1") {
+        if (value === "yes") {
+          console.log(`opening ${name} response`);
+          setIsRadio1Visible(true);
+        } else {
+          console.log(`closing ${name} response`);
+          setIsRadio1Visible(false);
+        }
+    }
+
+    if (name === "radio2") {
+      if (value === "yes") {
+        console.log(`opening ${name} response`);
+        setIsRadio2Visible(true);
+        setSuccess(true);
+      } else {
+        console.log(`closing ${name} response`);
+        setIsRadio2Visible(false);
+      }
+  }
+
+  }
+
+  function handleCheckBox(e){
+    setIsBoxChecked(e.target.checked);
+  }
 
   return(  
     <div>
@@ -95,6 +167,16 @@ function CurriculumDash() {
             </Card.Body>
           </Card>
 
+          {/* Card3: Archive Intake */}
+          <Card id='card3' className="text-center mx-auto" style={{ background: '#d2492a', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
+            <Card.Body>
+              <Card.Title style={{fontSize:'30px'}}>
+                {/* <MDBCardLink disabled={disableViewCourse} href='#' style={{color:'whitesmoke'}}>View Course</MDBCardLink>  */}
+                <Button onClick={handleOpenModal} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}>Archive Intake</Button>
+              </Card.Title>
+            </Card.Body>
+          </Card>
+
           {/* Card4: Success Rate */}
           {/* <Card id='card4' className="text-center mx-auto" style={{ background: '#a40084', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
             <Card.Body>
@@ -102,6 +184,79 @@ function CurriculumDash() {
             </Card.Body>
           </Card>  */}
         </Container>
+
+        <div className="mb-3">
+              <Modal show={open} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Archive Intakes</Modal.Title>
+                </Modal.Header>
+                  <Modal.Body>
+
+                   <div>
+                    <h4>Confirm to archive intake form:</h4>
+                   
+                    {/* Data: Yes */}
+                    <div className="yes">
+                    <label htmlFor='yes'>Yes</label>
+                    <input type='radio' id='yes' name='radio1' value='yes' onClick={handleRadioButtons}/>
+                    </div>
+                    {/* Identified Problem: No */}
+                    <div className="no">
+                    <label htmlFor='no'>No</label>
+                    <input defaultChecked={true} type='radio' id='no' name='radio1' value='no' onClick={handleRadioButtons}/>
+
+                    </div>
+                    {/*isRadio2Visible ? radioResponse2HTML : null*/}
+
+                   </div>
+
+
+                   <div>
+                    <h4>Was this intake considered successful?</h4>
+                   
+                    {/* Data: Yes */}
+                    <div className="yes">
+                    <label htmlFor='yes'>Yes</label>
+                    <input type='radio' id='yes' name='radio2' value='yes' onClick={handleRadioButtons}/>
+                    </div>
+                    {/* Identified Problem: No */}
+                    <div className="no">
+                    <label htmlFor='no'>No</label>
+                    <input defaultChecked={true} type='radio' id='no' name='radio2' value='no' onClick={handleRadioButtons}/>
+
+                    </div>
+                    
+
+                   </div>
+
+                   <div>
+                  
+                   
+                    {/* Data: Yes */}
+                    <div className="yes">
+                    <input defaultChecked={false} type='checkbox' id='yes' name='check' onChange={handleCheckBox}/>
+                    <label htmlFor='check'>I understand</label>
+                    </div>
+                  
+                    
+                   </div>
+                  
+
+                    
+
+                    
+                      
+                    
+                  </Modal.Body>
+                  
+
+                  <Modal.Footer>
+                    <Button disabled = {!check} style={{background:'#6E9A35'}} onClick={submitModal}>Submit</Button>
+                    <Button variant="secondary" onClick={handleCloseModal}>Close</Button>
+                  </Modal.Footer>
+
+              </Modal>
+          </div>
       </div>
     </div>
 
