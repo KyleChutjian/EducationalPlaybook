@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from '../services/authService';
 import { getAccountsByRole } from '../services/userService';
-import { getIntakeByIntakeId, getOpenIntakeByClientId, assignProjectLeadsByIntakeId, projectleadApproveIntake } from '../services/intakeService';
+import { getIntakeByIntakeId, getOpenIntakeByClientId, assignProjectLeadsByIntakeId, projectleadApproveIntake, editIntakeStatusByIntakeId } from '../services/intakeService';
 import ClientNav from './ClientNav';
 import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap';
 import { Col, Form } from 'react-bootstrap';
+import Select from 'react-select';
 
 
 
@@ -24,21 +25,15 @@ function ViewIntake() {
 
 
   //Project Lead Hooks
-  const [projectLeads, setProjectLeads] = useState([]);
+  const [ projectLeads, setProjectLeads] = useState([]);
   const [ selectedProjectLeads, setSelectedProjectLeads ] = useState([]);
-  const [ projectLeadsHTML, setProjectLeadsHTML ] = useState(<div></div>);
-  const [ selectedProjectLeadsHTML, setSelectedProjectLeadsHTML ] = useState(<div></div>);
-  
-
   const currentIntakeId = localStorage.getItem("currentIntakeId");
 
   useEffect(() => {
-    console.log('updating projectleads');
-    loadOptions(projectLeads)
-  }, [projectLeads])
+    
+  }, [projectLeads]);
 
   useEffect(() => {
-
     // Get Current User
     const currentUser = getCurrentUser();
 
@@ -67,7 +62,6 @@ function ViewIntake() {
         setIntakeResponse(result.data.intakeResponse);
         status = result.data.status;
         setStatus(status.toLowerCase())
-        console.log(status);
         if (result.data.intakeResponse[2] === '') {
           result.data.intakeResponse[2] = 'No';
         }
@@ -76,101 +70,54 @@ function ViewIntake() {
         }
       });
     }
-    
-
 
     // Get Accounts using Status
     getAccountsByRole("PROJECTLEAD").then((projectLeads) => {
-
       const leads = projectLeads.data.map((lead) => {
         return {
-          name: `${lead.firstName} ${lead.lastName}`,
-          projectLeadId: lead._id
+          label: `${lead.firstName} ${lead.lastName}`,
+          value: lead._id
         }
       });
-
-      
-      if (leads !== []) {
-        setProjectLeads(leads);
-        loadOptions(leads);
-      }
-      
+      setProjectLeads(leads);
     });
-
   }, []);
 
-  const handleApprovePL = () => {
-    projectleadApproveIntake({
-      intakeId: currentIntakeId
-    })
-
-
-    history("/pldashboard");
+  const handleSelectProjectLeads = (e) => {
+    setSelectedProjectLeads(e);
   }
-
 
   // Handles Create New Account Submission
   const submitModal = (e) => {
     e.preventDefault();
     setOpen(false);
-    console.log(selectedProjectLeads);
     const selectedIds = selectedProjectLeads.map((leads) => {
-      return leads.projectLeadId;
+      return leads.value;
     })
     assignProjectLeadsByIntakeId(currentIntakeId, {projectLeadIds: selectedIds});
     history("/admindashboard");
   };
-
-  const handleProjectLeadChange = (e) => {
-    const { value } = e.target;
-    console.log(`value: ${value}`);
-
-    setSelectedProjectLeads((old) => {
-      projectLeads.forEach((lead) => {
-        if (lead.projectLeadId === value) {
-          if (!old.includes(lead)) {
-            old.push(lead);
-          }
-          
-        }
-      })
-      // console.log(old);
-      loadSelectedProjectLeads(old);
-      return old;
+  const handleApprovePL = () => {
+    projectleadApproveIntake({
+      intakeId: currentIntakeId
     })
+    history("/pldashboard");
   }
 
-  const loadSelectedProjectLeads = (leads) => {
-    console.log(leads);
-    const selectedNames = leads.map((lead) => {
-      return lead.name;
-    });
-    console.log(selectedNames);
+  const handleDeny = () => {
+    console.log('Deny');
 
-    var returnString = "";
-    
-    selectedNames.forEach((name, index) => {
-        returnString += name;
-        if (index !== selectedNames.length-1) {
-          returnString += ', '
-        }
-    })
-    console.log(returnString);
-    setSelectedProjectLeadsHTML(<div>
-      <p>{returnString}</p>
-    </div>)
-  }
+    // Set status to "archived-denied"
+    editIntakeStatusByIntakeId(currentIntakeId, "archived-denied");
 
-  const loadOptions = (leads) => {
-    // console.log(leads);
-    setProjectLeadsHTML(
-
-    <Form.Control as='select' multiple value={selectedProjectLeads} onChange={handleProjectLeadChange}>
-      {leads.map((lead, index) => {
-        return <option key={`${lead}${index}`} name={lead.name} value={lead.projectLeadId}>{lead.name}</option>
-      })}
-    </Form.Control>);
-
+    const permissionLevel = localStorage.getItem("permission-level");
+    if (permissionLevel === "admin") {
+      history("/admindashboard");
+    } else if (permissionLevel === "projectlead") {
+      history("/pldashboard");
+    } else {
+      console.log('Something went wrong');
+    }
   }
 
   return (
@@ -179,21 +126,24 @@ function ViewIntake() {
       <div className="mb-3">
         <Modal show={open} onHide={handleCloseModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Assign Project Lead</Modal.Title>
+            <Modal.Title>Assign Project Leads</Modal.Title>
           </Modal.Header>
             <Modal.Body>
               
               <Form.Group as={Col} controlId='projectleads'>
-                <Form.Label>Project-Leads</Form.Label>
-                {projectLeadsHTML}
-
+                <Form.Label>Project-Leads:</Form.Label>
+                <Select 
+                  closeMenuOnSelect={false} 
+                  isMulti 
+                  options={projectLeads} 
+                  onChange={handleSelectProjectLeads}
+                />
               </Form.Group>
-              {selectedProjectLeadsHTML}
             </Modal.Body>
             
 
             <Modal.Footer>
-              <Button style={{background:'#6E9A35'}} onClick={submitModal}>Submit</Button>
+              <Button style={{background:'#6E9A35'}} onClick={submitModal}>Approve & Assign</Button>
               <Button variant="secondary" onClick={handleCloseModal}>Close</Button>
             </Modal.Footer>
 
@@ -257,17 +207,24 @@ function ViewIntake() {
          {/* Buttons */}
 
          <div className="login-button text-center" style={{paddingBottom: "0.3%"}}>
-          {status !== "approved" ?             <button type="submit" onClick={()=>{
+          {/* {status !== "approved" ?             <button type="submit" onClick={()=>{
 
-            }} className="btn btn-success" style={{width:'50%',fontFamily: 'Bitter', background:'#d2492a'}}>Deny</button> : <div></div>}
+            }} className="btn btn-success" style={{width:'50%',fontFamily: 'Bitter', background:'#d2492a'}}>Deny</button> : <div></div>} */}
 
           </div>
           <div className="create-account-button text-center">
-            {localStorage.getItem("permission-level") === "admin"  && status === "pending-admin"? <Button variant="primary" onClick={handleOpenModal} style={{width:'50%',fontFamily: 'Bitter', background: '#a40084'}}>Approve&Assign</Button>:null}
-            {localStorage.getItem("permission-level") === "projectlead" && status === "pending-projectlead" ? <Button variant="primary" onClick={handleApprovePL} style={{width:'50%',fontFamily: 'Bitter', background: '#a40084'}}>Approve</Button>:null}
+            {localStorage.getItem("permission-level") === "admin"  && status === "pending-admin" ? 
+              <div>
+                <Button variant="primary" onClick={handleOpenModal} style={{width:'20%',fontFamily: 'Bitter', background: '#a40084', marginRight: '1%'}}>Approve & Assign</Button>
+                <Button variant="primary" onClick={handleDeny} style={{width:'20%',fontFamily: 'Bitter', background: '#d2492a', marginLeft: '1%'}}>Deny</Button>
+              </div> : null}
+            {localStorage.getItem("permission-level") === "projectlead" && status === "pending-projectlead" ? 
+              <div>
+                <Button variant="primary" onClick={handleApprovePL} style={{width:'20%',fontFamily: 'Bitter', background: '#a40084', marginRight: '1%'}}>Approve</Button>
+                <Button variant="primary" onClick={handleDeny} style={{width:'20%',fontFamily: 'Bitter', background: '#d2492a', marginLeft: '1%'}}>Deny</Button>
+              </div>:null}
 
             {/* {approveButton} */}
-            {/* <Button variant="primary" onClick={handleOpenModal} style={{width:'50%',fontFamily: 'Bitter', background: '#a40084'}}>Approve&Assign</Button> */}
           </div>
 
       </div> 

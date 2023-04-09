@@ -310,7 +310,7 @@ router.get("/:intakeId/view-intake", async (req, res) => {
 router.put("/:intakeId/edit-intake-status/:status", async (req, res) => {
     try {
         const status = req.params.status.toLowerCase();
-        if (status != "pending" && status != "approved" && status != "archived") {
+        if (status != "pending-client" && status != "pending-admin" && status != "pending-projectlead" && status != "approved" && status != "archived-fail" && status != "archived-success" && status != "archived-denied") {
             res.status(500).send(`Invalid Status: ${status}`);
         }
         const intakeId = req.params.intakeId;
