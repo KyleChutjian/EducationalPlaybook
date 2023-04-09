@@ -1,28 +1,17 @@
+
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from "react-router-dom";
-import { NavLink } from "react-router-dom";
-import { loginUser } from '../services/authService';
+
 import AdminNav from '../components/AdminNav';
 import ClientNav from '../components/ClientNav';
-import Container from 'react-bootstrap/Container';
 import {Card} from 'react-bootstrap';
-import { Dropdown, DropdownButton, Button } from 'react-bootstrap';
-import { ListGroup } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { getIntakeByIntakeId, editNeedsAssessmentByIntakeId } from '../services/intakeService';
+import { useNavigate } from 'react-router-dom';
 
-
-import {
-  MDBContainer,
-  MDBInput,
-  MDBCheckbox,
-  MDBBtn,
-  MDBIcon,
-  MDBTextArea
-}
-from 'mdb-react-ui-kit';
 
 function NeedsAssessment() {
+
   const history = useNavigate();
   const [ adminNavbar, setAdminNavbar ] = useState(false);
 
@@ -146,7 +135,6 @@ function NeedsAssessment() {
     loadNeedsAssessmentCards(newNeedsAssessment);
   }
 
-  
     return(
         <div>
           <div>
@@ -175,6 +163,7 @@ function NeedsAssessment() {
 
         </div>
   )
+
 }
 
 export default NeedsAssessment;

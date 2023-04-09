@@ -10,23 +10,17 @@ function ArchivedIntakes() {
 
   const history = useNavigate();
 
-  const archIntakeArray = new Array();
-  const archIntakeNameArray = new Array();
+  const archIntakeArray = [];
+  const archIntakeNameArray = [];
 
   const toArchivedIntake = () => {
     // Update the route
     let path = '/curriculumDash';
     history(path);
   };
-  const toLogin = () => {
-    // Update the route
-    let path1 = '/login';
-    history(path1);
-  };
 
 
   const [ adminNavbar, setAdminNavbar ] = useState(false);
-  const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
 
   //Approved Intake Hooks
   const [archivedIntakes, setArchivedIntakes] = useState(null);

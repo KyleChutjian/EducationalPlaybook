@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useNavigate } from "react-router-dom";
-import { NavLink } from "react-router-dom";
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
-//import { AiOutlineSetting } from "react-icons/bs";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 
@@ -19,6 +17,12 @@ function AdminNav() {
       history(path);
   };
 
+  const toManageAccounts = () => {
+    // Update the route
+    let path = '/ManageAccounts';
+    history(path);
+};
+
     return (
         <div>
     <Navbar bg="light" expand="lg" className="ms-auto">
@@ -31,9 +35,9 @@ function AdminNav() {
           <Nav className="ms-auto">
             <NavDropdown 
               title={<i className="bi bi-gear"></i>} id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Manage Accounts</NavDropdown.Item>
+              <NavDropdown.Item onClick={toManageAccounts}>Manage Accounts</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
+              <NavDropdown.Item>
                 Logout
               </NavDropdown.Item>
             </NavDropdown>    

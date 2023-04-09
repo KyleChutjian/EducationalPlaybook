@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AdminNav from '../components/AdminNav';
 import ClientNav from '../components/ClientNav';
 import { Button } from 'react-bootstrap';
-import { getIntakesByStatus, getIntakesByPermissionByStatus } from '../services/intakeService';
-import { getAccountsByRole } from '../services/userService';
+import { getIntakesByPermissionByStatus } from '../services/intakeService';
 import {Card} from 'react-bootstrap';
 import { getCurrentUser } from '../services/authService';
 

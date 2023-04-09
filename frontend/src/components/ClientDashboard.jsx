@@ -4,7 +4,6 @@ import Container from 'react-bootstrap/Container';
 import {Card} from 'react-bootstrap';
 import ClientNav from './ClientNav';
 import { Dropdown, DropdownButton, Button } from 'react-bootstrap';
-import { MDBCardLink } from 'mdb-react-ui-kit';
 import { getCurrentUser } from '../services/authService';
 import { getOpenIntakeByClientId } from '../services/intakeService';
 import { getUserByUserId, getDashboardsByUserId } from '../services/userService';
@@ -108,8 +107,6 @@ function ClientDashboard() {
   // };
 
   const submitProblemButton = () => {
-    // Update the route
-    let path3 = '/dashboard';
     history(button1Output);
 };
  

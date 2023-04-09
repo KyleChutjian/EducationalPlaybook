@@ -20,9 +20,10 @@ function CurriculumDash() {
   const [status, setStatus ] = useState("");
    // TEMPORARY, waiting for sadjell
   //const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
-  const [currentIntakeId, setCurrentIntakeId] = useState(localStorage.setItem("currentIntakeId", "64332c606ad1113507499c63"));
+  //const [currentIntakeId, setCurrentIntakeId] = useState(localStorage.setItem("currentIntakeId", "64332c606ad1113507499c63"));
 
   const radioResponse3HTML = <div class = "button-approved">Submit</div>;
+  const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
   
   useEffect(() => {
 
@@ -33,11 +34,11 @@ function CurriculumDash() {
       setAdminNavbar(false);
     }
 
-    getCurriculumByIntakeId(currentIntakeId).then((res) => {
+    getCurriculumByIntakeId(localStorage.getItem("currentIntakeId")).then((res) => {
       setCurriculumTitle(`Curriculum Development Plan: ${res.data.name}`)
     });
 
-  }, [currentIntakeId]);
+  });
 
   const intakeData = () => {
     // Update the route
@@ -52,11 +53,6 @@ function CurriculumDash() {
   const viewCourse = () => {
     // Update the route
     let path = '/curriculum';
-    history(path);
-  };
-  const editCourse = () => {
-    // Update the route
-    let path = '/editcurriculum';
     history(path);
   };
 
