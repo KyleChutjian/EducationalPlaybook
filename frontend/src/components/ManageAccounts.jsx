@@ -1,20 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from "react-router-dom";
-import { NavLink } from "react-router-dom";
-import { loginUser } from '../services/authService';
-import { getCurrentUser } from '../services/authService';
 import AdminNav from '../components/AdminNav';
 import { getAccounts } from '../services/userService';
 import { manageAccounts } from '../services/userService';
-
-import {
-  MDBContainer,
-  MDBInput,
-  MDBCheckbox,
-  MDBBtn,
-  MDBIcon
-}
-from 'mdb-react-ui-kit';
 
 function ManageAccounts() {
 
@@ -40,7 +27,7 @@ function ManageAccounts() {
     }, []);
 
     const loadUsers = (users) => {
-      if (users == [] && typeof(users)) {
+      if (users === [] && typeof(users)) {
         return <div></div>;
       }
       console.log(users);

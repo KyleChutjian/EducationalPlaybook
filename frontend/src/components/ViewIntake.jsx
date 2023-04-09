@@ -2,13 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from '../services/authService';
 import { getAccountsByRole } from '../services/userService';
-import { editIntakeStatusByIntakeId, getIntakeByIntakeId, getIntakesByProgramLeadIdByStatus, getOpenIntakeByClientId, assignProjectLeadsByIntakeId, projectleadApproveIntake } from '../services/intakeService';
+import { getIntakeByIntakeId, getOpenIntakeByClientId, assignProjectLeadsByIntakeId, projectleadApproveIntake } from '../services/intakeService';
 import ClientNav from './ClientNav';
 import Modal from 'react-bootstrap/Modal';
-import {Card} from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
-import Multiselect from 'multiselect-react-dropdown';
-import Select from 'react-select';
 import { Col, Form } from 'react-bootstrap';
 
 
@@ -16,7 +13,6 @@ import { Col, Form } from 'react-bootstrap';
 function ViewIntake() {
   const history = useNavigate();
 
-  const [ approveButton, setApproveButton ] = useState(<div></div>);
   const [ status, setStatus ] = useState("approved");
 
   // Modal open hook
@@ -79,23 +75,6 @@ function ViewIntake() {
           result.data.intakeResponse[3] = 'No';
         }
       });
-    }
-
-    if (permissionLevel === "admin") {
-      console.log('ADMIN')
-      setApproveButton(<div>
-        <Button variant="primary" onClick={handleOpenModal} style={{width:'50%',fontFamily: 'Bitter', background: '#a40084'}}>Approve&Assign</Button>
-      </div>)
-    }
-    if (permissionLevel === "projectlead") {
-      setApproveButton(<div>
-        <Button variant="primary" onClick={handleApprovePL} style={{width:'50%',fontFamily: 'Bitter', background: '#a40084'}}>Approve</Button>
-      </div>)
-    }
-    console.log(status);
-    if (status === "") {
-      console.log('test');
-      setApproveButton(<div></div>)
     }
     
 

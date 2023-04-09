@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import * as ReactDOM from 'react-dom';
 import { useNavigate } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import {Card} from 'react-bootstrap';
 import ClientNav from '../components/ClientNav';
-import { Dropdown, DropdownButton, Button } from 'react-bootstrap';
-import { MDBCardLink } from 'mdb-react-ui-kit';
+import { Button } from 'react-bootstrap';
 import { getCurrentUser } from '../services/authService';
 import { getOpenIntakeByClientId } from '../services/intakeService';
-import { getUserByUserId, getDashboardsByUserId } from '../services/userService';
 
 function Dashboard() {
   const history = useNavigate();

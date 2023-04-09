@@ -14,7 +14,6 @@ function EditCurriculum() {
   const history = useNavigate();
 
   const [ adminNavbar, setAdminNavbar ] = useState(false);
-  const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
 
   // Curriculum Hooks
   const [ curriculumId, setCurriculumId ] = useState("");
@@ -64,7 +63,7 @@ function EditCurriculum() {
     }
 
     // Get Curriculum using CurrentIntakeId
-    getCurriculumByIntakeId(currentIntakeId).then((curriculum) => {
+    getCurriculumByIntakeId(localStorage.getItem("currentIntakeId")).then((curriculum) => {
       // All works
       setCurriculumId(curriculum.data._id);
       setCurriculumTitle(`Edit ${curriculum.data.name}`);

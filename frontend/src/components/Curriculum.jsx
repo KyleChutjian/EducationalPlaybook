@@ -1,34 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import AdminNav from '../components/AdminNav';
 import ClientNav from '../components/ClientNav';
-import EditCurriculum from './EditCurriculum';
 import { useNavigate } from "react-router-dom";
-import { getCurriculumByIntakeId, getCurriculumByCurriculumId } from '../services/curriculumService';
+import { getCurriculumByIntakeId } from '../services/curriculumService';
 import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import { MDBTextArea } from 'mdb-react-ui-kit';
-import Dropdown from 'react-bootstrap/Dropdown';
 import editIcon from '../resources/edit-icon.png';
 import { getFileByPath } from '../services/curriculumService';
 
 function Curriculum() {
-  const fileInput = React.createRef();
   const history = useNavigate();
 
   const [ permissionLevel, setPermissionLevel ] = useState("client");
   const [ adminNavbar, setAdminNavbar ] = useState(false);
-  const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
 
   // Curriculum Hooks
-  const [ curriculumId, setCurriculumId ] = useState("");
   const [ curriculumTitle, setCurriculumTitle ] = useState("");
 
   // Learning Objective Hooks
-  const [ curriculumLearningObjectives, setCurriciulumLearningObjectives ] = useState("");
+  // const [ curriculumLearningObjectives, setCurriciulumLearningObjectives ] = useState("");
   const [ learningObjectives, setLearningObjectives ] = useState(<div></div>);
 
   // Step Hooks
-  const [ curriculumSteps, setCurriculumSteps ] = useState("");
+  // const [ curriculumSteps, setCurriculumSteps ] = useState("");
   const [ courseSteps, setCourseSteps ] = useState(<div></div>);
 
   // Resource Hooks
@@ -37,7 +30,7 @@ function Curriculum() {
   // const [ resourceExtraOption, setResourceExtraOption ] = useState(<div></div>);
 
   // Link Hooks
-  const [ curriculumLinks, setCurriculumLinks ] = useState("");
+  // const [ curriculumLinks, setCurriculumLinks ] = useState("");
   const [ links, setLinks ] = useState(<div></div>);
 
   // File Hooks
@@ -45,7 +38,6 @@ function Curriculum() {
   const [ files, setFiles ] = useState(<div></div>);
 
   useEffect(() => {
-    console.log(curriculumFiles);
     loadFiles(curriculumFiles);
   }, [curriculumFiles])
 
@@ -59,12 +51,11 @@ function Curriculum() {
     }
 
     // Get Curriculum using CurrentIntakeId
-    getCurriculumByIntakeId(currentIntakeId).then((curriculum) => {
-      setCurriculumId(curriculum.data._id);
+    getCurriculumByIntakeId(localStorage.getItem("currentIntakeId")).then((curriculum) => {
       setCurriculumTitle(curriculum.data.name);
-      setCurriciulumLearningObjectives(curriculum.data.objectives);
-      setCurriculumSteps(curriculum.data.steps);
-      setCurriculumLinks(curriculum.data.links);
+      // setCurriciulumLearningObjectives(curriculum.data.objectives);
+      // setCurriculumSteps(curriculum.data.steps);
+      // setCurriculumLinks(curriculum.data.links);
       setCurriculumFiles(curriculum.data.files);
       loadLearningObjectives(curriculum.data.objectives);
       loadSteps(curriculum.data.steps);
@@ -73,7 +64,6 @@ function Curriculum() {
       replaceFileOutputs(curriculum.data.files).then((result) => {
         // setCurriculumFiles(result);
         setTimeout(() => {
-          console.log(result);
           setCurriculumFiles(result)
         }, 100)
       });
@@ -81,7 +71,7 @@ function Curriculum() {
     });
 
       
-  }, [currentIntakeId]);
+  }, [curriculumTitle]);
 
   // Curriculum Learning Objective Functions:
   const loadLearningObjectives = (objectives) => {
@@ -121,61 +111,47 @@ function Curriculum() {
     ))
   }
 
-    // Curriculum File Functions:
-    const replaceFileOutputs = async (files) => {
-      if (typeof files === 'undefined' || files === "") {
-        return [];
-      }
-      
-      setFiles(files.forEach((specificFile, index) => {
-        if (typeof specificFile.output === 'string') {
-          // Get the file from backend files directory
-          getFileByPath(specificFile.output).then((result) => {
-            var fileName;
-            if (typeof specificFile.output === 'string') {
-              const firstUnderscoreIndex = specificFile.output.indexOf('_')+1;
-              var oneUnderscoreString = specificFile.output.substring(firstUnderscoreIndex);
-              const secondUnderscoreIndex = oneUnderscoreString.indexOf('_')+1;
-              fileName = oneUnderscoreString.substring(secondUnderscoreIndex);
-            } else {
-              fileName = specificFile.output.name;
-            }
-            
-            const blob = new Blob([result.data], {type: result.headers['content-type']});
-            const file = new File([blob], fileName, {type: result.headers['content-type']});
-  
-            files[index].output = file;
-  
-            setCurriculumFiles((oldFiles) => {
-              if (typeof oldFiles === 'object') {
-                return oldFiles;
-              }
-  
-              oldFiles[index].output = file;
-              return oldFiles;
-            })
-          });
+  // Curriculum File Functions:
+  const replaceFileOutputs = async (files) => {
+    if (typeof files === 'undefined' || files === "") {
+      return [];
+    }
+    
+    setFiles(files.forEach((specificFile, index) => {
+      if (typeof specificFile.output === 'string') {
+        // Get the file from backend files directory
+        getFileByPath(specificFile.output).then((result) => {
+          var fileName;
+          if (typeof specificFile.output === 'string') {
+            const firstUnderscoreIndex = specificFile.output.indexOf('_')+1;
+            var oneUnderscoreString = specificFile.output.substring(firstUnderscoreIndex);
+            const secondUnderscoreIndex = oneUnderscoreString.indexOf('_')+1;
+            fileName = oneUnderscoreString.substring(secondUnderscoreIndex);
+          } else {
+            fileName = specificFile.output.name;
+          }
           
-  
-        }
-      }))
-  
-      return files;
-  
-    }
+          const blob = new Blob([result.data], {type: result.headers['content-type']});
+          const file = new File([blob], fileName, {type: result.headers['content-type']});
 
-  // Curriculum Attachment Functions:
-  const loadResourceOutput = (type, output, index) => {
-    if (type === "Link") {
-      // return <MDBTextArea readonly className="col-md-3" rows={1} name={`output${index}`} defaultValue={output} />
-      // return <p className='col-md-12' name={`output${index}`} style={{border: '1px solid black', minHeight:'30px', marginTop: '1%', marginBottom: '1%'}}>{output}</p>
-      return null;
-    } else if (type === "File") {
-      return <div>
-        <h3 style={{fontFamily: 'Bitter', fontSize:'16px', marginTop: "1%"}}>{`Replace \"${output.name}\":`}</h3>
-        <input readonly type='file' className="form-control" id="fileInput" name={`file${index}`} ref={fileInput}/>
-      </div>
-    }
+          files[index].output = file;
+
+          setCurriculumFiles((oldFiles) => {
+            if (typeof oldFiles === 'object') {
+              return oldFiles;
+            }
+
+            oldFiles[index].output = file;
+            return oldFiles;
+          })
+        });
+        
+
+      }
+    }))
+
+    return files;
+
   }
 
   //change to links and files
@@ -188,7 +164,6 @@ function Curriculum() {
         return(
           <div className="container" key={`${link[0]}${index}`}>
             <div className="row" style={{paddingTop: "1%"}}>
-                {console.log(link)}
                 <span style={{display: 'flex'}}>
                   <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Link #${index+1}: `}<a href={link.output} className="link-primary">{link.title}</a></b></h3>
                 </span> 
@@ -223,7 +198,6 @@ function Curriculum() {
     if (typeof files === 'undefined') {
       return <div></div>
     }
-    console.log(files);
     setFiles(
       files.map((file, index) => {
         return(

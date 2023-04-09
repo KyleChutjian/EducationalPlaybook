@@ -10,8 +10,8 @@ import { Button } from 'react-bootstrap';
 function ApprovedIntakes() {
 
   const history = useNavigate();
-  const approvIntakeArray = new Array();
-  const approvIntakeNameArray = new Array();
+  const approvIntakeArray = [];
+  const approvIntakeNameArray = [];
 
 
   const toApprovedIntake = () => {
@@ -21,17 +21,7 @@ function ApprovedIntakes() {
   };
 
 
-  
-
-  const toLogin = () => {
-    // Update the route
-    let path1 = '/login';
-    history(path1);
-  };
-
-
   const [ adminNavbar, setAdminNavbar ] = useState(false);
-  const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
 
   //Approved Intake Hooks
   const [approvedIntakes, setApprovedIntakes] = useState(null);

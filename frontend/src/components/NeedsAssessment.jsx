@@ -3,25 +3,12 @@ import React, { useState, useEffect } from 'react'
 
 import AdminNav from '../components/AdminNav';
 import ClientNav from '../components/ClientNav';
-import Container from 'react-bootstrap/Container';
 import {Card} from 'react-bootstrap';
-import { Dropdown, DropdownButton, Button } from 'react-bootstrap';
-import { ListGroup } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { getIntakeByIntakeId, editNeedsAssessmentByIntakeId } from '../services/intakeService';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  MDBContainer,
-  MDBInput,
-  MDBCheckbox,
-  MDBBtn,
-  MDBIcon,
-  MDBTextArea
-}
-from 'mdb-react-ui-kit';
-//localStorage.setItem("currentIntakeId", <selected intake's intakeId>);
-//later call: localStorage.getItem("currentIntakeId");
 
 function NeedsAssessment() {
 

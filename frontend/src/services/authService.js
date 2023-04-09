@@ -1,7 +1,6 @@
 import jwtDecode from "jwt-decode"; // handles the token
 import http from "./httpService";
 import { login, logout } from "./userService";
-import { getIntakesByClientIdByStatus } from '../services/intakeService'
 
 const tokenKey = "token";
 

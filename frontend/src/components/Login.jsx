@@ -1,22 +1,11 @@
 import React, { useState } from 'react'
-import { Form, useNavigate } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { loginUser } from '../services/authService';
 import { createAccount } from '../services/userService';
 import TextField from "@mui/material/TextField";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useEffect } from 'react';
-
-import {
-  MDBContainer,
-  MDBInput,
-  MDBCheckbox,
-  MDBBtn,
-  MDBIcon
-}
-from 'mdb-react-ui-kit';
-import ClientNav from './ClientNav';
 
 
 function Login() {

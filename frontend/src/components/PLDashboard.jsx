@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { getCurrentUser, loginUser } from '../services/authService';
+import { getCurrentUser } from '../services/authService';
 import Container from 'react-bootstrap/Container';
 import {Card} from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
@@ -8,16 +8,6 @@ import AdminNav from '../components/AdminNav';
 import { Dropdown } from 'react-bootstrap';
 import { DropdownButton } from 'react-bootstrap';
 import { getUserByUserId, getDashboardsByUserId } from '../services/userService';
-
-import {
-  MDBContainer,
-  MDBCardLink,
-  MDBInput,
-  MDBCheckbox,
-  MDBBtn,
-  MDBIcon
-}
-from 'mdb-react-ui-kit';
 
 function PLDashboard() {
     const history = useNavigate();

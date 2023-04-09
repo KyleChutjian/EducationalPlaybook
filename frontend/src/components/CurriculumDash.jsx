@@ -11,8 +11,7 @@ function CurriculumDash() {
   const history = useNavigate();
   const [ curriculumTitle, setCurriculumTitle ] = useState("");
   const [ adminNavbar, setAdminNavbar ] = useState(false);
-  //localStorage.setItem("currentIntakeId", "63f52c4d02554f88c031c537"); // TEMPORARY, waiting for sadjell
-  const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
+  // const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
   
   useEffect(() => {
 
@@ -23,11 +22,11 @@ function CurriculumDash() {
       setAdminNavbar(false);
     }
 
-    getCurriculumByIntakeId(currentIntakeId).then((res) => {
+    getCurriculumByIntakeId(localStorage.getItem("currentIntakeId")).then((res) => {
       setCurriculumTitle(`Curriculum Development Plan: ${res.data.name}`)
     });
 
-  }, [currentIntakeId]);
+  });
 
   const intakeData = () => {
     // Update the route
@@ -42,11 +41,6 @@ function CurriculumDash() {
   const viewCourse = () => {
     // Update the route
     let path = '/curriculum';
-    history(path);
-  };
-  const editCourse = () => {
-    // Update the route
-    let path = '/editcurriculum';
     history(path);
   };
 
