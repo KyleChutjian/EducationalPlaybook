@@ -7,7 +7,8 @@ import {Card} from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { getCurriculumByIntakeId } from '../services/curriculumService';
 import Modal from 'react-bootstrap/Modal';
-import { getIntakeByIntakeId } from '../services/intakeService';
+import archive from '../resources/archive.png';
+import { editIntakeStatusByIntakeId, getIntakeByIntakeId } from '../services/intakeService';
 
 function CurriculumDash() {
   const history = useNavigate();
@@ -24,6 +25,8 @@ function CurriculumDash() {
 
   const radioResponse3HTML = <div class = "button-approved">Submit</div>;
   const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
+
+  
   
   useEffect(() => {
 
@@ -68,13 +71,12 @@ function CurriculumDash() {
     // Handles Create New Account Submission
     const submitModal = (e) => {
       if (success == true){
-        getIntakeByIntakeId(currentIntakeId).then((result) => {
-          setStatus("archived-success");
-        });
+       editIntakeStatusByIntakeId(currentIntakeId, "archived-success");
+       console.log(currentIntakeId.status);
 
       }
       else{
-        getIntakeByIntakeId(currentIntakeId).setStatus("archived-fail");
+        editIntakeStatusByIntakeId(currentIntakeId, "archived-fail");
 
       }
       console.log(currentIntakeId.status);
@@ -95,6 +97,7 @@ function CurriculumDash() {
         if (value === "yes") {
           console.log(`opening ${name} response`);
           setIsRadio1Visible(true);
+          setSuccess(true);
         } else {
           console.log(`closing ${name} response`);
           setIsRadio1Visible(false);
@@ -105,7 +108,7 @@ function CurriculumDash() {
       if (value === "yes") {
         console.log(`opening ${name} response`);
         setIsRadio2Visible(true);
-        setSuccess(true);
+        
       } else {
         console.log(`closing ${name} response`);
         setIsRadio2Visible(false);
@@ -125,7 +128,18 @@ function CurriculumDash() {
       </div>
       {/* Jumbotron */}
       <div className='p-5 text-center'>
+
+      <span className='p-5' style={{display: 'flex', justifyContent: 'center'}}>
+
         <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>{curriculumTitle}</h1>
+
+        {
+          <button style={{border: 'none', backgroundColor: 'inherit', paddingLeft: '1%', paddingBottom: '0%'}}>
+            <img src={archive} alt='edit-icon' height='25px' onClick={handleOpenModal}/>
+          </button> 
+        }
+      </span>
+        
       </div>
       {/* Buttons */}
       <div className="col d-flex justify-content-center" style={{paddingTop: "0.5%"}}>
@@ -163,16 +177,7 @@ function CurriculumDash() {
             </Card.Body>
           </Card>
 
-          {/* Card3: Archive Intake */}
-          <Card id='card3' className="text-center mx-auto" style={{ background: '#d2492a', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
-            <Card.Body>
-              <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink disabled={disableViewCourse} href='#' style={{color:'whitesmoke'}}>View Course</MDBCardLink>  */}
-                <Button onClick={handleOpenModal} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}>Archive Intake</Button>
-              </Card.Title>
-            </Card.Body>
-          </Card>
-
+         
           {/* Card4: Success Rate */}
           {/* <Card id='card4' className="text-center mx-auto" style={{ background: '#a40084', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
             <Card.Body>
@@ -189,41 +194,26 @@ function CurriculumDash() {
                   <Modal.Body>
 
                    <div>
-                    <h4>Confirm to archive intake form:</h4>
+                    <h4>Was this intake considered successful?</h4>
                    
                     {/* Data: Yes */}
                     <div className="yes">
                     <label htmlFor='yes'>Yes</label>
                     <input type='radio' id='yes' name='radio1' value='yes' onClick={handleRadioButtons}/>
                     </div>
+                   
                     {/* Identified Problem: No */}
                     <div className="no">
                     <label htmlFor='no'>No</label>
                     <input defaultChecked={true} type='radio' id='no' name='radio1' value='no' onClick={handleRadioButtons}/>
 
                     </div>
-                    {/*isRadio2Visible ? radioResponse2HTML : null*/}
-
-                   </div>
-
-
-                   <div>
-                    <h4>Was this intake considered successful?</h4>
                    
-                    {/* Data: Yes */}
-                    <div className="yes">
-                    <label htmlFor='yes'>Yes</label>
-                    <input type='radio' id='yes' name='radio2' value='yes' onClick={handleRadioButtons}/>
-                    </div>
-                    {/* Identified Problem: No */}
-                    <div className="no">
-                    <label htmlFor='no'>No</label>
-                    <input defaultChecked={true} type='radio' id='no' name='radio2' value='no' onClick={handleRadioButtons}/>
-
-                    </div>
-                    
 
                    </div>
+
+
+                   
 
                    <div>
                   
