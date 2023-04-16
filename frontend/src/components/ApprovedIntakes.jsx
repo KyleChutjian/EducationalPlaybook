@@ -5,6 +5,7 @@ import ClientNav from '../components/ClientNav';
 import { getIntakesByStatus} from '../services/intakeService';
 import {Card} from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
+import { getCurrentUser } from '../services/authService';
 
 
 function ApprovedIntakes() {
@@ -28,8 +29,12 @@ function ApprovedIntakes() {
 
 
   useEffect(() => {
-    // Permissions
+    const currentUser = getCurrentUser();
     const permissionLevel = localStorage.getItem("permission-level");
+    if (!currentUser.isAdmin || !currentUser.isProjectLead) {
+      history("/clientdashboard");
+    }
+
     if (permissionLevel === "admin") {
       setAdminNavbar(true);
     }

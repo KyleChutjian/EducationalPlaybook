@@ -18,6 +18,14 @@ function AdminDashboard() {
 
   useEffect(() => {
     const currentUser = getCurrentUser();
+    const permissionLevel = localStorage.getItem("permission-level");
+    if (!currentUser.isAdmin) {
+      if (permissionLevel === "projectlead") {
+        history("/pldashboard");
+      } else if (permissionLevel === "client") {
+        history("/clientdashboard");
+      }
+    }
 
     // Gets the user's first name for the "Welcome, [Name]"
     getUserByUserId(currentUser.id).then((res) => {
@@ -91,9 +99,6 @@ function AdminDashboard() {
           <Card id='card1' className="text-center mx-auto" style={{ background: '#0098C3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink onClick={button1} style={{color:'whitesmoke'}}>
-                  {button1Option}
-                  </MDBCardLink>  */}
                   <Button onClick={pendingIntakes} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>Pending Forms</Button>
               </Card.Title>
             </Card.Body>
@@ -103,7 +108,6 @@ function AdminDashboard() {
           <Card id='card2' className="text-center mx-auto" style={{ background: '#6E9A35', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
                 <Button onClick={approvedIntakes} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}>Approved Forms</Button>
               </Card.Title>
             </Card.Body>
@@ -113,7 +117,6 @@ function AdminDashboard() {
           <Card id='card3' className="text-center mx-auto" style={{ background: '#d2492a', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink disabled={disableViewCourse} href='#' style={{color:'whitesmoke'}}>View Course</MDBCardLink>  */}
                 <Button onClick={archivedIntakes} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}>Archived Forms</Button>
               </Card.Title>
             </Card.Body>
@@ -122,18 +125,13 @@ function AdminDashboard() {
           {/* Card4: Success Rate */}
           <Card id='card4' className="text-center mx-auto" style={{ background: '#a40084', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
             <Card.Body>
-              {/* <Card.Title style={{fontSize:'30px'}}>
-                <MDBCardLink href='#' style={{color:'whitesmoke'}}>View Completed Courses</MDBCardLink> 
-              </Card.Title> */}
               <Button onClick={successRate} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>Success Rate</Button>
             </Card.Body>
           </Card> 
         </Container>
       </div>
     </div>
-
   )
-
 }
 
 export default AdminDashboard;

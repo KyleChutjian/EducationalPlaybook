@@ -12,7 +12,6 @@ function Dashboard() {
 
   const [ curriculumName, setCurriculumName ] = useState("");
   
-  
   useEffect(() => {
 
     // Get current user
@@ -30,21 +29,6 @@ function Dashboard() {
 
   const viewIntakeButton = () => {
     history("/viewintake");
-    // switch (button1Option) {
-    //   case "Submit New Intake":
-    //   case "Edit Intake":
-    //     history("/submitintake");
-    //     break;
-
-    //   case "View Pending Intake":
-    //   case "View Approved Intake":
-    //     history("/viewIntake");
-    //     break;
-
-    //   default:
-    //     console.error(`Unknown button 1 option: ${button1Option}`);
-    // }
-
   };
   const needsAssessmentButton = () => {
     // Update the route
@@ -77,9 +61,6 @@ function Dashboard() {
           <Card id='card1' className="text-center mx-auto" style={{ background: '#0098C3', width: '60rem', margin:'5px', marginTop:'1%',color:'whitesmoke', fontFamily: 'Bitter' }}>
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink onClick={button1} style={{color:'whitesmoke'}}>
-                  {button1Option}
-                  </MDBCardLink>  */}
                   <Button onClick={viewIntakeButton} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>View Intake</Button>
               </Card.Title>
             </Card.Body>
@@ -89,7 +70,6 @@ function Dashboard() {
           <Card id='card2' className="text-center mx-auto" style={{ background: '#6E9A35', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
                 <Button onClick={needsAssessmentButton} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}>Needs Assessment</Button>
               </Card.Title>
             </Card.Body>
@@ -99,7 +79,6 @@ function Dashboard() {
           <Card id='card3' className="text-center mx-auto" style={{ background: '#d2492a', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink disabled={disableViewCourse} href='#' style={{color:'whitesmoke'}}>View Course</MDBCardLink>  */}
                 <Button onClick={viewCourseButton} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}>Curriculum</Button>
               </Card.Title>
             </Card.Body>

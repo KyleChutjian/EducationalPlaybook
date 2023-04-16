@@ -4,7 +4,9 @@ const jwt = require("jsonwebtoken");
 exports.getToken = (user) =>  {
   const account = {
     email: user.email,
-    id: user._id
+    id: user._id,
+    isProjectLead: user.isProjectLead,
+    isAdmin: user.isAdmin
   };
   return jwt.sign(account, process.env.SECRET, {expiresIn: 3600}); // expires in 1h
 };
@@ -16,7 +18,7 @@ exports.verifyUser = (req, res, next) => {
 
   // if token is not null, decode it
   if (token) { 
-    jwt.verify(token, process,env.SECRET, function(err, decoded) {
+    jwt.verify(token, process.env.SECRET, function(err, decoded) {
       if (err) {
         var err = new Error("You are not authenticated!");
         err.status = 401;
@@ -43,5 +45,18 @@ exports.verifyAdmin = (req, res, next) => {
     const err = new Error("You are not an account with administrative permission!");
     err.status = 403;
     return next(err);
+  }
+};
+
+exports.verifyProjectLead = (req, res, next) => {
+  console.log(req.decoded);
+  if (req.decoded.isProjectLead) {
+    console.log("Project-Lead verified");
+    next();
+  } else {
+    const err = new Error("You are not an account with project-lead permission!");
+    err.status = 403;
+    res.status(403).send(err);
+    // return next(err);
   }
 };

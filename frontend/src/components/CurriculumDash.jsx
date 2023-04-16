@@ -23,10 +23,7 @@ function CurriculumDash() {
   const radioResponse3HTML = <div class = "button-approved">Submit</div>;
   const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
 
-  
-  
   useEffect(() => {
-
     const permissionLevel = localStorage.getItem("permission-level");
     if (permissionLevel === "admin") {
       setAdminNavbar(true);

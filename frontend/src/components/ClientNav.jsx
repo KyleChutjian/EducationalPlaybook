@@ -5,6 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { logoutUser } from '../services/authService';
 
 
 
@@ -17,6 +18,10 @@ function ClientNav() {
       let path = '/dashboard';
       history(path);
   };
+  const handleLogout = () => {
+    logoutUser();
+    history("/logout");
+  }
 
     return (
     <div>
@@ -29,7 +34,7 @@ function ClientNav() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             <NavDropdown title={<i className="bi bi-person"></i>} id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Logout</NavDropdown.Item>
+              <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

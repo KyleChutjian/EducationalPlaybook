@@ -17,6 +17,14 @@ function PLDashboard() {
   
     useEffect(() => {
       const currentUser = getCurrentUser();
+      const permissionLevel = localStorage.getItem("permission-level");
+      if (!currentUser.isProjectLead) {
+        if (permissionLevel === "admin") {
+          history("/admindashboard");
+        } else if (permissionLevel === "client") {
+          history("/clientdashboard");
+        }
+      }
 
       getUserByUserId(currentUser.id).then((res) => {
         setProjectLeadFirstName(res.data.firstName);
@@ -83,9 +91,6 @@ function PLDashboard() {
             <Card id='card1' className="text-center mx-auto" style={{ background: '#0098C3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
               <Card.Body>
                 <Card.Title style={{fontSize:'30px'}}>
-                  {/* <MDBCardLink onClick={button1} style={{color:'whitesmoke'}}>
-                    {button1Option}
-                    </MDBCardLink>  */}
                     <Button onClick={pendingIntakes} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}><u>Pending Forms</u></Button>
                 </Card.Title>
               </Card.Body>
@@ -95,7 +100,6 @@ function PLDashboard() {
             <Card id='card2' className="text-center mx-auto" style={{ background: '#6E9A35', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
               <Card.Body>
                 <Card.Title style={{fontSize:'30px'}}>
-                  {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
                   <Button onClick={approvedIntakes} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Approved Forms</u></Button>
                 </Card.Title>
               </Card.Body>
@@ -105,7 +109,6 @@ function PLDashboard() {
             <Card id='card3' className="text-center mx-auto" style={{ background: '#d2492a', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
               <Card.Body>
                 <Card.Title style={{fontSize:'30px'}}>
-                  {/* <MDBCardLink disabled={disableViewCourse} href='#' style={{color:'whitesmoke'}}>View Course</MDBCardLink>  */}
                   <Button onClick={archivedIntakes} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Archived Forms</u></Button>
                 </Card.Title>
               </Card.Body>

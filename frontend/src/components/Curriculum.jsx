@@ -21,12 +21,7 @@ function Curriculum() {
   const [ curriculumFiles, setCurriculumFiles ] = useState([]);
   const [ files, setFiles ] = useState(<div></div>);
 
-  // useEffect(() => {
-  //   loadFiles(curriculumFiles);
-  // }, [curriculumFiles])
-
   useEffect(() => {
-
     setPermissionLevel(localStorage.getItem("permission-level"));
     if (localStorage.getItem("permission-level") === "admin") {
       setAdminNavbar(true);
@@ -42,7 +37,6 @@ function Curriculum() {
 
       replaceFileOutputs(curriculum.data.files).then((result) => {
         setTimeout(() => {
-          // setCurriculumFiles(result)
           loadFiles(result)
         }, 400)
       });

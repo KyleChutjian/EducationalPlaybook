@@ -23,8 +23,10 @@ export function loginWithJwt(jwt) {
 // Logout
 export async function logoutUser() {
     const response = await logout();
-    console.log(response);
+    console.log(response.data);
     localStorage.removeItem(tokenKey);
+    localStorage.removeItem('currentIntakeId');
+    localStorage.removeItem('permission-level');
 }
 
 // Get Current User logged in

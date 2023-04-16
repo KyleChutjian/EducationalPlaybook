@@ -12,18 +12,23 @@ router.post("/login", passport.authenticate("local"), async (req, res) => {
 
         const token = Verify.getToken(user);
         return res.status(200).send(token);
+    }).catch((err) => {
+        res.send(err);
     });
 });
 
 // Logout
 router.post("/logout", async (req, res) => {
-    req.logout();
+    req.logout(function(err) {
+        if (err) {
+            return next(err);
+        }
+    });
     res.send({message: "Successfully logged out"});
 });
 
 // Get Accounts
 router.get("/get-accounts", async (req, res) => {
-    console.log("Get all users");
     try {
         const users = await User.find();
         res.status(200).json(users);
@@ -50,11 +55,9 @@ router.get("/get-accounts/:role", async (req, res) => {
     try {
         const role = req.params.role.toUpperCase();
         if (role == "ADMIN") {
-            console.log("Finding all Admins");
             const users = await User.find({isAdmin:true});
             res.status(200).json(users);
         } else if (role == "PROJECTLEAD") {
-            console.log("Finding all PLs");
             const users = await User.find({isProjectLead:true});
             res.status(200).json(users);
         } else {
@@ -85,7 +88,7 @@ router.post("/create-account", async (req, res) => {
 });
 
 // Updating User's Role
-router.put("/manage-accounts/:userId/:role/:output", async(req, res) => {
+router.route("/manage-accounts/:userId/:role/:output").put(Verify.verifyUser,Verify.verifyAdmin, async(req, res) => {
     const userId = req.params.userId;
     const role = req.params.role.toUpperCase();
     let output = req.params.output.toUpperCase();

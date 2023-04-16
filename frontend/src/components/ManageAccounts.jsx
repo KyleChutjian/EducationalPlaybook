@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from "react-router-dom";
 import AdminNav from '../components/AdminNav';
 import { getAccounts } from '../services/userService';
 import { manageAccounts } from '../services/userService';
+import { getCurrentUser } from '../services/authService';
 
 function ManageAccounts() {
-
-     //getUsers instead of getAccounts? (new method in userservice)
-    //getuserby something when checkbox clicked to update status (or foreach on save?)
-    //
-
-    //get all current accounts
-    //const users = getAccounts(); //make into useState
+  const history = useNavigate();
     const [ users, setUsers ] = useState([]);
-    const [ usersHtml, setUsersHtml ] = useState(<div></div>);
+    const [ usersHtml, setUsersHtml ] = useState(null);
 
     useEffect(() => {
-      //loadUsers(users);
-    }, [users]);
+      const currentUser = getCurrentUser();
+      const permissionLevel = localStorage.getItem("permission-level");
+      if (!currentUser.isAdmin) {
+        if (permissionLevel === "projectlead") {
+          history("/pldashboard");
+        } else if (permissionLevel === "client") {
+          history("/clientdashboard");
+        }
+      }
 
-    useEffect(() => {
       getAccounts().then((result) => {
         setUsers(result.data);
         loadUsers(result.data);
@@ -30,9 +32,8 @@ function ManageAccounts() {
       if (users === [] && typeof(users)) {
         return <div></div>;
       }
-      console.log(users);
       const tableItems = users.map((user,index) => {
-        return (<tr>
+        return (<tr key={index}>
           <td>{user.email}</td>
           <td>{user.lastName}, {user.firstName}</td>
           <td><input className="form-check-input" type="checkbox" name={`projectLead${index}`} value="" id="checkProjectLead" defaultChecked={user.isProjectLead} onChange={onChangeUser}/></td>
@@ -51,18 +52,14 @@ function ManageAccounts() {
     };
   
     const onChangeUser = (e) => {
-      const {name, value, checked} = e.target; //e.target.<attribute> for stuf
-      console.log(value, checked);
-      //get type of checkbox
-      //get userid/index
+      const {name, checked} = e.target; //e.target.<attribute> for stuf
+
       var indexString, index;
       if (name.includes("projectLead")) {
         indexString = name.split("projectLead")[1];
         index = parseInt(indexString);
         setUsers((oldUsers) => {
-          console.log(oldUsers[index].isProjectLead);
           oldUsers[index].isProjectLead = checked;
-          console.log(oldUsers[index].isProjectLead);
           return oldUsers;
         })
       }
@@ -74,17 +71,6 @@ function ManageAccounts() {
           return oldUsers;
         })
       }
-      
-
-    // console.log(`name: ${name}`);
-    // console.log(`value: ${value}`);
-    // let indexString, index;
-    // setCurriciulumLearningObjectives((oldObjectives) => {
-    //   indexString = name.split("objective")[1];
-    //   index = parseInt(indexString);
-    //   oldObjectives[index] = value;
-    //   return oldObjectives;
-    // });
     }
 
     return(
@@ -106,20 +92,11 @@ function ManageAccounts() {
             </thead>
             <tbody>
               {usersHtml}
-              {/* <tr>
-                <td scope="row">thomas.nowicki@hhchealth.org</td>
-                <td>Nowicki, Tom</td>
-                <td>
-                  <input className="form-check-input" type="checkbox" value="" id="checkProgram" />
-                </td>
-                <td><input className="form-check-input" type="checkbox" value="" id="checkAdmin" defaultChecked={true} onChange={onChangeUser}/></td>
-             </tr> */}
             </tbody>
           </table>
-          <button onClick={savePermsButton} type="button" class="btn btn-primary" style={{fontFamily: 'Bitter', borderColor: 'white', backgroundColor: '#6E9A35', width: '30%', marginLeft: '40%', marginRight: '40%'}}>Save</button>
+          <button onClick={savePermsButton} type="button" className="btn btn-primary" style={{fontFamily: 'Bitter', borderColor: 'white', backgroundColor: '#6E9A35', width: '30%', marginLeft: '40%', marginRight: '40%'}}>Save</button>
         </div>
   )
 }
-//something to indicate where table items (accounts) get inserted
 
 export default ManageAccounts;

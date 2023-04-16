@@ -16,6 +16,10 @@ function PendingIntakes() {
   const [ pendingIntakes, setPendingIntakes] = useState("");
 
   useEffect(() => {
+    const currentUser = getCurrentUser();
+    if (!currentUser.isAdmin || !currentUser.isProjectLead) {
+      history("/clientdashboard");
+    }
     // Permissions
     const permissionLevel = localStorage.getItem("permission-level");
     if (permissionLevel === "admin") {

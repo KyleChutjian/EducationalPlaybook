@@ -5,6 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { logoutUser } from '../services/authService';
 
 
 function AdminNav() {
@@ -21,7 +22,11 @@ function AdminNav() {
     // Update the route
     let path = '/ManageAccounts';
     history(path);
-};
+  };
+  const handleLogout = () => {
+    logoutUser();
+    history("/logout");
+  }
 
     return (
         <div>
@@ -37,7 +42,7 @@ function AdminNav() {
               title={<i className="bi bi-gear"></i>} id="basic-nav-dropdown">
               <NavDropdown.Item onClick={toManageAccounts}>Manage Accounts</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item>
+              <NavDropdown.Item onClick={handleLogout}>
                 Logout
               </NavDropdown.Item>
             </NavDropdown>    
