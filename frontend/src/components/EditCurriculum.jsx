@@ -27,16 +27,23 @@ function EditCurriculum() {
   const handleOpenNewLearningObjective = () => setOpenAddObjectiveModal(true);
   const handleCloseNewLearningObjective = () => setOpenAddObjectiveModal(false);
 
-  // Step Hooks
-  const [ curriculumSteps, setCurriculumSteps ] = useState("");
-  const [ courseSteps, setCourseSteps ] = useState(<div></div>);
-  const [ openAddCourseStepModal, setOpenAddCourseStepModal ] = useState(false);
-  const [ newCourseStep, setNewCourseStep ] = useState({
-    title: "",
-    description: ""
-  });
-  const handleOpenNewCourseStep = () => setOpenAddCourseStepModal(true);
-  const handleCloseNewCourseStep = () => setOpenAddCourseStepModal(false);
+  // Course Plan Hooks
+  const [ coursePlan, setCoursePlan ] = useState("");
+  const [ coursePlanHTML, setCoursePlanHTML ] = useState(<div></div>);
+  // const [ openAddCourseStepModal, setOpenAddCourseStepModal ] = useState(false);
+  // const [ newCourseStep, setNewCourseStep ] = useState({
+  //   description: "",
+  //   selectedTraining: {
+  //     lecture: false,
+  //     handsOnSkills: false,
+  //     mannequinBasedSimulation: false,
+  //     standardizedPatient: false,
+  //     inSituTraining: false,
+  //     other: false
+  //   }
+  // });
+  // const handleOpenNewCourseStep = () => setOpenAddCourseStepModal(true);
+  // const handleCloseNewCourseStep = () => setOpenAddCourseStepModal(false);
 
   // Link Hooks
   const [ curriculumLinks, setCurriculumLinks ] = useState("");
@@ -68,10 +75,10 @@ function EditCurriculum() {
       setCurriculumId(curriculum.data._id);
       setCurriculumTitle(`Edit ${curriculum.data.name}`);
       setCurriciulumLearningObjectives(curriculum.data.objectives);
-      setCurriculumSteps(curriculum.data.steps);
+      setCoursePlan(curriculum.data.plan);
       setCurriculumLinks(curriculum.data.links);
       loadLearningObjectives(curriculum.data.objectives);
-      loadSteps(curriculum.data.steps);
+      loadPlan(curriculum.data.plan);
       loadLinks(curriculum.data.links);
       
 
@@ -145,80 +152,136 @@ function EditCurriculum() {
   }
 
   // Curriculum Step Functions:
-  const loadSteps = (steps) => {
-    setCourseSteps(
-      steps.map((step, index) => {
-        return(
-          <div className="container" key={step[0]}>
+  const loadPlan = (plan) => {
+    setCoursePlanHTML(
+          <div className="container">
             <div className="row" style={{paddingTop: "1%"}}>
-              <span style={{display: "flex"}}>
-                <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Course Step #${index+1}`}</b></h3>
-                <img src={deleteIcon} alt='delete-icon' height='23px' style={{paddingLeft: "1%"}} name={`step${index}`} onClick={deleteCourseStep}/>
-              </span>
+              <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>Description</b></h3>
+
               <div>
                 <h6>Select the training formats needed for these learning objectives:</h6>
-                <MDBCheckbox name='inlineCheck' id='inlineCheckbox1' value='option1' label='Lecture' inline />
-                <MDBCheckbox name='inlineCheck' id='inlineCheckbox2' value='option2' label='Hands-on Skills' inline />
-                <MDBCheckbox name='inlineCheck' id='inlineCheckbox3' value='option3' label='Mannequin-based Simulation' inline />
-                <MDBCheckbox name='inlineCheck' id='inlineCheckbox3' value='option3' label='Standardized Patient' inline />
-                <MDBCheckbox name='inlineCheck' id='inlineCheckbox3' value='option3' label='In-Situ Training' inline />
-                <MDBCheckbox name='inlineCheck' id='inlineCheckbox3' value='option3' label='Other' inline />
-
+                <MDBCheckbox name='lecture' id='inlineCheckbox1' onChange={handleTrainingChange} defaultChecked={plan.selectedTraining.lecture} label='Lecture' inline />
+                <MDBCheckbox name='handsOnSkills' id='inlineCheckbox2' onChange={handleTrainingChange} defaultChecked={plan.selectedTraining.handsOnSkills} label='Hands-on Skills' inline />
+                <MDBCheckbox name='mannequinBasedSimulation' id='inlineCheckbox3' onChange={handleTrainingChange} defaultChecked={plan.selectedTraining.mannequinBasedSimulation} label='Mannequin-based Simulation' inline />
+                <MDBCheckbox name='standardizedPatient' id='inlineCheckbox3' onChange={handleTrainingChange} defaultChecked={plan.selectedTraining.standardizedPatient} label='Standardized Patient' inline />
+                <MDBCheckbox name='inSituTraining' id='inlineCheckbox3' onChange={handleTrainingChange} defaultChecked={plan.selectedTraining.inSituTraining} label='In-Situ Training' inline />
+                <MDBCheckbox name='other' id='inlineCheckbox3' onChange={handleTrainingChange} defaultChecked={plan.selectedTraining.other} label='Other' inline />
               </div>
-              {/* <MDBTextArea className="col-md-3" rows={1} name={`title${index}`} defaultValue={step[0]} onChange={handleCourseStepsResponseChange}/> */}
-              <MDBTextArea style={{marginTop: "1%", marginBottom: "1%"}} rows={4} name={`description${index}`} defaultValue={step[1]} onChange={handleCourseStepsResponseChange}/>
-              {index !== steps.length-1 ? <hr style={{height: "2px"}}></hr> : null}
+
+              <MDBTextArea style={{marginTop: "1%", marginBottom: "1%"}} rows={4} name="description" defaultValue={plan.description} onChange={handleCoursePlanResponseChange}/>
             </div>
           </div>
-        )
-      }
-    ))
+        
+      
+    )
   }
-  const handleCourseStepsResponseChange = (e) => {
+  const handleTrainingChange = (e) => {
+    const { name, checked } = e.target;
+    console.log(`name: ${name}, checked: ${checked}`);
+
+    switch (name) {
+      case "lecture":
+        setCoursePlan((oldPlan) => {
+          oldPlan.selectedTraining.lecture = checked;
+          console.log(oldPlan);
+          return oldPlan;
+        });
+        break;
+
+      case "handsOnSkills":
+        setCoursePlan((oldPlan) => {
+          oldPlan.selectedTraining.handsOnSkills = checked;
+          console.log(oldPlan);
+          return oldPlan;
+        });
+        break;
+
+      case "mannequinBasedSimulation":
+        setCoursePlan((oldPlan) => {
+          oldPlan.selectedTraining.mannequinBasedSimulation = checked;
+          console.log(oldPlan);
+          return oldPlan;
+        });
+        break;
+
+      case "standardizedPatient":
+        setCoursePlan((oldPlan) => {
+          oldPlan.selectedTraining.standardizedPatient = checked;
+          console.log(oldPlan);
+          return oldPlan;
+        });
+        break;
+
+      case "inSituTraining":
+        setCoursePlan((oldPlan) => {
+          oldPlan.selectedTraining.inSituTraining = checked;
+          console.log(oldPlan);
+          return oldPlan;
+        });
+        break;
+
+      case "other":
+        setCoursePlan((oldPlan) => {
+          oldPlan.selectedTraining.other = checked;
+          console.log(oldPlan);
+          return oldPlan;
+        });
+        break;
+
+      default:
+        console.log('Something went wrong');
+        break;
+    }
+  }
+  const handleCoursePlanResponseChange = (e) => {
     const { name, value} = e.target;
     let indexString, index;
 
-    setCurriculumSteps((oldSteps) => {
-      if (name.includes("title")) {
-        indexString = name.split("title")[1];
-        index = parseInt(indexString);
-        oldSteps[index][0] = value;
-      } else if (name.includes("description")) {
-        indexString = name.split("description")[1];
-        index = parseInt(indexString);
-        
-        oldSteps[index][1] = value;
-      } else {
-        console.log("Something went wrong");
-      }
-      return oldSteps;
-    });
-  }
-  const createNewCourseStepModal = (e) => {
-    e.preventDefault();
-    setOpenAddCourseStepModal(false);
-    const newCourseStepArray = [newCourseStep.title, newCourseStep.description];
-    curriculumSteps.push(newCourseStepArray);
-    loadSteps(curriculumSteps);
-  };
-  const deleteCourseStep = (e) => {
-    e.preventDefault();
-    const indexString = e.target.name.split('step')[1];
-    const index = parseInt(indexString);
-    curriculumSteps.splice(index, 1);
-    setCurriculumSteps(curriculumSteps);
-    loadSteps(curriculumSteps);
-  }
-  function handleCourseStepModalChange(e) {
-    const { name, value } = e.target;
+    setCoursePlan((oldPlan) => {
+      oldPlan.description = value;
+      return oldPlan;
+    })
 
-    setNewCourseStep((old) => {
-      return {
-        ...old,
-        [name]: value,
-      };
-    });
+    // setCoursePlan((oldSteps) => {
+    //   if (name.includes("title")) {
+    //     indexString = name.split("title")[1];
+    //     index = parseInt(indexString);
+    //     oldSteps[index][0] = value;
+    //   } else if (name.includes("description")) {
+    //     indexString = name.split("description")[1];
+    //     index = parseInt(indexString);
+        
+    //     oldSteps[index][1] = value;
+    //   } else {
+    //     console.log("Something went wrong");
+    //   }
+    //   return oldSteps;
+    // });
   }
+  // const createNewCourseStepModal = (e) => {
+  //   e.preventDefault();
+  //   setOpenAddCourseStepModal(false);
+  //   coursePlan.push(newCourseStep);
+  //   loadPlan(coursePlan);
+  // };
+  // const deleteCourseStep = (e) => {
+  //   e.preventDefault();
+  //   const indexString = e.target.name.split('step')[1];
+  //   const index = parseInt(indexString);
+  //   coursePlan.splice(index, 1);
+  //   setCoursePlan(coursePlan);
+  //   loadPlan(coursePlan);
+  // }
+  // function handleCourseStepModalChange(e) {
+  //   const { name, value } = e.target;
+
+  //   setNewCourseStep((old) => {
+  //     return {
+  //       ...old,
+  //       [name]: value,
+  //     };
+  //   });
+  // }
 
   // Curriculum Link Functions:
   const loadLinks = async (links) => {
@@ -354,7 +417,8 @@ function EditCurriculum() {
 
             <div>
               {/* For displaying this file */}
-              <p>{`${file.output.name}`}</p>
+              <h6 style={{fontFamily: 'Bitter', fontSize:'16px'}}><b>{`Download: `}<a style={{cursor: 'pointer'}} name={index} onClick={downloadFile} className="link-primary">{file.output.name}</a></b></h6>
+              {/* <p>{`${file.output.name}`}</p> */}
 
               {/* For editing the file */}
               <input type='file' className="form-control" id={`file${index}`} name={'file'} onChange={handleFileResponseChange} ref={fileInput}/>
@@ -366,6 +430,18 @@ function EditCurriculum() {
         </div>
       )
     }))
+  }
+  const downloadFile = (e) => {
+    const { name } = e.target;
+    const index = parseInt(name);
+
+    const url = window.URL.createObjectURL(curriculumFiles[index].output);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', curriculumFiles[index].output.name);
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode.removeChild(link);
   }
   const handleFileResponseChange = (e) => {
     const { name, value} = e.target;
@@ -438,7 +514,7 @@ function EditCurriculum() {
 
     const savedData = {
       objectives: curriculumLearningObjectives,
-      steps: curriculumSteps,
+      plan: coursePlan,
       links: curriculumLinks
       // files: curriculumFiles
     }
@@ -502,29 +578,25 @@ function EditCurriculum() {
         <h3 className="learning-objectives-title text-center" style={{fontFamily: 'Bitter', paddingTop: "1%", color: "#B05139"}}><b>Course Plan</b></h3>
 
         {/* Load Course Steps */}
-        {courseSteps}
+        {coursePlanHTML}
 
         {/* Add New Course Step */}
-        <div className="add-course-step text-center" style={{paddingTop: "1%"}}>
+        {/* <div className="add-course-step text-center" style={{paddingTop: "1%"}}>
             <Button variant="success" onClick={handleOpenNewCourseStep}>Add New</Button>
             <hr></hr>
-        </div>
+        </div> */}
       </div>
 
       {/* Create New Course Step Modal */}
-      <Modal show={openAddCourseStepModal} onHide={handleCloseNewCourseStep}>
+      {/* <Modal show={openAddCourseStepModal} onHide={handleCloseNewCourseStep}>
         <Modal.Header closeButton>
           <Modal.Title>New Course Step</Modal.Title>
         </Modal.Header>
         <Modal.Body>
 
           <form id="createCourseStepForm">
-            <div className="form-group">
-              {/* <label>Name of Course Step</label> */}
-              <input type="text" className="form-control" id="titleInput" name="title" placeholder='Name of Course Step' onChange={handleCourseStepModalChange}/>
-            </div>
             <div className="form-group" style={{paddingTop: "1%"}}>
-              {/* <label>Description of New Course Step</label> */}
+              <label>Description of New Course Step</label>
               <MDBTextArea rows={4} className="form-control" name="description" placeholder='Description of Course Step' onChange={handleCourseStepModalChange}></MDBTextArea>
             </div>
           </form>   
@@ -536,7 +608,7 @@ function EditCurriculum() {
           <Button variant="secondary" onClick={handleCloseNewCourseStep}>Close</Button>
         </Modal.Footer>
 
-      </Modal>
+      </Modal> */}
 
       {/* Links */}
       <div className="links-container">

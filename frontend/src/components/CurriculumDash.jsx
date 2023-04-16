@@ -19,9 +19,6 @@ function CurriculumDash() {
   const [check, setIsBoxChecked] = useState(false);
   const [success, setSuccess] = useState(false);
   const [status, setStatus ] = useState("");
-   // TEMPORARY, waiting for sadjell
-  //const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
-  //const [currentIntakeId, setCurrentIntakeId] = useState(localStorage.setItem("currentIntakeId", "64332c606ad1113507499c63"));
 
   const radioResponse3HTML = <div class = "button-approved">Submit</div>;
   const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
@@ -82,7 +79,14 @@ function CurriculumDash() {
       console.log(currentIntakeId.status);
       e.preventDefault();
       setOpen(false);
-     
+      const permissionLevel = localStorage.getItem("permission-level")
+      if (permissionLevel === "admin") {
+        history("/admindashboard")
+      }
+      if (permissionLevel === "projectlead") {
+        history("/pldashboard")
+      }
+      
     };
 
   const handleOpenModal = () => setOpen(true);

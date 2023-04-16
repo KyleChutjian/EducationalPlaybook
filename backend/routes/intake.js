@@ -126,12 +126,18 @@ router.put("/save-intake", async (req, res) => {
             const newCurriculum = new Curriculum({
                 name: intakeName,
                 objectives: ["Sample Learning Objective"], // Preset curriculum objective
-                steps: [["Step #1", "Step #1 Description"]], // Preset curriculum lesson
-                // resources: [["Sample Link Title", "Link", "https://www.google.com/"]] // Preset resource link
-                links: [{
-                    title: 'Sample Link Title',
-                    output: 'https://www.google.com/'
-                }], // Preset resource link
+                plan: {
+                    description: "Course Plan Description",
+                    selectedTraining: {
+                        lecture: false,
+                        handsOnSkills: false,
+                        mannequinBasedSimulation: false,
+                        standardizedPatient: false,
+                        inSituTraining: false,
+                        other: false
+                    }
+                }, // Preset curriculum lesson
+                links: [],
                 files: []
             });
 
@@ -185,11 +191,18 @@ router.put("/submit-intake", async (req, res) => {
             const newCurriculum = new Curriculum({
                 name: req.body.name,
                 objectives: ["Sample Learning Objective"], // Preset curriculum objective
-                steps: [["Step #1", "Step #1 Description"]], // Preset curriculum lesson
-                links: [{
-                    title: 'Sample Link Title',
-                    output: 'https://www.google.com/'
-                }], // Preset resource link
+                plan: {
+                    description: "Course Plan Description",
+                    selectedTraining: {
+                        lecture: false,
+                        handsOnSkills: false,
+                        mannequinBasedSimulation: false,
+                        standardizedPatient: false,
+                        inSituTraining: false,
+                        other: false
+                    }
+                }, // Preset curriculum lesson
+                links: [],
                 files: []
             });
 

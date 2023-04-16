@@ -71,8 +71,7 @@ router.get('/getFile/:path', async (req, res) => {
         
         // Build filepath
         const path = `${directory}//files//${decodedPath}`;
-        const test = fs.existsSync(path);
-        console.log(test);
+
         // Send file
         res.sendFile(path);
     } catch (err) {
@@ -182,11 +181,11 @@ router.put("/:curriculumId/saveChanges", async (req, res) => {
     
     try {
         const objectives = req.body.objectives;
-        const steps = req.body.steps;
+        const plan = req.body.plan;
         const links = req.body.links;
         
         await Curriculum.findByIdAndUpdate(curriculumId, 
-            {objectives: objectives, steps: steps, links: links}, 
+            {objectives: objectives, plan: plan, links: links}, 
             {$new: true}).then((curriculum) => {
                 res.status(200).json(curriculum);
             });

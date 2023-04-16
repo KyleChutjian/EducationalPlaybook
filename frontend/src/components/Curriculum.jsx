@@ -6,6 +6,7 @@ import { getCurriculumByIntakeId } from '../services/curriculumService';
 import Button from 'react-bootstrap/Button';
 import editIcon from '../resources/edit-icon.png';
 import { getFileByPath } from '../services/curriculumService';
+import { MDBCheckbox } from 'mdb-react-ui-kit';
 
 function Curriculum() {
   const history = useNavigate();
@@ -13,37 +14,18 @@ function Curriculum() {
   const [ permissionLevel, setPermissionLevel ] = useState("client");
   const [ adminNavbar, setAdminNavbar ] = useState(false);
 
-  // Curriculum Hooks
   const [ curriculumTitle, setCurriculumTitle ] = useState("");
-
-  // Learning Objective Hooks
-  // const [ curriculumLearningObjectives, setCurriciulumLearningObjectives ] = useState("");
   const [ learningObjectives, setLearningObjectives ] = useState(<div></div>);
-
-  // Step Hooks
-  // const [ curriculumSteps, setCurriculumSteps ] = useState("");
-  const [ courseSteps, setCourseSteps ] = useState(<div></div>);
-
-  // Resource Hooks
-  // const [ curriculumResources, setCurriculumResources ] = useState("");
-  // const [ resources, setResources ] = useState(<div></div>);
-  // const [ resourceExtraOption, setResourceExtraOption ] = useState(<div></div>);
-
-  // Link Hooks
-  // const [ curriculumLinks, setCurriculumLinks ] = useState("");
+  const [ coursePlan, setCoursePlan ] = useState(<div></div>);
   const [ links, setLinks ] = useState(<div></div>);
-
-  // File Hooks
   const [ curriculumFiles, setCurriculumFiles ] = useState([]);
   const [ files, setFiles ] = useState(<div></div>);
 
-  useEffect(() => {
-    loadFiles(curriculumFiles);
-  }, [curriculumFiles])
+  // useEffect(() => {
+  //   loadFiles(curriculumFiles);
+  // }, [curriculumFiles])
 
   useEffect(() => {
-    // Permissions
-    // const permissionLevel = localStorage.getItem("permission-level");
 
     setPermissionLevel(localStorage.getItem("permission-level"));
     if (localStorage.getItem("permission-level") === "admin") {
@@ -53,19 +35,16 @@ function Curriculum() {
     // Get Curriculum using CurrentIntakeId
     getCurriculumByIntakeId(localStorage.getItem("currentIntakeId")).then((curriculum) => {
       setCurriculumTitle(curriculum.data.name);
-      // setCurriciulumLearningObjectives(curriculum.data.objectives);
-      // setCurriculumSteps(curriculum.data.steps);
-      // setCurriculumLinks(curriculum.data.links);
-      setCurriculumFiles(curriculum.data.files);
+      // setCurriculumFiles(curriculum.data.files);
       loadLearningObjectives(curriculum.data.objectives);
-      loadSteps(curriculum.data.steps);
+      loadPlan(curriculum.data.plan);
       loadLinks(curriculum.data.links);
 
       replaceFileOutputs(curriculum.data.files).then((result) => {
-        // setCurriculumFiles(result);
         setTimeout(() => {
-          setCurriculumFiles(result)
-        }, 100)
+          // setCurriculumFiles(result)
+          loadFiles(result)
+        }, 400)
       });
 
     });
@@ -81,9 +60,7 @@ function Curriculum() {
           <div className="container" key={`learningObjective${index}`}>
             <div className="row" style={{paddingTop: "1%"}}>
               <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Learning Objective #${index+1}`}</b></h3>
-              {/* <MDBTextArea readonly style={{marginTop: "1%", marginBottom: "1%"}} rows={4} name={`objective${index}`} defaultValue={learningObjective}/> */}
-              <p className='col-md-12' name={`objective${index}`} style={{border: '1px solid black', minHeight:'50px', marginTop: '1%', marginBottom: '1%'}}>{learningObjective}</p>
-              {/* {index !== objectives.length-1 ? <hr style={{height: "2px"}}></hr> : null} */}
+              <p className='col-md-12' name={`objective${index}`} style={{wordWrap:"break-word", border: '1px solid black', minHeight:'50px', marginTop: '1%', marginBottom: '1%'}}>{learningObjective}</p>
             </div>
           </div>
         )
@@ -92,23 +69,43 @@ function Curriculum() {
   }
 
   // Curriculum Step Functions:
-  const loadSteps = (steps) => {
-    setCourseSteps(
-      steps.map((step, index) => {
-        return(
-          <div className="container" key={`${step[0]}${index}`}>
+  const loadPlan = (plan) => {
+    const selectedTrainingArray = [];
+    if (plan.selectedTraining.lecture) {
+      selectedTrainingArray.push("Lecture");
+    }
+    if (plan.selectedTraining.handsOnSkills) {
+      selectedTrainingArray.push("Hands-on Skills");
+    }
+    if (plan.selectedTraining.mannequinBasedSimulation) {
+      selectedTrainingArray.push("Mannequin-based Simulation");
+    }
+    if (plan.selectedTraining.standardizedPatient) {
+      selectedTrainingArray.push("Standardized Patient");
+    }
+    if (plan.selectedTraining.inSituTraining) {
+      selectedTrainingArray.push("In-Situ Training");
+    }
+    if (plan.selectedTraining.other) {
+      selectedTrainingArray.push("Other");
+    }
+    var selectedTrainingString;
+    if (selectedTrainingArray.length === 0) {
+      selectedTrainingString = "N/A";
+    } else {
+      selectedTrainingString = selectedTrainingArray.join(', ');
+    }
+    setCoursePlan(
+          <div className="container">
             <div className="row" style={{paddingTop: "1%"}}>
-              <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Course Step #${index+1}`}</b></h3>
-              {/* <MDBTextArea readonly className="col-md-3" rows={1} name={`title${index}`} defaultValue={step[0]} /> */}
-              {/* <p className='col-md-12' name={`title${index}`} style={{border: '1px solid black', minHeight:'30px', marginTop: '1%', marginBottom: '1%'}}>{step[0]}</p> */}
-              {/* <MDBTextArea readonly style={{marginTop: "1%", marginBottom: "1%"}} rows={4} name={`description${index}`} defaultValue={step[1]} /> */}
-              <p className='col-md-12' name={`description${index}`} style={{border: '1px solid black', minHeight:'100px', marginTop: '1%', marginBottom: '1%'}}>{step[1]}</p>
-              {/* {index !== steps.length-1 ? <hr style={{height: "2px"}}></hr> : null} */}
+              <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>Description</b></h3>
+              <div>
+                <h6>{`Training Format(s): ${selectedTrainingString}`}</h6>
+              </div>
+              <p className='col-md-12' style={{whiteSpace: 'pre-wrap', wordWrap:'break-word', border: '1px solid black', minHeight:'100px', marginTop: '1%', marginBottom: '1%'}}>{`${plan.description}`}</p>
             </div>
           </div>
-        )
-      }
-    ))
+    )
   }
 
   // Curriculum File Functions:
@@ -165,10 +162,8 @@ function Curriculum() {
           <div className="container" key={`${link[0]}${index}`}>
             <div className="row" style={{paddingTop: "1%"}}>
                 <span style={{display: 'flex'}}>
-                  <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Link #${index+1}: `}<a href={link.output} className="link-primary">{link.title}</a></b></h3>
+                  <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Link #${index+1}: `}<a href={`//${link.output}`} target='_blank' className="link-primary">{link.title}</a></b></h3>
                 </span> 
-                
-              {index !== links.length-1 ? <hr style={{height: "2px", marginTop: "1%"}}></hr> : null}
             </div>
           </div>
         )
@@ -180,9 +175,7 @@ function Curriculum() {
     const { name } = e.target;
 
     const indexString = name.split("file")[1];
-    console.log(indexString);
     const index = parseInt(indexString);
-    console.log(curriculumFiles[index].output);
 
     const url = window.URL.createObjectURL(curriculumFiles[index].output);
     const link = document.createElement('a');
@@ -203,12 +196,7 @@ function Curriculum() {
         return(
           <div className="container" key={`${file[0]}${index}`}>
             <div className="row" style={{paddingTop: "1%"}}>
-            {console.log(file)}
-                <span style={{display: 'flex'}}>
-                  <Button style={{fontFamily: 'Bitter', fontSize:'20px'}} name={`file${index}`} onClick={handleFileClick}>{`File #${index+1}: `} {file.title}</Button>
-                </span> 
-
-              {index !== files.length-1 ? <hr style={{height: "2px", marginTop: "1%"}}></hr> : null}
+              <h6 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Download: `}<a style={{cursor: 'pointer'}} name={`file${index}`} onClick={handleFileClick} className="link-primary">{file.output.name}</a></b></h6>
             </div>
           </div>
         )
@@ -232,13 +220,16 @@ function Curriculum() {
           <div className="row">
             <span className='p-5' style={{display: 'flex', justifyContent: 'center'}}>
               <h1 style={{fontFamily: 'Bitter', verticalAlign: 'middle', borderBottom: '0', margin: '0%'}}>{curriculumTitle}</h1>
+              <button style={{border: 'none', backgroundColor: 'inherit', paddingLeft: '1%', paddingBottom: '0%'}}>
+                  <img src={editIcon} alt='edit-icon' height='25px' onClick={editCurriculum}/>
+                </button>
               {/* Edit Button */}
-              {
+              {/* {
                 permissionLevel ==='admin' || permissionLevel === 'projectlead' ?
                 <button style={{border: 'none', backgroundColor: 'inherit', paddingLeft: '1%', paddingBottom: '0%'}}>
                   <img src={editIcon} alt='edit-icon' height='25px' onClick={editCurriculum}/>
                 </button> : null
-              }
+              } */}
             </span>
           </div>
         </div>
@@ -265,7 +256,7 @@ function Curriculum() {
         <h3 className="learning-objectives-title text-center" style={{fontFamily: 'Bitter', paddingTop: "1%", color: "#B05139"}}><b>Course Plan</b></h3>
 
         {/* Load Course Steps */}
-        {courseSteps}
+        {coursePlan}
 
         <hr></hr>
       </div>

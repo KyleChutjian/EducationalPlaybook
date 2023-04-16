@@ -1,5 +1,17 @@
 const mongoose = require("mongoose");
 
+// const stepSchema = new mongoose.Schema({
+//     description: {type: mongoose.Schema.Types.String, required: true},
+//     selectedTraining: {
+//         lecture: {type: mongoose.Schema.Types.Boolean, required: true},
+//         handsOnSkills: {type: mongoose.Schema.Types.Boolean, required: true},
+//         mannequinBasedSimulation: {type: mongoose.Schema.Types.Boolean, required: true},
+//         standardizedPatient: {type: mongoose.Schema.Types.Boolean, required: true},
+//         inSituTraining: {type: mongoose.Schema.Types.Boolean, required: true},
+//         other: {type: mongoose.Schema.Types.Boolean, required: true},
+//     }
+// });
+
 const resourceSchema = new mongoose.Schema({
     title: {type: mongoose.Schema.Types.String, required: true},
     output: {type: mongoose.Schema.Types.String, required: false}
@@ -7,9 +19,18 @@ const resourceSchema = new mongoose.Schema({
 
 const curriculumSchema = new mongoose.Schema({
     name: {type: mongoose.Schema.Types.String, required: false},
-    steps: { type: mongoose.Schema.Types.Mixed, required: true},
+    plan: {
+        description: {type: mongoose.Schema.Types.String, required: true},
+        selectedTraining: {
+            lecture: {type: mongoose.Schema.Types.Boolean, required: true},
+            handsOnSkills: {type: mongoose.Schema.Types.Boolean, required: true},
+            mannequinBasedSimulation: {type: mongoose.Schema.Types.Boolean, required: true},
+            standardizedPatient: {type: mongoose.Schema.Types.Boolean, required: true},
+            inSituTraining: {type: mongoose.Schema.Types.Boolean, required: true},
+            other: {type: mongoose.Schema.Types.Boolean, required: true},
+        }
+    },
     objectives: {type: mongoose.Schema.Types.Array, required: true},
-    // resources: {type: [resourceSchema], required: false},
     links: {type: [resourceSchema], required: false},
     files: {type: [resourceSchema], required: false}
 });
