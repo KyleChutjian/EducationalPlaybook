@@ -11,7 +11,7 @@ import archive from '../resources/archive.png';
 import { editIntakeStatusByIntakeId, getIntakeByIntakeId } from '../services/intakeService';
 import Tooltip from 'react-bootstrap/Tooltip'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
-import * as bootstrap from 'bootstrap';
+
 
 function CurriculumDash() {
   const history = useNavigate();
@@ -122,12 +122,6 @@ function CurriculumDash() {
     setIsBoxChecked(e.target.checked);
   }
 
-  document.addEventListener("DOMContentLoaded", function(){
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function(element){
-        return new bootstrap.Tooltip(element);
-    });
-})
 
   return(  
 

@@ -7,6 +7,8 @@ import Button from 'react-bootstrap/Button';
 import editIcon from '../resources/edit-icon.png';
 import { getFileByPath } from '../services/curriculumService';
 import { MDBCheckbox } from 'mdb-react-ui-kit';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
 function Curriculum() {
   const history = useNavigate();
@@ -214,9 +216,17 @@ function Curriculum() {
           <div className="row">
             <span className='p-5' style={{display: 'flex', justifyContent: 'center'}}>
               <h1 style={{fontFamily: 'Bitter', verticalAlign: 'middle', borderBottom: '0', margin: '0%'}}>{curriculumTitle}</h1>
-              <button style={{border: 'none', backgroundColor: 'inherit', paddingLeft: '1%', paddingBottom: '0%'}}>
+              {
+                <OverlayTrigger delay={{hide: 150, show: 300}} overlay={(props) => {
+                  return <Tooltip {...props}>Edit</Tooltip>
+                }}>
+                  <button style={{border: 'none', backgroundColor: 'inherit', paddingLeft: '1%', paddingBottom: '0%'}}>
                   <img src={editIcon} alt='edit-icon' height='25px' onClick={editCurriculum}/>
-                </button>
+                  </button>
+                </OverlayTrigger>
+
+              }
+
             </span>
           </div>
         </div>
