@@ -33,13 +33,13 @@ function AdminNav() {
     <Navbar bg="light" expand="lg" className="ms-auto">
       <Container>
         <Navbar.Brand onClick={toHome} >
-        <img src="./nav logo2.png" alt="bug" height={70} />
+        <img src="./cropped-logo.png" alt="bug" height={40}/>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             <NavDropdown 
-              title={<i className="bi bi-gear"></i>} id="basic-nav-dropdown">
+              title={<i className="bi bi-gear"></i>} id="basic-nav-dropdown" style={{fontSize:'25px'}}>
               <NavDropdown.Item onClick={toManageAccounts}>Manage Accounts</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={handleLogout}>

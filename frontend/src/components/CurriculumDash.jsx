@@ -9,6 +9,7 @@ import { getCurriculumByIntakeId } from '../services/curriculumService';
 import Modal from 'react-bootstrap/Modal';
 import archive from '../resources/archive.png';
 import { editIntakeStatusByIntakeId, getIntakeByIntakeId } from '../services/intakeService';
+import * as bootstrap from 'bootstrap';
 
 function CurriculumDash() {
   const history = useNavigate();
@@ -122,7 +123,15 @@ function CurriculumDash() {
     setIsBoxChecked(e.target.checked);
   }
 
+  document.addEventListener("DOMContentLoaded", function(){
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function(element){
+        return new bootstrap.Tooltip(element);
+    });
+})
+
   return(  
+
     <div>
       <div>
         {adminNavbar ? <AdminNav/> : <ClientNav/>}
@@ -135,7 +144,7 @@ function CurriculumDash() {
         <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>{curriculumTitle}</h1>
 
         {
-          <button style={{border: 'none', backgroundColor: 'inherit', paddingLeft: '1%', paddingBottom: '0%'}}>
+          <button id="archiveButton" data-toggle="tooltip" title="Archive" style={{border: 'none', backgroundColor: 'inherit', paddingLeft: '1%', paddingBottom: '0%'}}>
             <img src={archive} alt='edit-icon' height='25px' onClick={handleOpenModal}/>
           </button> 
         }
@@ -246,6 +255,8 @@ function CurriculumDash() {
           </div>
       </div>
     </div>
+
+    
 
   )  
 

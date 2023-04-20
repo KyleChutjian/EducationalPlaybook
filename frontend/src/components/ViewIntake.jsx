@@ -215,8 +215,8 @@ function ViewIntake() {
           <div className="create-account-button text-center">
             {localStorage.getItem("permission-level") === "admin"  && status === "pending-admin" ? 
               <div>
-                <Button variant="primary" onClick={handleOpenModal} style={{width:'20%',fontFamily: 'Bitter', background: '#a40084', marginRight: '1%'}}>Approve & Assign</Button>
-                <Button variant="primary" onClick={handleDeny} style={{width:'20%',fontFamily: 'Bitter', background: '#d2492a', marginLeft: '1%'}}>Deny</Button>
+                <Button variant="primary" onClick={handleOpenModal} style={{width:'20%',fontFamily: 'Bitter', background: '#6E9A35', marginRight: '1%'}}>Approve & Assign</Button>
+                <Button variant="danger" onClick={handleDeny} style={{width:'20%',fontFamily: 'Bitter', marginLeft: '1%'}}>Deny</Button>
               </div> : null}
             {localStorage.getItem("permission-level") === "projectlead" && status === "pending-projectlead" ? 
               <div>

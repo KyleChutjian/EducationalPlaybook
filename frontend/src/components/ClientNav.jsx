@@ -28,12 +28,12 @@ function ClientNav() {
     <Navbar bg="light" expand="lg" className="ms-auto" style={{borderBottom:"1px"}}>
       <Container>
         <Navbar.Brand onClick={toHome}>
-        <img src="./nav logo2.png" alt="bug" height={70} />
+        <img src="./cropped-logo.png" alt="bug" height={40} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <NavDropdown title={<i className="bi bi-person"></i>} id="basic-nav-dropdown">
+            <NavDropdown title={<i className="bi bi-person"></i>} id="basic-nav-dropdown" style={{fontSize:'25px'}}>
               <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>

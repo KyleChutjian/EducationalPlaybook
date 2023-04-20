@@ -1,18 +1,37 @@
-
 import React, { useState, useEffect } from 'react'
-
+import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { loginUser } from '../services/authService';
 import AdminNav from '../components/AdminNav';
 import ClientNav from '../components/ClientNav';
+import Container from 'react-bootstrap/Container';
 import {Card} from 'react-bootstrap';
-import { Button } from 'react-bootstrap';
+import { Dropdown, DropdownButton, Button } from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { getIntakeByIntakeId, editNeedsAssessmentByIntakeId } from '../services/intakeService';
-import { useNavigate } from 'react-router-dom';
+// import {
+//   Async,
+//   FieldFeedback,
+//   FieldFeedbacks,
+//   FormWithConstraints,
+//   Input
+// } from 'react-form-with-constraints-bootstrap';
 
+
+
+import {
+  MDBContainer,
+  MDBInput,
+  MDBCheckbox,
+  MDBBtn,
+  MDBIcon,
+  MDBTextArea
+}
+from 'mdb-react-ui-kit';
 
 function NeedsAssessment() {
 
-  const history = useNavigate();
   const [ adminNavbar, setAdminNavbar ] = useState(false);
 
   
@@ -49,7 +68,7 @@ function NeedsAssessment() {
               <Card id='card1' className="text-right mx-auto" style={{width: '60rem', margin:'20px', color:'black', fontFamily: 'Bitter' }}>
                 <Card.Header style={{fontSize:'20px'}}> 
                 <Form.Label style={{width:'50%', marginLeft:'25%', textAlign:'center'}}>Focus Area: </Form.Label>
-                <Form.Control style={{width:'50%', marginLeft:'25%', textAlign:'center'}} defaultValue={card[0]} type="focusArea" placeholder='ex. Innovation' name={`focus${index}`} onChange={handleNeedsAssessmentResponseChange}/> </Card.Header>
+                <Form.Control required style={{width:'50%', marginLeft:'25%', textAlign:'center'}} defaultValue={card[0]} type="focusArea" placeholder='ex. Innovation' name={`focus${index}`} onChange={handleNeedsAssessmentResponseChange}/> </Card.Header>
                 <Card.Body>
 
                   <div className="card-block">
@@ -66,7 +85,7 @@ function NeedsAssessment() {
                       <Form.Group className="mb-3" controlId="formFutureState">
                         <Form.Label>Desired Future State: </Form.Label>
                         <Form.Control type="futureState" defaultValue={card[1]} name={`future${index}`} onChange={handleNeedsAssessmentResponseChange} placeholder='At least 50% of our developer resources working on new features'/>
-                        <Form.Text id="subtext" muted>
+                        <Form.Text id="subtext" muted required>
                           Describe the desired allocated resources for this focus area
                         </Form.Text>
                       </Form.Group>
@@ -125,7 +144,6 @@ function NeedsAssessment() {
 
   const saveChanges = () => {
     editNeedsAssessmentByIntakeId(currentIntakeId, {newNeedsAssessment: needsAssessmentData})
-    history("/curriculumDash")
   }
 
   const addNew = (e) => {
@@ -135,6 +153,7 @@ function NeedsAssessment() {
     loadNeedsAssessmentCards(newNeedsAssessment);
   }
 
+  
     return(
         <div>
           <div>
@@ -149,6 +168,39 @@ function NeedsAssessment() {
           {needsAssessmentCards}
 
           {/* Assessment Cards */}
+          {/* <div className="col d-flex justify-content-center">
+              <Card id='card1' className="text-right mx-auto" style={{width: '60rem', margin:'20px', color:'black', fontFamily: 'Bitter' }}>
+                <Card.Header style={{fontSize:'20px'}}> 
+                <Form.Label style={{width:'50%', marginLeft:'25%', textAlign:'center'}}>Focus Area: </Form.Label>
+                <Form.Control style={{width:'50%', marginLeft:'25%', textAlign:'center'}} type="focusArea" placeholder='ex. Innovation'/> </Card.Header>
+                <Card.Body>
+
+                  <div class="card-block">
+                    <div class="row">
+                    <Form>
+                      <Form.Group className="mb-3" controlId="formFutureState">
+                        <Form.Label>Desired Furture State: </Form.Label>
+                        <Form.Control type="futureState" />
+                      </Form.Group>
+
+                      <Form.Group className="mb-3" controlId="formCurrentState">
+                        <Form.Label>Current State: </Form.Label>
+                        <Form.Control type="currentState" placeholder=''/>
+                      </Form.Group>
+
+                      <Form.Group className="mb-3" controlId="formCurrentState">
+                        <Form.Label>Identified Gap: </Form.Label>
+                        <Form.Control type="currentState" placeholder='ex. 40%'/>
+                      </Form.Group>
+                    </Form>
+                       
+                    </div>
+                  </div>
+    
+                </Card.Body>
+              </Card>
+                
+          </div> */}
 
                 <div className='row'>
                   {/* <div className='col'> */}
@@ -157,13 +209,13 @@ function NeedsAssessment() {
                       <Button style={{backgroundColor: '#6E9A35', fontFamily: 'Bitter', marginLeft: '5px', marginRight: '50%', minWidth:'160px', maxHeight:'40px'}} variant="primary" type="submit" onClick={saveChanges}>Save</Button>
                     </div>
 
+                  {/* </div>    */}
                 </div>
                 <br/>
                 <br/>
 
         </div>
   )
-
 }
 
 export default NeedsAssessment;

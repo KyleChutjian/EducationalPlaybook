@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useEffect } from 'react';
+import Form from 'react-bootstrap/Form';
 
 
 function Login() {
@@ -75,6 +76,47 @@ function Login() {
 
     useEffect(() => { document.body.style.backgroundColor = '#66c1db' }, [])
 
+      //Regex Expressions
+  var emailRegEx = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  var passwordRegEx = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+  var passwordConfirmRegEx = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
+  //Check validity 
+  var emailValid = false;
+  var passwordValid = false;
+  var passwordConfirmValid = false;
+
+  //Validate Form 
+  function validateForm() {
+
+    //Validate Email
+    const email = document.getElementById("email");
+    if(email === "" || email == null) {
+        alert("Please enter an email.");
+    } else if (emailRegEx.test(email) == false) {
+        alert("Invalid email. Please use follow the example template: (example@quinnipiac/qu.edu)");
+    } else if (!/^[^@\s]+@quinnipiac.edu$/i.test(email) && !/^[^@\s]+@qu.edu$/i.test(email)) {
+        alert("Invalid email. Please enter your Quinnipiac email.")
+    } else {
+        emailValid = true;
+    }
+
+  }
+
+//     const txtFieldState = {
+//       value: "",
+//       valid: true,
+//       typeMismatch: false,
+//       errMsg: "" //this is where our error message gets across
+//   };
+
+//   state = {
+//     email: { ...txtFieldState, fieldName: "Email", required: true, requiredTxt: "Email is required", formatErrorTxt: "Incorrect email format" },
+//     firstname: { ...txtFieldState, fieldName: "First Name", required: true, requiredTxt: "First Name is required" },
+//     lastname: { ...txtFieldState, fieldName: "Last Name", required: false, requiredTxt: "Last Name is required" },
+//     allFieldsValid: false
+// };
+
     // Login screen HTML
     return(
       
@@ -87,21 +129,24 @@ function Login() {
         <div id="loginForm" className='form-container text-center' style={{ height:'100%', opacity:'90%'}}>
           <div style={{paddingBottom: "0.5%"}}>
               <TextField 
-                style={{width:'50%', background:'white'}}
+                type="email"
+                style={{width:'50%', background:'white', marginBottom:'20px'}}
                 label="yourname@hhchealth.org"
                 name="email"
                 value={account.email}
                 onChange={handleChange}
+                required
               />
           </div>
           <div id="password" className="mb-3">
               <TextField
-                style={{width:'50%', background:'white'}}
+                style={{width:'50%', background:'white', marginBottom:'20px'}}
                 label="Password"
                 name="password"
                 type="password"
                 value={account.password}
                 onChange={handleChange}
+                required
               />
           </div>
           <div className="mb-3">
@@ -111,24 +156,24 @@ function Login() {
                 </Modal.Header>
                   <Modal.Body>
 
-                    <form id="createAccountForm">
+                    <Form id="createAccountForm">
                       <div className="form-group">
                         <label htmlFor="firstNameLabel">First Name</label>
-                        <input type="text" className="form-control" id="inputFirstName" name="firstName" placeholder="Enter First Name" onChange={handleModalChange}/>
+                        <input type="text" className="form-control" id="inputFirstName" name="firstName" placeholder="Enter First Name" onChange={handleModalChange} required/>
                       </div>
                       <div className="form-group">
                         <label htmlFor="lastNameLabel">Last Name</label>
-                        <input type="text" className="form-control" id="inputLastName" name="lastName" placeholder="Enter Last Name" onChange={handleModalChange}/>
+                        <input required type="text" className="form-control" id="inputLastName" name="lastName" placeholder="Enter Last Name" onChange={handleModalChange}/>
                       </div>
                       <div className="form-group">
                         <label htmlFor="emailLabel">Email</label>
-                        <input type="email" className="form-control" id="inputEmail" name="email" placeholder="Enter Email" onChange={handleModalChange}/>
+                        <input required type="email" className="form-control" id="inputEmail" name="email" placeholder="Enter Email" onChange={handleModalChange}/>
                       </div>
                       <div className="form-group">
                         <label htmlFor="passwordLabel">Password</label>
-                        <input type="password" className="form-control" id="inputPassword" name="password" placeholder="Enter Password" onChange={handleModalChange}/>
+                        <input required type="password" className="form-control" id="inputPassword" name="password" placeholder="Enter Password" onChange={handleModalChange}/>
                       </div>
-                    </form>
+                    </Form>
                       
                     
                   </Modal.Body>

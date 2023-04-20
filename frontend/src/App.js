@@ -17,6 +17,7 @@ import AdminNav from "./components/AdminNav";
 import PLDashboard from './components/PLDashboard';
 import ClientDashboard from './components/ClientDashboard';
 import React from "react";
+import * as bootstrap from 'bootstrap';
 
 import {
   BrowserRouter as Router,
