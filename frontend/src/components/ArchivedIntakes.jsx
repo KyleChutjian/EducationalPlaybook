@@ -43,7 +43,7 @@ function ArchivedIntakes() {
         return "#5cb85c";
 
       case "archived-fail":
-      case "archived-deny":
+      case "archived-denied":
         return "#d9534f";
 
       default:

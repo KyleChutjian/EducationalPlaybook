@@ -26,7 +26,6 @@ function SuccessRate() {
 
     getAllArchivedIntakes().then((intakes) => {
       setArchivedIntakes(intakes.data);
-      console.log(intakes.data)
       const success = intakes.data.filter((intake) => {
         return intake.status === "archived-success";
       })
@@ -34,7 +33,7 @@ function SuccessRate() {
         return intake.status === "archived-fail";
       });
       const deny = intakes.data.filter((intake) => {
-        return intake.status === "archived-deny";
+        return intake.status === "archived-denied";
       });
 
       setArchivedSuccess(success);
@@ -68,8 +67,8 @@ function SuccessRate() {
           `${archivedFail.length}/${archivedIntakes.length} curriculums were unsuccessful`
         }</b></h3>
 
-        <h3 className="text-center" style={{fontFamily: 'Bitter', paddingTop: "1%", color: "red"}}><b>{
-          `${archivedDeny.length} curriculums were denied`
+        <h3 className="text-center" style={{fontFamily: 'Bitter', paddingTop: "1%", color: "red"}}><b>{archivedDeny.length === 1 ?
+          `${archivedDeny.length} intake form was denied` : `${archivedDeny.length} intake forms were denied`
         }</b></h3>
       </div>
       

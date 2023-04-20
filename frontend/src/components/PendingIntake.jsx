@@ -38,52 +38,12 @@ function PendingIntakes() {
       }
       
     })
-
-
-    // Get Intake using Status
-    // getIntakesByStatus("pending-admin" || "pending-client" || "pending-projectlead").then((pendingIntakes) => {
-    //   console.log(pendingIntakes.data);
-    //   setPendingIntakes(pendingIntakes);
-    //   loadIntakes(pendingIntakes.data);
-
-
-    //   for(var i = 0; i < pendingIntakes.data.length; i++){
-    //     var current = pendingIntakes.data[i]._id;
-    //     var currentName = pendingIntakes.data[i].name;
-
-    //     if(pendIntakeArray.indexOf(current) < 0){
-    //         console.log(pendIntakeArray.indexOf(current));
-    //         console.log(current);
-    //         pendIntakeArray.push(current);
-    //         pendIntakeNameArray.push(currentName);
-    //       }
-    //   }
-
-    //   console.log(pendIntakeArray);
-    // });
       
   }, []);
-
-  // // Returns an array of intake objects
-  // getIntakesByProjectLeadIdByStatus("63ec25944c32561072ec88db", "pending-projectlead").then((result) => {
-  //   // console.log(result.data);
-  // })
-
-  // // Returns an array of user objects
-  // getAccountsByRole("PROJECTLEAD").then((result) => {
-  //   // console.log(result.data);
-  // })
-
-  const toPendingIntake = () => {
-    // Update the route
-    let path = '/viewintake';
-    history(path);
-  };
 
   const loadIntakes = (intakes) => {
     setPendingIntakes(
       intakes.map((intake, index) => {
-        console.log(intake);
         return(
           <div className="container" key={index}>
             <div className="row" style={{paddingTop: "1%"}}>
@@ -94,7 +54,7 @@ function PendingIntakes() {
               <Card.Title style={{fontSize:'30px'}}>
                 <Button name={intake.name} onClick={() =>{
                   localStorage.setItem("currentIntakeId", intake.intakeId);
-                  toPendingIntake();
+                  history("/viewintake")
                 } } variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}>{intake.name}</Button>
               </Card.Title>
             </Card.Body>
