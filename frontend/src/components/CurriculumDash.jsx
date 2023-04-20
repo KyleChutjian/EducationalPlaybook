@@ -9,6 +9,8 @@ import { getCurriculumByIntakeId } from '../services/curriculumService';
 import Modal from 'react-bootstrap/Modal';
 import archive from '../resources/archive.png';
 import { editIntakeStatusByIntakeId, getIntakeByIntakeId } from '../services/intakeService';
+import Tooltip from 'react-bootstrap/Tooltip'
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import * as bootstrap from 'bootstrap';
 
 function CurriculumDash() {
@@ -35,6 +37,10 @@ function CurriculumDash() {
     getCurriculumByIntakeId(localStorage.getItem("currentIntakeId")).then((res) => {
       setCurriculumTitle(`Curriculum Development Plan: ${res.data.name}`)
     });
+
+    getIntakeByIntakeId(localStorage.getItem("currentIntakeId")).then((res) => {
+      setStatus(res.data.status);
+    })
 
   });
 
@@ -67,14 +73,11 @@ function CurriculumDash() {
     const submitModal = (e) => {
       if (success == true){
        editIntakeStatusByIntakeId(currentIntakeId, "archived-success");
-       console.log(currentIntakeId.status);
-
       }
       else{
         editIntakeStatusByIntakeId(currentIntakeId, "archived-fail");
 
       }
-      console.log(currentIntakeId.status);
       e.preventDefault();
       setOpen(false);
       const permissionLevel = localStorage.getItem("permission-level")
@@ -97,22 +100,18 @@ function CurriculumDash() {
 
     if (name === "radio1") {
         if (value === "yes") {
-          console.log(`opening ${name} response`);
           setIsRadio1Visible(true);
           setSuccess(true);
         } else {
-          console.log(`closing ${name} response`);
           setIsRadio1Visible(false);
         }
     }
 
     if (name === "radio2") {
       if (value === "yes") {
-        console.log(`opening ${name} response`);
         setIsRadio2Visible(true);
         
       } else {
-        console.log(`closing ${name} response`);
         setIsRadio2Visible(false);
       }
   }
@@ -142,11 +141,15 @@ function CurriculumDash() {
       <span className='p-5' style={{display: 'flex', justifyContent: 'center'}}>
 
         <h1 className='mb-3' style={{fontFamily: 'Bitter'}}>{curriculumTitle}</h1>
+        {status.includes("archived") ? null :
+                <OverlayTrigger delay={{hide: 150, show: 300}} overlay={(props) => {
+                  return <Tooltip {...props}>Archive</Tooltip>
+                }}>
+                  <button style={{border: 'none', backgroundColor: 'inherit', paddingLeft: '1%', paddingBottom: '1%'}}>
+                    <img src={archive} alt='edit-icon' height='25px' onClick={handleOpenModal}/>
+                  </button>
+                </OverlayTrigger>
 
-        {
-          <button id="archiveButton" data-toggle="tooltip" title="Archive" style={{border: 'none', backgroundColor: 'inherit', paddingLeft: '1%', paddingBottom: '0%'}}>
-            <img src={archive} alt='edit-icon' height='25px' onClick={handleOpenModal}/>
-          </button> 
         }
       </span>
         
@@ -156,12 +159,9 @@ function CurriculumDash() {
         <Container id='clientButtonContainer' fluid>
 
           {/* Card1: Intake Data */}
-          <Card id='card1' className="text-center mx-auto" style={{ background: '#0098C3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
+          <Card id='card1' className="text-center mx-auto" style={{background: '#0098C3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink onClick={button1} style={{color:'whitesmoke'}}>
-                  {button1Option}
-                  </MDBCardLink>  */}
                   <Button onClick={intakeData} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>Intake Data</Button>
               </Card.Title>
             </Card.Body>
@@ -171,7 +171,6 @@ function CurriculumDash() {
           <Card id='card2' className="text-center mx-auto" style={{ background: '#6E9A35', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
                 <Button onClick={needsAssessment} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}>Needs Assessment</Button>
               </Card.Title>
             </Card.Body>
@@ -181,19 +180,10 @@ function CurriculumDash() {
           <Card id='card3' className="text-center mx-auto" style={{ background: '#d2492a', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink disabled={disableViewCourse} href='#' style={{color:'whitesmoke'}}>View Course</MDBCardLink>  */}
                 <Button onClick={viewCourse} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}>Curriculum</Button>
               </Card.Title>
             </Card.Body>
           </Card>
-
-         
-          {/* Card4: Success Rate */}
-          {/* <Card id='card4' className="text-center mx-auto" style={{ background: '#a40084', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
-            <Card.Body>
-              <Button onClick={editCourse} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>Edit Curriculum</Button>
-            </Card.Body>
-          </Card>  */}
         </Container>
 
         <div className="mb-3">
@@ -259,91 +249,6 @@ function CurriculumDash() {
     
 
   )  
-
-  //   return(
-
-      
-  //   <div>
-  //     <Navbar bg="light" expand="lg" className="ms-auto">
-  //     <Container>
-  //       <Navbar.Brand href="#home">
-  //       <img src="./final-ep-logo.png" alt="bug" height={100} />
-  //       </Navbar.Brand>
-  //       <Navbar.Toggle aria-controls="basic-navbar-nav" />
-  //       <Navbar.Collapse id="basic-navbar-nav">
-  //         <Nav className="ms-auto">
-  //           <Nav.Link href="#home">Home</Nav.Link>
-  //           <Nav.Link href="#link">Link</Nav.Link>
-  //           <NavDropdown title="Settings" id="basic-nav-dropdown">
-  //             <NavDropdown.Item href="#action/3.1">Manage Accounts</NavDropdown.Item>
-  //             <NavDropdown.Item href="#action/3.2">
-  //               Another action
-  //             </NavDropdown.Item>
-  //             <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-  //             <NavDropdown.Divider />
-  //             <NavDropdown.Item href="#action/3.4">
-  //               Separated link
-  //             </NavDropdown.Item>
-  //           </NavDropdown>
-            
-  //         </Nav>
-  //       </Navbar.Collapse>
-  //     </Container>
-  //   </Navbar>
-  //   <div class="container-fluid text-sm-center p-3 bg-light" style={{fontFamily: 'Bitter'}}>
-  //       <h1> Admin Dashboard</h1>
-  //       <h3> Curriculum #001</h3>
-  //   </div> 
-  //   <div class="col d-flex justify-content-center">
-
-  //   <Container fluid>
-  //    <Card className="text-center mx-auto" style={{ background: '#0098C3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
-  //     <Card.Body>
-  //       <Card.Title>Intake Forms</Card.Title>
-  //       <Card.Text>
-  //         All intake forms that have been submitted will appear here. Once reviewed they may be approved for further data collection.
-  //       </Card.Text>
-  //       <Button variant="light">Review</Button>
-  //     </Card.Body>
-  //   </Card>
-
-  //   <Card className="text-center mx-auto" style={{ background: '#6E9A35', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
-  //     <Card.Body>
-  //       <Card.Title>Needs Assessment</Card.Title>
-  //       <Card.Text>
-  //         With supporting text below as a natural lead-in to additional content.
-  //       </Card.Text>
-  //       <Button variant="light">Analyze</Button>
-  //     </Card.Body>
-  //   </Card>
-
-  //   <Card className="text-center mx-auto" style={{ background: '#d2492a', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
-  //     <Card.Body>
-  //       <Card.Title>Course</Card.Title>
-  //       <Card.Text>
-  //         Using the information gathered through intake data and needs assessments, this section can be used to develop a curriculum based on the needs of the hospital community.
-  //       </Card.Text>
-  //       <Button variant="light">Add to course</Button>
-  //     </Card.Body>
-  //   </Card>
-
-  //   <Card className="text-center mx-auto" style={{ background: '#a40084', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
-  //     <Card.Body>
-  //       <Card.Title>Complete Courses</Card.Title>
-  //       <Card.Text>
-  //         Fully developed curriculum plans that have been marked as "complete" will appear here for access at any time.
-  //       </Card.Text>
-  //       <Button variant="light">View</Button>
-  //     </Card.Body>
-  //   </Card> 
-  //   </Container>
-    
-
-  //   </div>
-      
-  //   </div>
-
-  // )
 }
 
 export default CurriculumDash;

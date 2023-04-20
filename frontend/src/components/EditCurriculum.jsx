@@ -30,20 +30,6 @@ function EditCurriculum() {
   // Course Plan Hooks
   const [ coursePlan, setCoursePlan ] = useState("");
   const [ coursePlanHTML, setCoursePlanHTML ] = useState(<div></div>);
-  // const [ openAddCourseStepModal, setOpenAddCourseStepModal ] = useState(false);
-  // const [ newCourseStep, setNewCourseStep ] = useState({
-  //   description: "",
-  //   selectedTraining: {
-  //     lecture: false,
-  //     handsOnSkills: false,
-  //     mannequinBasedSimulation: false,
-  //     standardizedPatient: false,
-  //     inSituTraining: false,
-  //     other: false
-  //   }
-  // });
-  // const handleOpenNewCourseStep = () => setOpenAddCourseStepModal(true);
-  // const handleCloseNewCourseStep = () => setOpenAddCourseStepModal(false);
 
   // Link Hooks
   const [ curriculumLinks, setCurriculumLinks ] = useState("");
@@ -242,46 +228,7 @@ function EditCurriculum() {
       return oldPlan;
     })
 
-    // setCoursePlan((oldSteps) => {
-    //   if (name.includes("title")) {
-    //     indexString = name.split("title")[1];
-    //     index = parseInt(indexString);
-    //     oldSteps[index][0] = value;
-    //   } else if (name.includes("description")) {
-    //     indexString = name.split("description")[1];
-    //     index = parseInt(indexString);
-        
-    //     oldSteps[index][1] = value;
-    //   } else {
-    //     console.log("Something went wrong");
-    //   }
-    //   return oldSteps;
-    // });
   }
-  // const createNewCourseStepModal = (e) => {
-  //   e.preventDefault();
-  //   setOpenAddCourseStepModal(false);
-  //   coursePlan.push(newCourseStep);
-  //   loadPlan(coursePlan);
-  // };
-  // const deleteCourseStep = (e) => {
-  //   e.preventDefault();
-  //   const indexString = e.target.name.split('step')[1];
-  //   const index = parseInt(indexString);
-  //   coursePlan.splice(index, 1);
-  //   setCoursePlan(coursePlan);
-  //   loadPlan(coursePlan);
-  // }
-  // function handleCourseStepModalChange(e) {
-  //   const { name, value } = e.target;
-
-  //   setNewCourseStep((old) => {
-  //     return {
-  //       ...old,
-  //       [name]: value,
-  //     };
-  //   });
-  // }
 
   // Curriculum Link Functions:
   const loadLinks = async (links) => {

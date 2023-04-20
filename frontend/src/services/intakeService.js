@@ -59,9 +59,9 @@ export function projectleadApproveIntake(data) {
 }
 
 // Archive Intake by IntakeId
-export function archiveIntakebyIntakeId(intakeId) {
+export function getAllArchivedIntakes() {
     http.setJwt(getJwt());
-    return http.put(`${apiEndPointIntake}/archive-intake/${intakeId}`);
+    return http.get(`${apiEndPointIntake}/archived-all`);
 }
 
 // Edit Intake Form by IntakeId

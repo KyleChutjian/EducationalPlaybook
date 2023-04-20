@@ -3,29 +3,27 @@ import { useNavigate } from "react-router-dom";
 import AdminNav from '../components/AdminNav';
 import ClientNav from '../components/ClientNav';
 import { Button } from 'react-bootstrap';
-import { getIntakesByStatus} from '../services/intakeService';
+import { getAllArchivedIntakes } from '../services/intakeService';
 import {Card} from 'react-bootstrap';
 
 function ArchivedIntakes() {
 
   const history = useNavigate();
 
-  const archIntakeArray = [];
-  const archIntakeNameArray = [];
+  // const archIntakeArray = [];
+  // const archIntakeNameArray = [];
 
-  const toArchivedIntake = () => {
-    // Update the route
-    let path = '/curriculumDash';
-    history(path);
-  };
+
 
 
   const [ adminNavbar, setAdminNavbar ] = useState(false);
 
-  //Approved Intake Hooks
   const [archivedIntakes, setArchivedIntakes] = useState(null);
+  const [archivedIntakesHTML, setArchivedIntakesHTML] = useState(null);
 
-
+  useEffect(() => {
+    loadIntakes(archivedIntakes)
+  }, [archivedIntakes])
 
   useEffect(() => {
     // Permissions
@@ -33,35 +31,32 @@ function ArchivedIntakes() {
     if (permissionLevel === "admin") {
       setAdminNavbar(true);
     }
-
-
-    // Get Intake using Status
-    getIntakesByStatus("archived").then((archivedIntakes) => {
-      console.log(archivedIntakes.data);
-      console.log("Hello World");
-      setArchivedIntakes(archivedIntakes);
-      loadIntakes(archivedIntakes.data);
-
-      for(var i = 0; i < archivedIntakes.data.length; i++){
-        var current = archivedIntakes.data[i]._id;
-        var currentName = archivedIntakes.data[i].name;
-
-        if(archIntakeArray.indexOf(current) < 0){
-            console.log(archIntakeArray.indexOf(current));
-            console.log(current);
-            archIntakeArray.push(current);
-            archIntakeNameArray.push(currentName);
-          }
-      }
-
-      console.log(archIntakeArray);
-    });
+    getAllArchivedIntakes().then((intakes) => {
+      setArchivedIntakes(intakes.data);
+    })
       
   }, []);
 
+  const getIntakeBackgroundColor = (status) => {
+    switch (status) {
+      case "archived-success":
+        return "#5cb85c";
+
+      case "archived-fail":
+      case "archived-denied":
+        return "#d9534f";
+
+      default:
+        return "#D3D3D3";
+    }
+  }
+
   const loadIntakes = (intakes) => {
-    setArchivedIntakes(
-      intakes.map((archivedIntakes, index) => {
+    if (intakes === null) {
+      return null;
+    }
+    setArchivedIntakesHTML(
+      intakes.map((intake, index) => {
         return(
           <div className="container" key={index}>
             <div className="row" style={{paddingTop: "1%"}}>
@@ -70,11 +65,10 @@ function ArchivedIntakes() {
             <Card id='card2' className="text-center mx-auto" style={{ background: '#D3D3D3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
             <Card.Body>
               <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
                 <Button name={index} onClick={() =>{
-                  localStorage.setItem("currentIntakeId", archIntakeArray[index]);
-                  toArchivedIntake();
-                } } variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}>{archIntakeNameArray[index]}<u>{}</u></Button>
+                  localStorage.setItem("currentIntakeId", intake._id)
+                  history("/curriculumDash");
+                } } variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px", background: getIntakeBackgroundColor(intake.status)}}>{intake.name}<u>{}</u></Button>
               </Card.Title>
             </Card.Body>
           </Card>
@@ -103,7 +97,7 @@ function ArchivedIntakes() {
       </div>
 
       <div className="intake-body container" style={{paddingTop: "1%"}}>
-          {archivedIntakes}       
+          {archivedIntakesHTML}       
         </div>
 
     

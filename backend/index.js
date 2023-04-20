@@ -10,11 +10,12 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const mongooseConnectionString = `mongodb+srv://${process.env.LOGIN}:${process.env.PASSWORD}@cluster0.yb6wo5k.mongodb.net/test`;
 const User = require('./models/User');
+const path = require('path');
 var users = require('./routes/users');
 var intakes = require('./routes/intake');
 var curriculums = require('./routes/curriculum');
 const app = express();
-
+// app.use(express.static(path.join(__dirname + "/public")));
 // Middlewares
 app.use(bodyParser.json({limit: '50mb', extended: true}));
 
@@ -43,6 +44,8 @@ mongoose.connect(mongooseConnectionString, {useNewUrlParser:true});
 app.use("/user", users);
 app.use("/intake", intakes);
 app.use("/curriculum", curriculums);
+
+
 
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
