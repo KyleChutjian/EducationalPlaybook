@@ -32,7 +32,7 @@ function Curriculum() {
     // Get Curriculum using CurrentIntakeId
     getCurriculumByIntakeId(localStorage.getItem("currentIntakeId")).then((curriculum) => {
       setCurriculumTitle(curriculum.data.name);
-      // setCurriculumFiles(curriculum.data.files);
+      setCurriculumFiles(curriculum.data.files);
       loadLearningObjectives(curriculum.data.objectives);
       loadPlan(curriculum.data.plan);
       loadLinks(curriculum.data.links);
@@ -40,7 +40,7 @@ function Curriculum() {
       replaceFileOutputs(curriculum.data.files).then((result) => {
         setTimeout(() => {
           loadFiles(result)
-        }, 400)
+        }, 600)
       });
 
     });
@@ -128,9 +128,9 @@ function Curriculum() {
           const file = new File([blob], fileName, {type: result.headers['content-type']});
 
           files[index].output = file;
-
+          
           setCurriculumFiles((oldFiles) => {
-            if (typeof oldFiles === 'object') {
+            if (typeof oldFiles[index] === 'undefined') {
               return oldFiles;
             }
 

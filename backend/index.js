@@ -15,7 +15,7 @@ var users = require('./routes/users');
 var intakes = require('./routes/intake');
 var curriculums = require('./routes/curriculum');
 const app = express();
-// app.use(express.static(path.join(__dirname + "/public")));
+app.use(express.static(path.join(__dirname + "/public")));
 // Middlewares
 app.use(bodyParser.json({limit: '50mb', extended: true}));
 

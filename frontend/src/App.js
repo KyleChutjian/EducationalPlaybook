@@ -18,7 +18,7 @@ import PLDashboard from './components/PLDashboard';
 import ClientDashboard from './components/ClientDashboard';
 import React from "react";
 import * as bootstrap from 'bootstrap';
-
+import { HashRouter } from 'react-router-dom';
 import {
   BrowserRouter as Router,
   Routes,
@@ -28,7 +28,7 @@ import {
 
 function App() {
   return (
-    <Router>
+    <HashRouter>
       <Routes>
         <Route exact path="/" element={<Navigate to="/login" />}/>
         <Route exact path="/login" element={<Login />}/>
@@ -50,7 +50,7 @@ function App() {
         <Route exact path="/successRate" element={<SuccessRate />}/>
         <Route exact path="/adminNav" element={<AdminNav />}/>
       </Routes>
-    </Router>
+    </HashRouter>
   );
 }
 

@@ -48,7 +48,8 @@ function ManageAccounts() {
       users.forEach((user) => {
         manageAccounts(user._id,"projectLead",user.isProjectLead);
         manageAccounts(user._id,"admin",user.isAdmin);
-      })      
+      })
+      history("/admindashboard");
     };
   
     const onChangeUser = (e) => {
