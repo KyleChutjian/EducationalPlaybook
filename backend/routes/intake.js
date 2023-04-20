@@ -274,11 +274,14 @@ router.put("/approve-intake/projectlead", async (req, res) => {
 });
 
 // Archive Intake by IntakeId
-router.put("/archive-intake/:intakeId", async (req, res) => {
+router.get("/archived-all", async (req, res) => {
     try {
-        const intakeId = req.params.intakeId;
-        const intake = await Intake.findByIdAndUpdate(intakeId, {status: "archived"});
-        res.status(200).send(`Successfully archived this intake form, it has been moved to the 'Archived Intakes' screen.`);
+        const intakes = await Intake.find({
+            status: {
+                $in: ["archived-success", "archived-fail", "archived-denied"]
+            }
+        });
+        res.status(200).json(intakes);
     } catch (err) {
         res.status(500).json(err);
     }

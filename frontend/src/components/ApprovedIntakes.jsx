@@ -11,22 +11,16 @@ import { getCurrentUser } from '../services/authService';
 function ApprovedIntakes() {
 
   const history = useNavigate();
-  const approvIntakeArray = [];
-  const approvIntakeNameArray = [];
-
-
-  const toApprovedIntake = () => {
-    // Update the route
-    let path = '/curriculumDash';
-    history(path);
-  };
-
 
   const [ adminNavbar, setAdminNavbar ] = useState(false);
 
   //Approved Intake Hooks
   const [approvedIntakes, setApprovedIntakes] = useState(null);
+  const [approvedIntakesHTML, setApprovedIntakesHTML] = useState(null);
 
+  useEffect(() => {
+    loadIntakes(approvedIntakes);
+  }, [approvedIntakes])
 
   useEffect(() => {
     const currentUser = getCurrentUser();
@@ -34,64 +28,39 @@ function ApprovedIntakes() {
     if (!currentUser.isAdmin || !currentUser.isProjectLead) {
       history("/clientdashboard");
     }
-
     if (permissionLevel === "admin") {
       setAdminNavbar(true);
     }
-
-
     // Get Intake using Status
     getIntakesByStatus("approved").then((approvedIntakes) => {
-      //console.log(approvedIntakes.data);
-      setApprovedIntakes(approvedIntakes);
-      loadIntakes(approvedIntakes.data);
-      for(var i = 0; i < approvedIntakes.data.length; i++){
-        var current = approvedIntakes.data[i]._id;
-        var currentName = approvedIntakes.data[i].name;
-
-        if(approvIntakeArray.indexOf(current) < 0){
-            console.log(approvIntakeArray.indexOf(current));
-            console.log(current);
-            approvIntakeArray.push(current);
-            approvIntakeNameArray.push(currentName);
-          }
-      }
-
-      console.log(approvIntakeArray);
-      
-
+      setApprovedIntakes(approvedIntakes.data);
     });
       
   }, []);
 
- 
   const loadIntakes = (intakes) => {
-    setApprovedIntakes(
-      intakes.map((approvedIntakes, index) => {
+    if (intakes === null) {
+      return null;
+    }
+    setApprovedIntakesHTML(
+      intakes.map((intake, index) => {
         return(
           <div className="container" key={index}>
             <div className="row" style={{paddingTop: "1%"}}>
-
-
-            <Card id='card2' className="text-center mx-auto" style={{ background: '#D3D3D3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
-            <Card.Body>
-              <Card.Title style={{fontSize:'30px'}}>
-                {/* <MDBCardLink onClick={button2} style={{color:'whitesmoke'}}>Needs Assessment</MDBCardLink>  */}
-                <Button name={index} onClick={() =>{
-                  localStorage.setItem("currentIntakeId", approvIntakeArray[index]);
-                  toApprovedIntake();
-                } } variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}>{approvIntakeNameArray[index]}<u>{}</u></Button>
-              </Card.Title>
-            </Card.Body>
-          </Card>
-
+              <Card id='card2' className="text-center mx-auto" style={{ background: '#D3D3D3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
+                <Card.Body>
+                  <Card.Title style={{fontSize:'30px'}}>
+                    <Button name={index} onClick={() =>{
+                      localStorage.setItem("currentIntakeId", intake._id);
+                      history('/curriculumDash');
+                    } } variant='outline-dark' size='lg' style={{width: "350px", fontSize: "28px"}}>{intake.name}</Button>
+                  </Card.Title>
+                </Card.Body>
+              </Card>
             </div>
           </div>
         )
-       
       }
-
-    
     ))
     
 
@@ -115,7 +84,7 @@ function ApprovedIntakes() {
       </div>
 
         <div className="intake-body container" style={{paddingTop: "1%"}}>
-          {approvedIntakes}       
+          {approvedIntakesHTML}       
         </div>
       </div>
 
