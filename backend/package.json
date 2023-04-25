@@ -1,4 +1,7 @@
 {
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -10,5 +13,8 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^8.0.0"
+  },
+  "scripts": {
+    "start": "node index.js"
   }
 }

@@ -35,4 +35,4 @@ const curriculumSchema = new mongoose.Schema({
     files: {type: [resourceSchema], required: false}
 });
 
-module.exports = mongoose.model("Curriculum", curriculumSchema);
+module.exports = mongoose.model("curriculum", curriculumSchema);

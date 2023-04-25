@@ -1,7 +1,7 @@
 import http from "./httpService";
 import { getJwt } from "./authService";
 
-const apiEndPointIntake = "http://localhost:3001/intake";
+const apiEndPointIntake = "https://educationalplaybook.herokuapp.com/intake";
 
 // Get All Intake Forms
 export function getAllIntakes() {

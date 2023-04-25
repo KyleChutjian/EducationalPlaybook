@@ -10,4 +10,4 @@ const intakeFormSchema = new mongoose.Schema({
     needsAssessment: {type: mongoose.Schema.Types.Mixed, required: true}
 });
 
-module.exports = mongoose.model("IntakeForm", intakeFormSchema);
+module.exports = mongoose.model("intakeForm", intakeFormSchema);

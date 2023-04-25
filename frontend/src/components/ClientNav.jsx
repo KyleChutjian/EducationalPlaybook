@@ -14,8 +14,18 @@ function ClientNav() {
   const history = useNavigate();
 
   const toHome = () => {
-      // Update the route
-      let path = '/dashboard';
+      const permissionLevel = localStorage.getItem('permission-level');
+      let path;
+      if (permissionLevel === 'admin') {
+        path = '/admindashboard';
+      }
+      if (permissionLevel === 'projectlead') {
+        path = '/pldashboard';
+      }
+      if (permissionLevel === 'client') {
+        path = '/clientdashboard';
+      }
+      
       history(path);
   };
   const handleLogout = () => {
@@ -28,7 +38,10 @@ function ClientNav() {
     <Navbar bg="light" expand="lg" className="ms-auto" style={{borderBottom:"1px"}}>
       <Container>
         <Navbar.Brand onClick={toHome}>
-        <img src="./cropped-logo.png" alt="bug" height={40} />
+          <input type='image' src='./cropped-logo.png' alt='bug' height={40}/>
+          {/* <img src="./cropped-logo.png" alt="bug" height={40} /> */}
+
+        
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

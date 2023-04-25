@@ -32,16 +32,16 @@ function Curriculum() {
     // Get Curriculum using CurrentIntakeId
     getCurriculumByIntakeId(localStorage.getItem("currentIntakeId")).then((curriculum) => {
       setCurriculumTitle(curriculum.data.name);
-      setCurriculumFiles(curriculum.data.files);
+      // setCurriculumFiles(curriculum.data.files);
       loadLearningObjectives(curriculum.data.objectives);
       loadPlan(curriculum.data.plan);
       loadLinks(curriculum.data.links);
 
-      replaceFileOutputs(curriculum.data.files).then((result) => {
-        setTimeout(() => {
-          loadFiles(result)
-        }, 600)
-      });
+      // replaceFileOutputs(curriculum.data.files).then((result) => {
+      //   setTimeout(() => {
+      //     loadFiles(result)
+      //   }, 600)
+      // });
 
     });
 
@@ -105,47 +105,47 @@ function Curriculum() {
   }
 
   // Curriculum File Functions:
-  const replaceFileOutputs = async (files) => {
-    if (typeof files === 'undefined' || files === "") {
-      return [];
-    }
+  // const replaceFileOutputs = async (files) => {
+  //   if (typeof files === 'undefined' || files === "") {
+  //     return [];
+  //   }
     
-    setFiles(files.forEach((specificFile, index) => {
-      if (typeof specificFile.output === 'string') {
-        // Get the file from backend files directory
-        getFileByPath(specificFile.output).then((result) => {
-          var fileName;
-          if (typeof specificFile.output === 'string') {
-            const firstUnderscoreIndex = specificFile.output.indexOf('_')+1;
-            var oneUnderscoreString = specificFile.output.substring(firstUnderscoreIndex);
-            const secondUnderscoreIndex = oneUnderscoreString.indexOf('_')+1;
-            fileName = oneUnderscoreString.substring(secondUnderscoreIndex);
-          } else {
-            fileName = specificFile.output.name;
-          }
+  //   setFiles(files.forEach((specificFile, index) => {
+  //     if (typeof specificFile.output === 'string') {
+  //       // Get the file from backend files directory
+  //       getFileByPath(specificFile.output).then((result) => {
+  //         var fileName;
+  //         if (typeof specificFile.output === 'string') {
+  //           const firstUnderscoreIndex = specificFile.output.indexOf('_')+1;
+  //           var oneUnderscoreString = specificFile.output.substring(firstUnderscoreIndex);
+  //           const secondUnderscoreIndex = oneUnderscoreString.indexOf('_')+1;
+  //           fileName = oneUnderscoreString.substring(secondUnderscoreIndex);
+  //         } else {
+  //           fileName = specificFile.output.name;
+  //         }
           
-          const blob = new Blob([result.data], {type: result.headers['content-type']});
-          const file = new File([blob], fileName, {type: result.headers['content-type']});
+  //         const blob = new Blob([result.data], {type: result.headers['content-type']});
+  //         const file = new File([blob], fileName, {type: result.headers['content-type']});
 
-          files[index].output = file;
+  //         files[index].output = file;
           
-          setCurriculumFiles((oldFiles) => {
-            if (typeof oldFiles[index] === 'undefined') {
-              return oldFiles;
-            }
+  //         setCurriculumFiles((oldFiles) => {
+  //           if (typeof oldFiles[index] === 'undefined') {
+  //             return oldFiles;
+  //           }
 
-            oldFiles[index].output = file;
-            return oldFiles;
-          })
-        });
+  //           oldFiles[index].output = file;
+  //           return oldFiles;
+  //         })
+  //       });
         
 
-      }
-    }))
+  //     }
+  //   }))
 
-    return files;
+  //   return files;
 
-  }
+  // }
 
   //change to links and files
   const loadLinks = (links) => {
@@ -167,38 +167,38 @@ function Curriculum() {
     ))
   }
 
-  const handleFileClick = (e) => {
-    const { name } = e.target;
+  // const handleFileClick = (e) => {
+  //   const { name } = e.target;
 
-    const indexString = name.split("file")[1];
-    const index = parseInt(indexString);
+  //   const indexString = name.split("file")[1];
+  //   const index = parseInt(indexString);
 
-    const url = window.URL.createObjectURL(curriculumFiles[index].output);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', curriculumFiles[index].output.name);
-    document.body.appendChild(link);
-    link.click();
-    link.parentNode.removeChild(link);
+  //   const url = window.URL.createObjectURL(curriculumFiles[index].output);
+  //   const link = document.createElement('a');
+  //   link.href = url;
+  //   link.setAttribute('download', curriculumFiles[index].output.name);
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   link.parentNode.removeChild(link);
 
-  }
+  // }
 
-  const loadFiles = (files) => {
-    if (typeof files === 'undefined') {
-      return <div></div>
-    }
-    setFiles(
-      files.map((file, index) => {
-        return(
-          <div className="container" key={`${file[0]}${index}`}>
-            <div className="row" style={{paddingTop: "1%"}}>
-              <h6 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Download: `}<a style={{cursor: 'pointer'}} name={`file${index}`} onClick={handleFileClick} className="link-primary">{file.output.name}</a></b></h6>
-            </div>
-          </div>
-        )
-      }
-    ))
-  }
+  // const loadFiles = (files) => {
+  //   if (typeof files === 'undefined') {
+  //     return <div></div>
+  //   }
+  //   setFiles(
+  //     files.map((file, index) => {
+  //       return(
+  //         <div className="container" key={`${file[0]}${index}`}>
+  //           <div className="row" style={{paddingTop: "1%"}}>
+  //             <h6 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Download: `}<a style={{cursor: 'pointer'}} name={`file${index}`} onClick={handleFileClick} className="link-primary">{file.output.name}</a></b></h6>
+  //           </div>
+  //         </div>
+  //       )
+  //     }
+  //   ))
+  // }
 
   const editCurriculum = () => {
     history("/editcurriculum");
@@ -263,15 +263,15 @@ function Curriculum() {
         <h3 className="links-title text-center" style={{fontFamily: 'Bitter', paddingTop: "1%", color: "#B05139"}}><b>Links</b></h3>
         {/* Loaded Links */}
         {links}
-        <hr></hr>
+        {/* <hr></hr> */}
       </div>
 
        {/* Files */}
        <div className="files-container">
-        <h3 className="files-title text-center" style={{fontFamily: 'Bitter', paddingTop: "1%", color: "#B05139"}}><b>Attachments</b></h3>
+        {/* <h3 className="files-title text-center" style={{fontFamily: 'Bitter', paddingTop: "1%", color: "#B05139"}}><b>Attachments</b></h3> */}
         {/* Loaded Files */}
-        {files}
-        <hr></hr>
+        {/* {files} */}
+        {/* <hr></hr> */}
       </div>
 
 

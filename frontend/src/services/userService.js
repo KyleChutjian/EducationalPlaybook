@@ -1,7 +1,8 @@
 import http from "./httpService";
 import { getJwt } from "./authService";
 
-const apiEndPointUser = "http://localhost:3001/user";
+// const apiEndPointUser = "http://localhost:3001/user";
+const apiEndPointUser = `https://educationalplaybook.herokuapp.com/user`;
 
 // Login
 export function login(data) {

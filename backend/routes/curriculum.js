@@ -2,8 +2,8 @@ const express = require("express");
 const mongoose = require('mongoose');
 const router = express.Router();
 
-const Curriculum = require("../models/Curriculum");
-const Intake = require("../models/IntakeForm");
+const Curriculum = require("../models/curriculum");
+const Intake = require('../models/intakeForm');
 const fsPromise = require('node:fs/promises');
 const fs = require('fs');
 

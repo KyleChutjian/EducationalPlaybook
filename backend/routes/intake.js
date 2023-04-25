@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/User");
-const Intake = require("../models/IntakeForm");
-const Curriculum = require("../models/Curriculum");
+const User = require("../models/user");
+const Intake = require("../models/intakeForm");
+const Curriculum = require("../models/curriculum");
 
 const {
     verifyToken,

@@ -1,5 +1,5 @@
 require('dotenv').config();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const express  = require('express');
 const session = require("express-session");
 const fileUpload = require("express-fileupload");
@@ -9,13 +9,13 @@ const cors = require("cors");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const mongooseConnectionString = `mongodb+srv://${process.env.LOGIN}:${process.env.PASSWORD}@cluster0.yb6wo5k.mongodb.net/test`;
-const User = require('./models/User');
+const User = require('./models/user')
 const path = require('path');
 var users = require('./routes/users');
 var intakes = require('./routes/intake');
 var curriculums = require('./routes/curriculum');
 const app = express();
-app.use(express.static(path.join(__dirname + "/public")));
+// app.use(express.static(path.join(__dirname + "/public")));
 // Middlewares
 app.use(bodyParser.json({limit: '50mb', extended: true}));
 

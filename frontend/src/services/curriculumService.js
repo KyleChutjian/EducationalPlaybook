@@ -1,7 +1,7 @@
 import http from "./httpService";
 import { getJwt } from "./authService";
 
-const apiEndPointCurriculum = "http://localhost:3001/curriculum";
+const apiEndPointCurriculum = "https://educationalplaybook.herokuapp.com/curriculum";
 
 // Get All Curriculums
 export function getAllCurriculums() {
