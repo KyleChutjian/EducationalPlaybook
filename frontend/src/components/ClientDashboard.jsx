@@ -88,24 +88,6 @@ function ClientDashboard() {
 
   }, [currentStatus]);
 
-  // const button1 = () => {
-  //   switch (button1Option) {
-  //     case "Submit New Intake":
-  //     case "Edit Intake":
-  //       history("/submitintake");
-  //       break;
-
-  //     case "View Pending Intake":
-  //     case "View Approved Intake":
-  //       history("/viewIntake");
-  //       break;
-
-  //     default:
-  //       console.error(`Unknown button 1 option: ${button1Option}`);
-  //   }
-
-  // };
-
   const submitProblemButton = () => {
     history(button1Output);
 };

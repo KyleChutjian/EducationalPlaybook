@@ -273,13 +273,29 @@ router.put("/approve-intake/projectlead", async (req, res) => {
     }
 });
 
-// Archive Intake by IntakeId
+// Get All Archived Intakes
 router.get("/archived-all", async (req, res) => {
     try {
         const intakes = await Intake.find({
             status: {
                 $in: ["archived-success", "archived-fail", "archived-denied"]
             }
+        });
+        res.status(200).json(intakes);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+// Get Archived Intakes by ClientId
+router.get("/archived-all/:clientId", async (req, res) => {
+    try {
+        const clientId = req.params.clientId;
+        const intakes = await Intake.find({
+            status: {
+                $in: ["archived-success", "archived-fail", "archived-denied"]
+            },
+            clientId: clientId
         });
         res.status(200).json(intakes);
     } catch (err) {

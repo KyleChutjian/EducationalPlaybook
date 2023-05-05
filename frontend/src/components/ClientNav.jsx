@@ -39,9 +39,6 @@ function ClientNav() {
       <Container>
         <Navbar.Brand onClick={toHome}>
           <input type='image' src='./cropped-logo.png' alt='bug' height={40}/>
-          {/* <img src="./cropped-logo.png" alt="bug" height={40} /> */}
-
-        
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 import {Card} from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import AdminNav from '../components/AdminNav';
+import ClientNav from '../components/ClientNav';
 import { Dropdown } from 'react-bootstrap';
 import { DropdownButton } from 'react-bootstrap';
 import { getUserByUserId, getDashboardsByUserId } from '../services/userService';
@@ -68,7 +69,7 @@ function PLDashboard() {
     return(  
       <div>
         <div>
-          <AdminNav/>
+          {localStorage.getItem('permission-level') === 'admin' ? <AdminNav/> : <ClientNav/>}
         </div>
   
         {/* Header, viewing dashboards */}

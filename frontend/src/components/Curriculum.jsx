@@ -5,26 +5,23 @@ import { useNavigate } from "react-router-dom";
 import { getCurriculumByIntakeId } from '../services/curriculumService';
 import Button from 'react-bootstrap/Button';
 import editIcon from '../resources/edit-icon.png';
-import { getFileByPath } from '../services/curriculumService';
-import { MDBCheckbox } from 'mdb-react-ui-kit';
+// import { getFileByPath } from '../services/curriculumService';
+// import { MDBCheckbox } from 'mdb-react-ui-kit';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
 function Curriculum() {
   const history = useNavigate();
-
-  const [ permissionLevel, setPermissionLevel ] = useState("client");
   const [ adminNavbar, setAdminNavbar ] = useState(false);
 
   const [ curriculumTitle, setCurriculumTitle ] = useState("");
   const [ learningObjectives, setLearningObjectives ] = useState(<div></div>);
   const [ coursePlan, setCoursePlan ] = useState(<div></div>);
   const [ links, setLinks ] = useState(<div></div>);
-  const [ curriculumFiles, setCurriculumFiles ] = useState([]);
-  const [ files, setFiles ] = useState(<div></div>);
+  // const [ curriculumFiles, setCurriculumFiles ] = useState([]);
+  // const [ files, setFiles ] = useState(<div></div>);
 
   useEffect(() => {
-    setPermissionLevel(localStorage.getItem("permission-level"));
     if (localStorage.getItem("permission-level") === "admin") {
       setAdminNavbar(true);
     }
@@ -155,7 +152,7 @@ function Curriculum() {
     setLinks(
       links.map((link, index) => {
         return(
-          <div className="container" key={`${link[0]}${index}`}>
+          <div className="container" key={`${link[0]}${index}`} style={{paddingBottom: '3%'}}>
             <div className="row" style={{paddingTop: "1%"}}>
                 <span style={{display: 'flex'}}>
                   <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}><b>{`Link #${index+1}: `}<a href={`//${link.output}`} target='_blank' className="link-primary">{link.title}</a></b></h3>
@@ -202,6 +199,10 @@ function Curriculum() {
 
   const editCurriculum = () => {
     history("/editcurriculum");
+  }
+
+  const returnToDashboard = () => {
+    history('/curriculumDash');
   }
 
   return(
@@ -273,7 +274,11 @@ function Curriculum() {
         {/* {files} */}
         {/* <hr></hr> */}
       </div>
-
+      <hr></hr>
+      {/* Return to Curriculum Development Plan Dashboard */}
+      <div className="cdp-dashboard text-center" style={{paddingTop: "1%", paddingBottom: '1%'}}>
+        <Button variant="primary" onClick={returnToDashboard} style={{marginRight: '0.5%'}}>Return to Curriculum Dashboard</Button>
+      </div>
 
     </div>
   )

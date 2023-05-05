@@ -17,10 +17,8 @@ import AdminNav from "./components/AdminNav";
 import PLDashboard from './components/PLDashboard';
 import ClientDashboard from './components/ClientDashboard';
 import React from "react";
-import * as bootstrap from 'bootstrap';
 import { HashRouter } from 'react-router-dom';
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
   Navigate

@@ -2,6 +2,8 @@ import http from "./httpService";
 import { getJwt } from "./authService";
 
 const apiEndPointIntake = "https://educationalplaybook.herokuapp.com/intake";
+// const apiEndPointIntake = "http://localhost:3001/intake";
+
 
 // Get All Intake Forms
 export function getAllIntakes() {
@@ -58,10 +60,16 @@ export function projectleadApproveIntake(data) {
     return http.put(`${apiEndPointIntake}/approve-intake/projectlead`, data);
 }
 
-// Archive Intake by IntakeId
+// Get All Archived Intakes
 export function getAllArchivedIntakes() {
     http.setJwt(getJwt());
     return http.get(`${apiEndPointIntake}/archived-all`);
+}
+
+// Get Archived Intakes by ClientId
+export function getArchivedIntakesByClientId(clientId) {
+    http.setJwt(getJwt());
+    return http.get(`${apiEndPointIntake}/archived-all/${clientId}`);
 }
 
 // Edit Intake Form by IntakeId

@@ -7,7 +7,6 @@ import {Card} from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { getCurrentUser } from '../services/authService';
 
-
 function ApprovedIntakes() {
 
   const history = useNavigate();
@@ -62,15 +61,7 @@ function ApprovedIntakes() {
         )
       }
     ))
-    
-
   }
-
-
-
-  
-
-  
     return(
 
       <div className="intake-wrapper">
@@ -87,9 +78,6 @@ function ApprovedIntakes() {
           {approvedIntakesHTML}       
         </div>
       </div>
-
-      
-       
   )
 }
 

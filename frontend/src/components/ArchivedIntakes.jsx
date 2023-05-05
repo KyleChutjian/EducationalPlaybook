@@ -3,18 +3,13 @@ import { useNavigate } from "react-router-dom";
 import AdminNav from '../components/AdminNav';
 import ClientNav from '../components/ClientNav';
 import { Button } from 'react-bootstrap';
-import { getAllArchivedIntakes } from '../services/intakeService';
+import { getAllArchivedIntakes, getArchivedIntakesByClientId } from '../services/intakeService';
 import {Card} from 'react-bootstrap';
+import { getCurrentUser } from '../services/authService';
 
 function ArchivedIntakes() {
 
   const history = useNavigate();
-
-  // const archIntakeArray = [];
-  // const archIntakeNameArray = [];
-
-
-
 
   const [ adminNavbar, setAdminNavbar ] = useState(false);
 
@@ -31,9 +26,18 @@ function ArchivedIntakes() {
     if (permissionLevel === "admin") {
       setAdminNavbar(true);
     }
-    getAllArchivedIntakes().then((intakes) => {
-      setArchivedIntakes(intakes.data);
-    })
+
+    if (permissionLevel === 'client') {
+      getArchivedIntakesByClientId(getCurrentUser().id).then((intakes) => {
+        setArchivedIntakes(intakes.data);
+      })
+    } else {
+      getAllArchivedIntakes().then((intakes) => {
+        setArchivedIntakes(intakes.data);
+      });
+    }
+
+
       
   }, []);
 
@@ -79,11 +83,6 @@ function ArchivedIntakes() {
       }
     ))
   }
-
-  
-
-
-  
   return(
 
     <div className="intake-wrapper">
@@ -102,10 +101,7 @@ function ArchivedIntakes() {
 
     
     </div>
-
-    
-     
-)
+  )
 }
 
 export default ArchivedIntakes;

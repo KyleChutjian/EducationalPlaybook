@@ -40,8 +40,13 @@ function SuccessRate() {
       setArchivedDeny(deny);
       setArchivedFail(fail);
       const successRate = (success.length / intakes.data.length)*100;
-      setSuccessRate(successRate.toFixed(2));
-    })
+      if (isNaN(successRate)) {
+        setSuccessRate(0)
+      } else {
+        setSuccessRate(successRate.toFixed(2));
+      }
+      
+    });
   }, []);
 
   return(

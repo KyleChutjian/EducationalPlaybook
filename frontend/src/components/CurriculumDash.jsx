@@ -17,14 +17,9 @@ function CurriculumDash() {
   const history = useNavigate();
   const [ curriculumTitle, setCurriculumTitle ] = useState("");
   const [ adminNavbar, setAdminNavbar ] = useState(false);
-  const [isRadio1Visible, setIsRadio1Visible] = useState(false);
-  const [isRadio2Visible, setIsRadio2Visible] = useState(false);
   const [check, setIsBoxChecked] = useState(false);
   const [success, setSuccess] = useState(false);
   const [status, setStatus ] = useState("");
-
-  const radioResponse3HTML = <div class = "button-approved">Submit</div>;
-  const [ currentIntakeId, setCurrentIntakeId] = useState(localStorage.getItem("currentIntakeId"));
 
   useEffect(() => {
     const permissionLevel = localStorage.getItem("permission-level");
@@ -63,19 +58,13 @@ function CurriculumDash() {
   const [open, setOpen] = useState(false);
 
 
-    // Handles Logging in
-    function handleSubmit(e) {
-        e.preventDefault();
-       
-    }
-
     // Handles Create New Account Submission
     const submitModal = (e) => {
-      if (success == true){
-       editIntakeStatusByIntakeId(currentIntakeId, "archived-success");
+      if (success === true){
+       editIntakeStatusByIntakeId(localStorage.getItem('currentIntakeId'), "archived-success");
       }
       else{
-        editIntakeStatusByIntakeId(currentIntakeId, "archived-fail");
+        editIntakeStatusByIntakeId(localStorage.getItem('currentIntakeId'), "archived-fail");
 
       }
       e.preventDefault();
@@ -95,26 +84,14 @@ function CurriculumDash() {
 
 
   function handleRadioButtons(e) {
-    const name = e.target.name; // Radio1/Radio2
     const value = e.target.value; // Yes/No
-
-    if (name === "radio1") {
-        if (value === "yes") {
-          setIsRadio1Visible(true);
-          setSuccess(true);
-        } else {
-          setIsRadio1Visible(false);
-        }
+    if (value === "yes") {
+      setSuccess(true);
+    } else if (value === 'no') {
+      setSuccess(false);
+    } else {
+      console.log('Something went wrong');
     }
-
-    if (name === "radio2") {
-      if (value === "yes") {
-        setIsRadio2Visible(true);
-        
-      } else {
-        setIsRadio2Visible(false);
-      }
-  }
 
   }
 
@@ -192,13 +169,13 @@ function CurriculumDash() {
                    
                     {/* Data: Yes */}
                     <div className="yes">
-                    <label htmlFor='yes'>Yes</label>
+                    <label htmlFor='yes' style={{paddingRight: '1%'}}>Yes</label>
                     <input type='radio' id='yes' name='radio1' value='yes' onClick={handleRadioButtons}/>
                     </div>
                    
                     {/* Identified Problem: No */}
                     <div className="no">
-                    <label htmlFor='no'>No</label>
+                    <label htmlFor='no' style={{paddingRight: '1%'}}>No</label>
                     <input defaultChecked={true} type='radio' id='no' name='radio1' value='no' onClick={handleRadioButtons}/>
 
                     </div>
@@ -214,8 +191,8 @@ function CurriculumDash() {
                    
                     {/* Data: Yes */}
                     <div className="yes">
-                    <input defaultChecked={false} type='checkbox' id='yes' name='check' onChange={handleCheckBox}/>
-                    <label htmlFor='check'>I understand</label>
+                    <input defaultChecked={false} type='checkbox' id='yes' name='check' onChange={handleCheckBox} style={{marginRight: '1%'}}/>
+                    <label htmlFor='check'>I understand archiving this curriculum cannot be undone.</label>
                     </div>
                   
                     

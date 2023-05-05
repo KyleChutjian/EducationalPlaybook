@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { getCurrentUser } from '../services/authService';
 import { getAccountsByRole } from '../services/userService';
-import { getIntakeByIntakeId, getOpenIntakeByClientId, assignProjectLeadsByIntakeId, projectleadApproveIntake, editIntakeStatusByIntakeId } from '../services/intakeService';
+import { getIntakeByIntakeId, assignProjectLeadsByIntakeId, projectleadApproveIntake, editIntakeStatusByIntakeId, getOpenIntakeByClientId } from '../services/intakeService';
 import ClientNav from './ClientNav';
+import AdminNav from './AdminNav';
 import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap';
 import { Col, Form } from 'react-bootstrap';
 import Select from 'react-select';
-
-
+import { getCurrentUser } from '../services/authService';
 
 function ViewIntake() {
   const history = useNavigate();
@@ -34,16 +33,11 @@ function ViewIntake() {
   }, [projectLeads]);
 
   useEffect(() => {
-    // Get Current User
-    const currentUser = getCurrentUser();
-
-    const permissionLevel = localStorage.getItem("permission-level");
     const currentIntakeId = localStorage.getItem("currentIntakeId");
     var status = "";
 
-    if (permissionLevel === "client") {
-      // Get Open Intake by ClientID
-      getOpenIntakeByClientId(currentUser.id).then((result) => {
+    if (localStorage.getItem('permission-level') === 'client') {
+      getOpenIntakeByClientId(getCurrentUser().id).then((result) => {
         setIntakeName(result.data[0].name)
         
         if (result.data[0].intakeResponse[2] === '') {
@@ -55,7 +49,7 @@ function ViewIntake() {
         status = result.data[0].status;
         setStatus(status.toLowerCase())
         setIntakeResponse(result.data[0].intakeResponse);
-      });
+      })
     } else {
       getIntakeByIntakeId(currentIntakeId).then((result) => {
         setIntakeName(result.data.name)
@@ -149,13 +143,8 @@ function ViewIntake() {
 
         </Modal>
       </div>
-
-
-
       {/* Navbar */}
-      <header style={{ paddingLeft: 0 }}>
-        <ClientNav/>
-      </header>
+      {localStorage.getItem('permission-level') === 'admin' ? <AdminNav/> : <ClientNav/>}
 
       {/* Jumbotron */}
       <div className='p-5 text-center' style={{backgroundColor: '#0098C3', color:'whitesmoke'}}>
@@ -200,32 +189,21 @@ function ViewIntake() {
           <p style={{border: "1px solid black", minHeight:"100px"}}>{intakeResponse[5]}</p>
         </div>
 
-
-
-        
-
          {/* Buttons */}
+        <div className="create-account-button text-center">
+          {localStorage.getItem("permission-level") === "admin"  && status === "pending-admin" ? 
+            <div style={{paddingBottom: '1%'}}>
+              <Button variant="primary" onClick={handleOpenModal} style={{width:'20%',fontFamily: 'Bitter', background: '#6E9A35', marginRight: '1%'}}>Approve & Assign</Button>
+              <Button variant="danger" onClick={handleDeny} style={{width:'20%',fontFamily: 'Bitter', marginLeft: '1%'}}>Deny</Button>
+            </div> : null}
+          {localStorage.getItem("permission-level") === "projectlead" && status === "pending-projectlead" ? 
+            <div style={{paddingBottom: '1%'}}>
+              <Button variant="primary" onClick={handleApprovePL} style={{width:'20%',fontFamily: 'Bitter', background: '#a40084', marginRight: '1%'}}>Approve</Button>
+              <Button variant="primary" onClick={handleDeny} style={{width:'20%',fontFamily: 'Bitter', background: '#d2492a', marginLeft: '1%'}}>Deny</Button>
+            </div>:null}
 
-         <div className="login-button text-center" style={{paddingBottom: "0.3%"}}>
-          {/* {status !== "approved" ?             <button type="submit" onClick={()=>{
-
-            }} className="btn btn-success" style={{width:'50%',fontFamily: 'Bitter', background:'#d2492a'}}>Deny</button> : <div></div>} */}
-
-          </div>
-          <div className="create-account-button text-center">
-            {localStorage.getItem("permission-level") === "admin"  && status === "pending-admin" ? 
-              <div>
-                <Button variant="primary" onClick={handleOpenModal} style={{width:'20%',fontFamily: 'Bitter', background: '#6E9A35', marginRight: '1%'}}>Approve & Assign</Button>
-                <Button variant="danger" onClick={handleDeny} style={{width:'20%',fontFamily: 'Bitter', marginLeft: '1%'}}>Deny</Button>
-              </div> : null}
-            {localStorage.getItem("permission-level") === "projectlead" && status === "pending-projectlead" ? 
-              <div>
-                <Button variant="primary" onClick={handleApprovePL} style={{width:'20%',fontFamily: 'Bitter', background: '#a40084', marginRight: '1%'}}>Approve</Button>
-                <Button variant="primary" onClick={handleDeny} style={{width:'20%',fontFamily: 'Bitter', background: '#d2492a', marginLeft: '1%'}}>Deny</Button>
-              </div>:null}
-
-            {/* {approveButton} */}
-          </div>
+          {/* {approveButton} */}
+        </div>
 
       </div> 
       

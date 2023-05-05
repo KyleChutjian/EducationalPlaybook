@@ -66,11 +66,6 @@ function PendingIntakes() {
       }
     ))
   }
-
- 
-
-
-  
   return(
 
     <div className="intake-wrapper">
@@ -86,13 +81,8 @@ function PendingIntakes() {
       <div className="intake-body container" style={{paddingTop: "1%"}}>
           {pendingIntakes}       
         </div>
-
-    
     </div>
-
-    
-     
-)
+  )
 }
 
 export default PendingIntakes;

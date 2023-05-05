@@ -27,6 +27,29 @@ router.post("/logout", async (req, res) => {
     res.send({message: "Successfully logged out"});
 });
 
+// Change Password
+router.put("/change-password", async (req, res) => {
+    try {
+        const userId = req.body.userId;
+        const newPassword = req.body.password;
+        User.findById(userId).then((user) => {
+            if (user) {
+                user.setPassword(newPassword, function() {
+                    user.save();
+                    res.status(200).json({message: 'Successfully changed password'});
+                });
+            } else {
+                res.status(500).json({message: 'User does not exist'});
+            }
+        });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+    
+    User.findById()
+
+});
+
 // Get Accounts
 router.get("/get-accounts", async (req, res) => {
     try {

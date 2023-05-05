@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import AdminNav from '../components/AdminNav';
 import ClientNav from '../components/ClientNav';
 import { useNavigate } from "react-router-dom";
-import { getCurriculumByIntakeId, getFileByPath, uploadFiles, saveCurriculum } from '../services/curriculumService';
+import { getCurriculumByIntakeId, saveCurriculum } from '../services/curriculumService';
+// import { getFileByPath, uploadFiles } from '../services/curriculumService'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { MDBTextArea } from 'mdb-react-ui-kit';
@@ -10,7 +11,7 @@ import { MDBCheckbox } from 'mdb-react-ui-kit';
 import deleteIcon from '../resources/delete-icon.png';
 
 function EditCurriculum() {
-  const fileInput = React.createRef();
+  // const fileInput = React.createRef();
   const history = useNavigate();
 
   const [ adminNavbar, setAdminNavbar ] = useState(false);
@@ -36,8 +37,8 @@ function EditCurriculum() {
   const [ links, setLinks ] = useState(<div></div>);
 
   // File Hooks
-  const [ curriculumFiles, setCurriculumFiles ] = useState([]);
-  const [ files, setFiles ] = useState(<div></div>);
+  // const [ curriculumFiles, setCurriculumFiles ] = useState([]);
+  // const [ files, setFiles ] = useState(<div></div>);
 
 
   useEffect(() => {
@@ -220,8 +221,7 @@ function EditCurriculum() {
     }
   }
   const handleCoursePlanResponseChange = (e) => {
-    const { name, value} = e.target;
-    let indexString, index;
+    const { value} = e.target;
 
     setCoursePlan((oldPlan) => {
       oldPlan.description = value;
@@ -474,6 +474,10 @@ function EditCurriculum() {
     history("/curriculum");
   }
 
+  const cancel = () => {
+    history('/curriculum');
+  }
+
   return(
     <div>
       <div>
@@ -591,8 +595,9 @@ function EditCurriculum() {
       </div>
 
       {/* Save Changes Button */}
-      <div className="save-changes text-center" style={{paddingTop: "1%"}}>
-        <Button variant="primary" onClick={saveChanges}>Save Changes</Button>
+      <div className="save-changes text-center" style={{paddingTop: "1%", paddingBottom: '1%'}}>
+        <Button variant="primary" onClick={saveChanges} style={{marginRight: '0.5%'}}>Save Changes</Button>
+        <Button variant="secondary" onClick={cancel} style={{marginLeft: '0.5%'}}>Cancel</Button>
       </div>
 
     </div>

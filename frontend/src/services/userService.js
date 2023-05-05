@@ -14,6 +14,12 @@ export function logout() {
     return http.post(`${apiEndPointUser}/logout`);
 }
 
+// Change Password
+export function changePassword(data) {
+    console.log(`${apiEndPointUser}/change-password`)
+    return http.put(`${apiEndPointUser}/change-password`, data);
+}
+
 // Get-accounts
 export function getAccounts() {
     http.setJwt(getJwt());
