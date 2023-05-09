@@ -29,6 +29,8 @@ function SubmitIntake() {
     <MDBTextArea id='question4' rows={4} name="question4" defaultValue={intakeResponse[3]} onChange={handleIntakeResponseChange}/>
   </div>
 
+   
+
   useEffect(() => {
 
     // Get Current User
@@ -181,9 +183,30 @@ function SubmitIntake() {
     });
     history("/clientdashboard");
 
+
   }
 
-  return (
+   //Check validity 
+  //  var intakeValid = false;
+    
+
+  //  function validateForm(e) {
+  //    e.preventDefault();
+  //    const intakeResponse = intakeResponse[0];
+  //    console.log(intakeResponse);
+  //    if(intakeResponse === "") {
+  //      alert("Please enter something in this field.");
+  //    } else {
+  //        intakeValid = true;
+  //    }
+
+  //    if(intakeValid = true){
+  //      handleSubmit();
+  //    }
+  //  }
+
+
+    return (
     <div className="intake-wrapper">
       {/* Navbar */}
       <header style={{ paddingLeft: 0 }}>
@@ -196,22 +219,23 @@ function SubmitIntake() {
       </div>
       
       <div className="intake-body container" style={{paddingTop: "1%"}}>
+      <form action="page_submission_URL" method="POST">
         {/* Name of Intake */}
         <div className="row question1-wrapper">
           <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Name of Problem: </h3>
-          <MDBTextArea id='question1' rows={1} defaultValue={intakeName} onChange={handleIntakeNameChange}/>
+          <MDBTextArea required id='question1' rows={1} defaultValue={intakeName} onChange={handleIntakeNameChange}/>
         </div>
 
         {/* Question 1 */}
         <div className="row question1-wrapper" style={{paddingTop: "2%"}}>
           <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Why is this training needed?</h3>
-          <MDBTextArea id='question1' rows={4} name="question1" defaultValue={intakeResponse[0]} onChange={handleIntakeResponseChange}/>
+          <MDBTextArea required type='submit' pattern=".{8,}" maxlength="15" id='question1' rows={4} name="question1" defaultValue={intakeResponse[0]} onChange={handleIntakeResponseChange}/>
         </div>
 
         {/* Question 2 */}
         <div className="row question2-wrapper" style={{paddingTop: "2%"}}>
           <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Can you describe the current gap that exists?</h3>
-          <MDBTextArea id='question2' rows={4} name="question2" defaultValue={intakeResponse[1]} onChange={handleIntakeResponseChange}/>
+          <MDBTextArea required id='question2' rows={4} name="question2" defaultValue={intakeResponse[1]} onChange={handleIntakeResponseChange}/>
         </div>
 
         {/* Question 3 */}
@@ -253,14 +277,16 @@ function SubmitIntake() {
         {/* Question 5 */}
         <div className="row question5-wrapper" style={{paddingTop: "2%"}}>
           <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>How will we measure success of this training?</h3>
-          <MDBTextArea id='question5' rows={4} name="question5" defaultValue={intakeResponse[4]} onChange={handleIntakeResponseChange}/>
+          <MDBTextArea required id='question5' rows={4} name="question5" defaultValue={intakeResponse[4]} onChange={handleIntakeResponseChange}/>
         </div>
 
         {/* Question 6 */}
         <div className="row question6-wrapper" style={{paddingTop: "2%"}}>
           <h3 style={{fontFamily: 'Bitter', fontSize:'20px'}}>Who are your champions for this training development project? Please include name(s) and email(s). </h3>
-          <MDBTextArea id='question6' rows={4} name="question6" defaultValue={intakeResponse[5]} onChange={handleIntakeResponseChange}/>
+          <MDBTextArea required id='question6' rows={4} name="question6" defaultValue={intakeResponse[5]} onChange={handleIntakeResponseChange}/>
         </div>
+        </form>
+        
 
         {/* Buttons */}
         <div className="row" style={{paddingTop: "2%", paddingBottom: "5%"}}>
@@ -269,13 +295,13 @@ function SubmitIntake() {
             <form id="save-close-form" onSubmit={handleSaveAndClose}>
               <span style={{paddingRight: "1%"}}>
                 <button
+                  //variant="light"
                   id="saveAndCloseIntakeButton2"
-                  className="btn btn-success btn-md center-block"
+                  className="btn btn-md center-block"
                   type="submit"
                   form="save-close-form"
                   onSubmit={handleSaveAndClose}
-                  style={{width: "150px", fontFamily:'Bitter', backgroundColor: '#0098C3'}}
-
+                  style={{width: "150px", fontFamily:'Bitter', backgroundColor: '#0098C3', color:'whitesmoke', opacity:'80%'}}
                 >Save & Return</button>
               </span>
             </form>
@@ -287,7 +313,7 @@ function SubmitIntake() {
                   className="btn btn-primary btm-md center-block"
                   type="submit"
                   onSubmit={handleSubmit}
-                  style={{width: "150px", display: "inline-block", verticalAlign: "top", fontFamily:'Bitter', backgroundColor: '#6E9A35'}}
+                  style={{width: "150px", display: "inline-block", verticalAlign: "top", fontFamily:'Bitter', backgroundColor: '#6E9A35', opacity:"85%"}}
                   >Submit</button>
               </span>
             </form>

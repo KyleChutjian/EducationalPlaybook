@@ -498,7 +498,7 @@ function EditCurriculum() {
 
         {/* Add New Learning Objective */}
         <div className="add-learning-objective text-center" style={{paddingTop: "1%"}}>
-            <Button variant="success" onClick={handleOpenNewLearningObjective}>Add New</Button>
+            <Button variant="light" style={{ fontFamily: 'Bitter'}} onClick={handleOpenNewLearningObjective}>Add New</Button>
             <hr></hr>
         </div>
         {/* Create New Learning Objective Modal */}
@@ -517,8 +517,8 @@ function EditCurriculum() {
                   
 
           <Modal.Footer>
-            <Button variant="primary" onClick={createNewLearningObjectiveModal}>Create</Button>
-            <Button variant="secondary" onClick={handleCloseNewLearningObjective}>Close</Button>
+            <Button style={{background:'#6E9A35', fontFamily: 'Bitter'}} onClick={createNewLearningObjectiveModal}>Create</Button>
+            {/* <Button variant="secondary" onClick={handleCloseNewLearningObjective}>Close</Button> */}
           </Modal.Footer>
 
         </Modal>
@@ -570,7 +570,7 @@ function EditCurriculum() {
         {/* Add New Link */}
         <div className="add-resource text-center" style={{paddingTop: "1%"}}>
           <span>
-            <Button variant="success" onClick={createNewLink}>New Link</Button>
+            <Button variant="light" style={{ fontFamily: 'Bitter'}} onClick={createNewLink}>New Link</Button>
           </span>
           
           <hr></hr>
@@ -596,8 +596,8 @@ function EditCurriculum() {
 
       {/* Save Changes Button */}
       <div className="save-changes text-center" style={{paddingTop: "1%", paddingBottom: '1%'}}>
-        <Button variant="primary" onClick={saveChanges} style={{marginRight: '0.5%'}}>Save Changes</Button>
-        <Button variant="secondary" onClick={cancel} style={{marginLeft: '0.5%'}}>Cancel</Button>
+        <Button variant="success" onClick={saveChanges} style={{marginRight: '0.5%', background:'#6E9A35', fontFamily: 'Bitter', opacity:"90%"}}>Save Changes</Button>
+        <Button variant="danger" onClick={cancel} style={{marginLeft: '0.5%', fontFamily: 'Bitter', opacity:"90%"}}>Cancel</Button>
       </div>
 
     </div>

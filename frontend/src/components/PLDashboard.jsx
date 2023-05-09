@@ -92,7 +92,7 @@ function PLDashboard() {
             <Card id='card1' className="text-center mx-auto" style={{ background: '#0098C3', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter' }}>
               <Card.Body>
                 <Card.Title style={{fontSize:'30px'}}>
-                    <Button onClick={pendingIntakes} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}><u>Pending Forms</u></Button>
+                    <Button onClick={pendingIntakes} variant='outline-light' size='lg' style={{minWidth: "350px", fontSize: "28px"}}>Pending Forms</Button>
                 </Card.Title>
               </Card.Body>
             </Card>
@@ -101,7 +101,7 @@ function PLDashboard() {
             <Card id='card2' className="text-center mx-auto" style={{ background: '#6E9A35', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
               <Card.Body>
                 <Card.Title style={{fontSize:'30px'}}>
-                  <Button onClick={approvedIntakes} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Approved Forms</u></Button>
+                  <Button onClick={approvedIntakes} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}>Approved Forms</Button>
                 </Card.Title>
               </Card.Body>
             </Card>
@@ -110,7 +110,7 @@ function PLDashboard() {
             <Card id='card3' className="text-center mx-auto" style={{ background: '#d2492a', width: '60rem', margin:'5px', color:'whitesmoke', fontFamily: 'Bitter'}}>
               <Card.Body>
                 <Card.Title style={{fontSize:'30px'}}>
-                  <Button onClick={archivedIntakes} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}><u>Archived Forms</u></Button>
+                  <Button onClick={archivedIntakes} variant='outline-light' size='lg' style={{width: "350px", fontSize: "28px"}}>Archived Forms</Button>
                 </Card.Title>
               </Card.Body>
             </Card>

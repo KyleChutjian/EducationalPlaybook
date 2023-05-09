@@ -209,7 +209,7 @@ function CurriculumDash() {
 
                   <Modal.Footer>
                     <Button disabled = {!check} style={{background:'#6E9A35'}} onClick={submitModal}>Submit</Button>
-                    <Button variant="secondary" onClick={handleCloseModal}>Close</Button>
+                    {/* <Button variant="secondary" onClick={handleCloseModal}>Close</Button> */}
                   </Modal.Footer>
 
               </Modal>

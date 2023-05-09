@@ -120,12 +120,12 @@ function ViewIntake() {
       <div className="mb-3">
         <Modal show={open} onHide={handleCloseModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Assign Project Leads</Modal.Title>
+            <Modal.Title style={{fontFamily: 'Bitter'}} >Assign Project Leads</Modal.Title>
           </Modal.Header>
             <Modal.Body>
               
               <Form.Group as={Col} controlId='projectleads'>
-                <Form.Label>Project-Leads:</Form.Label>
+                <Form.Label style={{fontFamily: 'Bitter'}}>Project-Leads:</Form.Label>
                 <Select 
                   closeMenuOnSelect={false} 
                   isMulti 
@@ -137,8 +137,8 @@ function ViewIntake() {
             
 
             <Modal.Footer>
-              <Button style={{background:'#6E9A35'}} onClick={submitModal}>Approve & Assign</Button>
-              <Button variant="secondary" onClick={handleCloseModal}>Close</Button>
+              <Button style={{background:'#6E9A35', fontFamily: 'Bitter'}} onClick={submitModal}>Approve & Assign</Button>
+              {/* <Button variant="secondary" onClick={handleCloseModal}>Close</Button> */}
             </Modal.Footer>
 
         </Modal>
@@ -198,8 +198,8 @@ function ViewIntake() {
             </div> : null}
           {localStorage.getItem("permission-level") === "projectlead" && status === "pending-projectlead" ? 
             <div style={{paddingBottom: '1%'}}>
-              <Button variant="primary" onClick={handleApprovePL} style={{width:'20%',fontFamily: 'Bitter', background: '#a40084', marginRight: '1%'}}>Approve</Button>
-              <Button variant="primary" onClick={handleDeny} style={{width:'20%',fontFamily: 'Bitter', background: '#d2492a', marginLeft: '1%'}}>Deny</Button>
+              <Button variant="primary" onClick={handleApprovePL} style={{width:'20%',fontFamily: 'Bitter', background: '#6E9A35', marginRight: '1%'}}>Approve</Button>
+              <Button variant="danger" onClick={handleDeny} style={{width:'20%',fontFamily: 'Bitter', marginLeft: '1%'}}>Deny</Button>
             </div>:null}
 
           {/* {approveButton} */}

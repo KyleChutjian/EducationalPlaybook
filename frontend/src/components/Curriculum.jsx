@@ -277,7 +277,7 @@ function Curriculum() {
       <hr></hr>
       {/* Return to Curriculum Development Plan Dashboard */}
       <div className="cdp-dashboard text-center" style={{paddingTop: "1%", paddingBottom: '1%'}}>
-        <Button variant="primary" onClick={returnToDashboard} style={{marginRight: '0.5%'}}>Return to Curriculum Dashboard</Button>
+        <Button variant="light" onClick={returnToDashboard} style={{marginRight: '0.5%', fontFamily:'Bitter'}}>Return to Curriculum Dashboard</Button>
       </div>
 
     </div>

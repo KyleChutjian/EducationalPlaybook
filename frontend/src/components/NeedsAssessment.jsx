@@ -144,8 +144,8 @@ function NeedsAssessment() {
           <div className="container">
             <div className='row'>
               <div className='text-center' style={{display: 'inline'}}>
-                <Button style={{backgroundColor: '#0098C3', fontFamily: 'Bitter', marginRight:'0.5%', minWidth:'160px', maxHeight:'40px'}} type="submit" onClick={addNew}>Add Focus Area</Button>
-                <Button style={{backgroundColor: '#6E9A35', fontFamily: 'Bitter', marginLeft: '0.5%', minWidth:'160px', maxHeight:'40px'}} variant="primary" type="submit" onClick={saveChanges}>Save</Button>
+                <Button style={{fontFamily: 'Bitter', marginRight:'0.5%', minWidth:'160px', maxHeight:'40px'}} variant="light" type="submit" onClick={addNew}>Add Focus Area</Button>
+                <Button style={{backgroundColor: '#6E9A35', fontFamily: 'Bitter', marginLeft: '0.5%', minWidth:'160px', maxHeight:'40px', opacity:"90%"}} variant="primary" type="submit" onClick={saveChanges}>Save</Button>
               </div>
             </div>
           </div>
